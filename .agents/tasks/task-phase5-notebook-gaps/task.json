@@ -1,0 +1,7 @@
+{
+  "task_id": "task-phase5-notebook-gaps",
+  "task_description": "Fill gaps where notebook outputs (DBSCAN spatial clusters, model performance metrics, counterfactual explanations, model documentation) are not yet represented in the dashboard. Add new AI chat capabilities for these new topics. Update documentation.",
+  "status": "in_progress",
+  "feature_order": ["FEAT-001", "FEAT-002"],
+  "blocked_reason": null
+}

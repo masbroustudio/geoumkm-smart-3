@@ -3,7 +3,7 @@
 import { Suspense, useState, useEffect, useMemo } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { ArrowLeft, Search, Users, Building2, Calendar, DollarSign, Wifi, WifiOff, ShieldCheck, Target, Lightbulb, MapPin } from 'lucide-react';
+import { ArrowLeft, Search, Users, Building2, Calendar, DollarSign, Wifi, WifiOff, ShieldCheck, Target, Lightbulb, MapPin, TrendingUp } from 'lucide-react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell } from 'recharts';
 import { umkmDetailData, umkmDetailMap, UmkmDetail } from '@/lib/umkm-detail-data';
 
@@ -282,6 +282,51 @@ function UmkmDetailView({ data }: { data: UmkmDetail }) {
           ))}
         </ol>
       </div>
+
+      {/* How to Improve Card */}
+      {data.counterfactuals && data.counterfactuals.length > 0 && (
+        <div className="glass-card p-6">
+          <h3 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
+            <TrendingUp className="w-5 h-5 text-emerald-400" />
+            How to Improve
+          </h3>
+          <p className="text-xs text-slate-400 mb-4">
+            Analisis counterfactual: perubahan minimal pada fitur tertentu untuk meningkatkan skor.
+          </p>
+          <div className="space-y-4">
+            {data.counterfactuals.map((cf, idx) => (
+              <div key={idx} className="p-3 rounded-lg bg-slate-800/50 border border-slate-700">
+                <div className="flex items-center justify-between mb-2">
+                  <span className="text-sm font-medium text-white">{cf.feature}</span>
+                  <span className="text-xs text-emerald-400 font-medium">{cf.impact}</span>
+                </div>
+                <div className="space-y-1.5">
+                  <div className="flex items-center gap-3">
+                    <span className="text-xs text-slate-500 w-14">Current</span>
+                    <div className="flex-1 h-4 bg-slate-700 rounded-full overflow-hidden">
+                      <div
+                        className="h-full bg-slate-400 rounded-full"
+                        style={{ width: `${cf.current}%` }}
+                      />
+                    </div>
+                    <span className="text-xs text-slate-400 w-8 text-right">{cf.current}</span>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <span className="text-xs text-slate-500 w-14">Target</span>
+                    <div className="flex-1 h-4 bg-slate-700 rounded-full overflow-hidden">
+                      <div
+                        className="h-full bg-emerald-500 rounded-full"
+                        style={{ width: `${cf.target}%` }}
+                      />
+                    </div>
+                    <span className="text-xs text-emerald-400 w-8 text-right">{cf.target}</span>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
 
       {/* Competitors */}
       <div className="glass-card p-6">

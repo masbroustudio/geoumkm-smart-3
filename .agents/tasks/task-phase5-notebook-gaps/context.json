@@ -1,0 +1,30 @@
+{
+  "project_type": "Next.js 14 static export dashboard with Azure Functions API and ML notebooks",
+  "language": "TypeScript (frontend + API), Python (ML notebooks)",
+  "build_system": "pnpm for frontend and API. next build with output: 'export' for static site.",
+  "test_framework": "Vitest with @testing-library/react, jsdom environment, tests in frontend/__tests__/",
+  "build_command": "cd /projects/sandbox/geoumkm-smart-3/frontend && pnpm build",
+  "test_command": "cd /projects/sandbox/geoumkm-smart-3/frontend && pnpm test:ci",
+  "verification_instructions": "1. Run pnpm build to verify static export succeeds. 2. Run pnpm test:ci to verify all tests pass.",
+  "snapshot_or_generated_files": null,
+  "setup_instructions": "cd /projects/sandbox/geoumkm-smart-3/frontend && pnpm install",
+  "environment_constraints": "Static export (output: 'export') - no server routes. All data must be static in lib/ files. COMMON_DEPENDENCIES network mode - pnpm install works. Do NOT use bash heredocs for file creation - use fs_write tool directly.",
+  "contribution_requirements": "Keep i18n working - add sidebar keys to TranslationKeys type and both en.ts/id.ts. Keep all existing functionality intact.",
+  "key_patterns": "Pages are in frontend/app/(dashboard)/<route>/page.tsx. Data files are in frontend/lib/<name>-data.ts. Chat intelligence is in FloatingChatPanel.tsx getEnhancedResponse(). Sidebar nav uses lucide-react icons and TranslationKeys type. Translation types must match across types.ts, en.ts, and id.ts. Charts use Recharts (BarChart, PieChart, etc.).",
+  "relevant_files": [
+    "frontend/app/(dashboard)/clustering/page.tsx",
+    "frontend/app/(dashboard)/credit-scoring/page.tsx",
+    "frontend/app/(dashboard)/umkm/page.tsx",
+    "frontend/components/dashboard/Sidebar.tsx",
+    "frontend/components/chat/FloatingChatPanel.tsx",
+    "frontend/lib/knowledge-base.ts",
+    "frontend/lib/static-data.ts",
+    "frontend/lib/umkm-detail-data.ts",
+    "frontend/lib/translations/types.ts",
+    "frontend/lib/translations/en.ts",
+    "frontend/lib/translations/id.ts",
+    "ml/data/executive_summary.json",
+    "docs/MANUAL_SETUP_NOTES.md"
+  ],
+  "directory_structure": "frontend/app/(dashboard)/ - dashboard pages (clustering, credit-scoring, umkm, etc.). frontend/lib/ - data files, utils, translations. frontend/components/ - UI components (chat/, dashboard/, ui/, landing/). api/src/functions/ - Azure Functions endpoints. ml/data/ - ML output data. docs/ - documentation."
+}

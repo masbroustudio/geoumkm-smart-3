@@ -29,6 +29,7 @@ export interface UmkmDetail {
   cluster_name: ClusterName;
   recommendations: string[];
   nearby_competitors: number;
+  counterfactuals: { feature: string; current: number; target: number; impact: string }[];
 }
 
 export const umkmDetailData: UmkmDetail[] = [
@@ -42,6 +43,11 @@ export const umkmDetailData: UmkmDetail[] = [
     cluster_name: 'Urban Digital Leaders',
     recommendations: ['Tingkatkan pemasaran digital melalui media sosial', 'Daftarkan usaha di platform delivery online', 'Pertimbangkan ekspansi cabang di area sekitar', 'Ikuti pelatihan manajemen keuangan UMKM'],
     nearby_competitors: 18,
+    counterfactuals: [
+      { feature: 'Digital Marketing Score', current: 65, target: 85, impact: 'Skor potensi naik ~8 poin' },
+      { feature: 'Platform Delivery', current: 50, target: 80, impact: 'Omset naik ~20%' },
+      { feature: 'Risk Management', current: 78, target: 90, impact: 'Skor kredit naik ~0.03 poin' },
+    ],
   },
   {
     id: 'UMKM-002', nama_usaha: 'Toko Batik Indah', jenis_usaha: 'Fashion',
@@ -53,6 +59,11 @@ export const umkmDetailData: UmkmDetail[] = [
     cluster_name: 'Urban Digital Leaders',
     recommendations: ['Buat toko online di marketplace', 'Perluas variasi produk batik modern', 'Jalin kerjasama dengan desainer lokal', 'Ikuti pameran fashion regional'],
     nearby_competitors: 12,
+    counterfactuals: [
+      { feature: 'E-commerce Presence', current: 40, target: 75, impact: 'Skor potensi naik ~12 poin' },
+      { feature: 'Product Diversification', current: 55, target: 80, impact: 'Omset naik ~25%' },
+      { feature: 'Market Reach', current: 78, target: 90, impact: 'Skor potensi naik ~5 poin' },
+    ],
   },
   {
     id: 'UMKM-003', nama_usaha: 'Kerajinan Bambu Nusantara', jenis_usaha: 'Kerajinan',
@@ -64,6 +75,11 @@ export const umkmDetailData: UmkmDetail[] = [
     cluster_name: 'Suburban Growth Hub',
     recommendations: ['Buat akun media sosial untuk promosi produk', 'Daftarkan produk di marketplace online', 'Ikuti program pelatihan digital UMKM', 'Kembangkan produk ramah lingkungan'],
     nearby_competitors: 8,
+    counterfactuals: [
+      { feature: 'Digital Access', current: 62, target: 80, impact: 'Skor potensi naik ~10 poin' },
+      { feature: 'Infrastructure Score', current: 78, target: 88, impact: 'Skor potensi naik ~6 poin' },
+      { feature: 'Jarak ke Bank', current: 18, target: 10, impact: 'Skor kredit naik ~0.05 poin' },
+    ],
   },
   {
     id: 'UMKM-004', nama_usaha: 'Bengkel Las Jaya Teknik', jenis_usaha: 'Jasa',
@@ -75,6 +91,11 @@ export const umkmDetailData: UmkmDetail[] = [
     cluster_name: 'Urban Digital Leaders',
     recommendations: ['Investasi alat modern untuk efisiensi', 'Buat website portofolio proyek', 'Perluas layanan ke maintenance berkala', 'Rekrut tenaga ahli bersertifikasi'],
     nearby_competitors: 6,
+    counterfactuals: [
+      { feature: 'Automation Level', current: 60, target: 85, impact: 'Efisiensi naik ~30%' },
+      { feature: 'Online Presence', current: 70, target: 90, impact: 'Skor potensi naik ~5 poin' },
+      { feature: 'Certification Score', current: 65, target: 85, impact: 'Skor kredit naik ~0.04 poin' },
+    ],
   },
   {
     id: 'UMKM-005', nama_usaha: 'Tani Sejahtera Organik', jenis_usaha: 'Pertanian',
@@ -86,6 +107,11 @@ export const umkmDetailData: UmkmDetail[] = [
     cluster_name: 'Suburban Growth Hub',
     recommendations: ['Sertifikasi organik untuk nilai tambah produk', 'Jalin kontrak dengan supermarket', 'Gunakan sistem irigasi modern', 'Buat brand packaging yang menarik'],
     nearby_competitors: 15,
+    counterfactuals: [
+      { feature: 'Infrastructure Score', current: 70, target: 85, impact: 'Skor potensi naik ~13 poin' },
+      { feature: 'Akses Internet', current: 40, target: 70, impact: 'Skor potensi naik ~10 poin' },
+      { feature: 'Jarak ke Bank', current: 15, target: 10, impact: 'Skor kredit naik ~0.05 poin' },
+    ],
   },
   {
     id: 'UMKM-006', nama_usaha: 'Rumah Makan Padang Minang', jenis_usaha: 'Makanan',
@@ -97,6 +123,11 @@ export const umkmDetailData: UmkmDetail[] = [
     cluster_name: 'Urban Digital Leaders',
     recommendations: ['Tambah layanan catering untuk acara', 'Buat sistem reservasi online', 'Optimalkan Google Business Profile', 'Pertimbangkan franchise model'],
     nearby_competitors: 22,
+    counterfactuals: [
+      { feature: 'Online Booking System', current: 45, target: 80, impact: 'Skor potensi naik ~9 poin' },
+      { feature: 'Brand Visibility', current: 60, target: 85, impact: 'Omset naik ~15%' },
+      { feature: 'Risk Management', current: 75, target: 88, impact: 'Skor kredit naik ~0.04 poin' },
+    ],
   },
   {
     id: 'UMKM-007', nama_usaha: 'Konveksi Mutiara Fashion', jenis_usaha: 'Fashion',
@@ -108,6 +139,11 @@ export const umkmDetailData: UmkmDetail[] = [
     cluster_name: 'Suburban Growth Hub',
     recommendations: ['Ekspor produk ke marketplace internasional', 'Investasi mesin jahit otomatis', 'Buat brand sendiri selain jasa maklon', 'Ikuti sertifikasi SNI'],
     nearby_competitors: 25,
+    counterfactuals: [
+      { feature: 'Export Readiness', current: 35, target: 70, impact: 'Omset naik ~40%' },
+      { feature: 'Automation Level', current: 50, target: 75, impact: 'Skor potensi naik ~8 poin' },
+      { feature: 'Financial Access', current: 76, target: 88, impact: 'Skor kredit naik ~0.06 poin' },
+    ],
   },
   {
     id: 'UMKM-008', nama_usaha: 'Sanggar Seni Kreatif', jenis_usaha: 'Kerajinan',
@@ -119,6 +155,11 @@ export const umkmDetailData: UmkmDetail[] = [
     cluster_name: 'Urban Digital Leaders',
     recommendations: ['Jual produk di Etsy dan marketplace global', 'Buat kelas workshop berbayar', 'Kolaborasi dengan hotel untuk souvenir', 'Dokumentasikan proses kreatif di YouTube'],
     nearby_competitors: 10,
+    counterfactuals: [
+      { feature: 'Global Market Access', current: 30, target: 65, impact: 'Omset naik ~35%' },
+      { feature: 'Content Marketing', current: 55, target: 80, impact: 'Skor potensi naik ~7 poin' },
+      { feature: 'Financial Score', current: 75, target: 88, impact: 'Skor kredit naik ~0.04 poin' },
+    ],
   },
   {
     id: 'UMKM-009', nama_usaha: 'Jasa Cuci Mobil Bersih Kilau', jenis_usaha: 'Jasa',
@@ -130,6 +171,11 @@ export const umkmDetailData: UmkmDetail[] = [
     cluster_name: 'Suburban Growth Hub',
     recommendations: ['Buat akun Google Maps dan minta review pelanggan', 'Tawarkan layanan detailing premium', 'Buat sistem membership pelanggan tetap', 'Gunakan produk ramah lingkungan sebagai nilai jual'],
     nearby_competitors: 14,
+    counterfactuals: [
+      { feature: 'Digital Presence', current: 30, target: 70, impact: 'Skor potensi naik ~15 poin' },
+      { feature: 'Service Diversification', current: 45, target: 75, impact: 'Omset naik ~25%' },
+      { feature: 'Customer Retention', current: 50, target: 80, impact: 'Skor potensi naik ~8 poin' },
+    ],
   },
   {
     id: 'UMKM-010', nama_usaha: 'Kebun Strawberry Lembang', jenis_usaha: 'Pertanian',
@@ -141,6 +187,11 @@ export const umkmDetailData: UmkmDetail[] = [
     cluster_name: 'Transitional Developing',
     recommendations: ['Kembangkan agrowisata untuk pendapatan tambahan', 'Proses strawberry menjadi selai dan produk olahan', 'Jalin kemitraan dengan restoran dan hotel', 'Gunakan greenhouse untuk produksi sepanjang tahun'],
     nearby_competitors: 20,
+    counterfactuals: [
+      { feature: 'Infrastructure Score', current: 65, target: 80, impact: 'Skor potensi naik ~11 poin' },
+      { feature: 'Akses Internet', current: 45, target: 70, impact: 'Skor potensi naik ~9 poin' },
+      { feature: 'Financial Access', current: 62, target: 80, impact: 'Skor kredit naik ~0.07 poin' },
+    ],
   },
   {
     id: 'UMKM-011', nama_usaha: 'Bakso Sapi Pak Kumis', jenis_usaha: 'Makanan',
@@ -152,6 +203,11 @@ export const umkmDetailData: UmkmDetail[] = [
     cluster_name: 'Suburban Growth Hub',
     recommendations: ['Buka cabang di area padat penduduk', 'Daftar di GrabFood dan GoFood', 'Buat frozen bakso untuk dijual online', 'Standarisasi resep untuk konsistensi rasa'],
     nearby_competitors: 16,
+    counterfactuals: [
+      { feature: 'Infrastructure Score', current: 75, target: 88, impact: 'Skor potensi naik ~10 poin' },
+      { feature: 'Digital Marketing', current: 50, target: 78, impact: 'Omset naik ~20%' },
+      { feature: 'Financial Access', current: 70, target: 85, impact: 'Skor kredit naik ~0.05 poin' },
+    ],
   },
   {
     id: 'UMKM-012', nama_usaha: 'Toko Kain Sunda Asri', jenis_usaha: 'Fashion',
@@ -163,6 +219,11 @@ export const umkmDetailData: UmkmDetail[] = [
     cluster_name: 'Urban Digital Leaders',
     recommendations: ['Mulai berjualan di Tokopedia dan Shopee', 'Buat katalog produk digital', 'Ikuti pelatihan fotografi produk', 'Tawarkan customisasi kain untuk desainer'],
     nearby_competitors: 9,
+    counterfactuals: [
+      { feature: 'Digital Presence', current: 30, target: 72, impact: 'Skor potensi naik ~14 poin' },
+      { feature: 'E-commerce Score', current: 20, target: 65, impact: 'Omset naik ~30%' },
+      { feature: 'Market Reach', current: 90, target: 95, impact: 'Skor potensi naik ~3 poin' },
+    ],
   },
   {
     id: 'UMKM-013', nama_usaha: 'Ternak Ayam Makmur', jenis_usaha: 'Pertanian',
@@ -174,6 +235,11 @@ export const umkmDetailData: UmkmDetail[] = [
     cluster_name: 'Transitional Developing',
     recommendations: ['Adopsi sistem recording digital untuk peternakan', 'Proses ayam menjadi produk olahan bernilai tinggi', 'Sertifikasi halal dan BPOM', 'Buat kemitraan langsung dengan restoran'],
     nearby_competitors: 11,
+    counterfactuals: [
+      { feature: 'Infrastructure Score', current: 72, target: 85, impact: 'Skor potensi naik ~11 poin' },
+      { feature: 'Akses Internet', current: 35, target: 65, impact: 'Skor potensi naik ~12 poin' },
+      { feature: 'Jarak ke Bank', current: 20, target: 12, impact: 'Skor kredit naik ~0.06 poin' },
+    ],
   },
   {
     id: 'UMKM-014', nama_usaha: 'Salon Cantik Alami', jenis_usaha: 'Jasa',
@@ -185,6 +251,11 @@ export const umkmDetailData: UmkmDetail[] = [
     cluster_name: 'Urban Digital Leaders',
     recommendations: ['Buat sistem booking online', 'Tambah layanan spa dan treatment', 'Promosi melalui Instagram dan TikTok', 'Program loyalitas pelanggan'],
     nearby_competitors: 19,
+    counterfactuals: [
+      { feature: 'Online Booking System', current: 55, target: 85, impact: 'Skor potensi naik ~7 poin' },
+      { feature: 'Social Media Score', current: 65, target: 90, impact: 'Omset naik ~20%' },
+      { feature: 'Customer Retention', current: 70, target: 90, impact: 'Skor potensi naik ~5 poin' },
+    ],
   },
   {
     id: 'UMKM-015', nama_usaha: 'Gerabah Seni Tradisional', jenis_usaha: 'Kerajinan',
@@ -196,6 +267,11 @@ export const umkmDetailData: UmkmDetail[] = [
     cluster_name: 'Rural Developing',
     recommendations: ['Daftarkan produk sebagai kerajinan unggulan daerah', 'Buat akun media sosial untuk showcase karya', 'Ikuti pameran kerajinan nasional', 'Kolaborasi dengan arsitek untuk produk dekoratif'],
     nearby_competitors: 7,
+    counterfactuals: [
+      { feature: 'Infrastructure Score', current: 55, target: 75, impact: 'Skor potensi naik ~13 poin' },
+      { feature: 'Akses Internet', current: 25, target: 60, impact: 'Skor potensi naik ~15 poin' },
+      { feature: 'Jarak ke Bank', current: 25, target: 12, impact: 'Skor kredit naik ~0.08 poin' },
+    ],
   },
   {
     id: 'UMKM-016', nama_usaha: 'Nasi Goreng Pak Budi', jenis_usaha: 'Makanan',
@@ -207,6 +283,11 @@ export const umkmDetailData: UmkmDetail[] = [
     cluster_name: 'Transitional Developing',
     recommendations: ['Fokus pada menu signature yang unik', 'Daftar di semua platform delivery', 'Buat promo paket hemat untuk mahasiswa', 'Perbaiki packaging untuk delivery'],
     nearby_competitors: 28,
+    counterfactuals: [
+      { feature: 'Infrastructure Score', current: 76, target: 88, impact: 'Skor potensi naik ~9 poin' },
+      { feature: 'Brand Differentiation', current: 40, target: 70, impact: 'Omset naik ~25%' },
+      { feature: 'Financial Access', current: 68, target: 82, impact: 'Skor kredit naik ~0.06 poin' },
+    ],
   },
   {
     id: 'UMKM-017', nama_usaha: 'Distro Streetwear Bandung', jenis_usaha: 'Fashion',
@@ -218,6 +299,11 @@ export const umkmDetailData: UmkmDetail[] = [
     cluster_name: 'Urban Digital Leaders',
     recommendations: ['Ekspansi ke pasar internasional via e-commerce', 'Kolaborasi dengan influencer lokal', 'Buat limited edition untuk eksklusivitas', 'Investasi pada branding dan identitas visual'],
     nearby_competitors: 30,
+    counterfactuals: [
+      { feature: 'International Market', current: 40, target: 75, impact: 'Omset naik ~45%' },
+      { feature: 'Brand Value Score', current: 70, target: 92, impact: 'Skor potensi naik ~5 poin' },
+      { feature: 'Supply Chain Score', current: 75, target: 90, impact: 'Skor kredit naik ~0.02 poin' },
+    ],
   },
   {
     id: 'UMKM-018', nama_usaha: 'Toko Pupuk Subur Tani', jenis_usaha: 'Pertanian',
@@ -229,6 +315,11 @@ export const umkmDetailData: UmkmDetail[] = [
     cluster_name: 'Transitional Developing',
     recommendations: ['Buat layanan antar untuk petani di sekitar', 'Jual pupuk organik sebagai produk premium', 'Sediakan konsultasi pertanian gratis', 'Buat program kemitraan dengan kelompok tani'],
     nearby_competitors: 5,
+    counterfactuals: [
+      { feature: 'Infrastructure Score', current: 72, target: 85, impact: 'Skor potensi naik ~11 poin' },
+      { feature: 'Akses Internet', current: 38, target: 65, impact: 'Skor potensi naik ~12 poin' },
+      { feature: 'Jarak ke Bank', current: 18, target: 10, impact: 'Skor kredit naik ~0.06 poin' },
+    ],
   },
   {
     id: 'UMKM-019', nama_usaha: 'Laundry Express Bersih', jenis_usaha: 'Jasa',
@@ -240,6 +331,11 @@ export const umkmDetailData: UmkmDetail[] = [
     cluster_name: 'Urban Digital Leaders',
     recommendations: ['Buka outlet tambahan di perumahan baru', 'Layanan antar-jemput via aplikasi', 'Tambah layanan dry cleaning premium', 'Program member dengan diskon regular'],
     nearby_competitors: 21,
+    counterfactuals: [
+      { feature: 'Service Coverage', current: 60, target: 85, impact: 'Omset naik ~30%' },
+      { feature: 'App Integration', current: 55, target: 82, impact: 'Skor potensi naik ~6 poin' },
+      { feature: 'Customer Loyalty', current: 65, target: 88, impact: 'Skor kredit naik ~0.03 poin' },
+    ],
   },
   {
     id: 'UMKM-020', nama_usaha: 'Anyaman Rotan Cirebon', jenis_usaha: 'Kerajinan',
@@ -251,6 +347,11 @@ export const umkmDetailData: UmkmDetail[] = [
     cluster_name: 'Rural Developing',
     recommendations: ['Daftarkan di platform ekspor kerajinan', 'Buat showroom kecil di area wisata', 'Ikuti program pendampingan UMKM dari pemerintah', 'Diversifikasi produk ke furniture modern'],
     nearby_competitors: 4,
+    counterfactuals: [
+      { feature: 'Infrastructure Score', current: 62, target: 78, impact: 'Skor potensi naik ~12 poin' },
+      { feature: 'Akses Internet', current: 30, target: 60, impact: 'Skor potensi naik ~14 poin' },
+      { feature: 'Jarak ke Bank', current: 22, target: 12, impact: 'Skor kredit naik ~0.09 poin' },
+    ],
   },
   {
     id: 'UMKM-021', nama_usaha: 'Catering Ibu Siti', jenis_usaha: 'Makanan',
@@ -262,6 +363,11 @@ export const umkmDetailData: UmkmDetail[] = [
     cluster_name: 'Suburban Growth Hub',
     recommendations: ['Buat website dengan menu dan harga transparan', 'Tambah layanan diet dan healthy catering', 'Jalin kerjasama dengan kantor sekitar', 'Sertifikasi halal MUI'],
     nearby_competitors: 17,
+    counterfactuals: [
+      { feature: 'Digital Presence', current: 55, target: 80, impact: 'Skor potensi naik ~10 poin' },
+      { feature: 'Service Diversification', current: 50, target: 75, impact: 'Omset naik ~20%' },
+      { feature: 'Certification Score', current: 60, target: 85, impact: 'Skor kredit naik ~0.05 poin' },
+    ],
   },
   {
     id: 'UMKM-022', nama_usaha: 'Boutique Hijab Syari', jenis_usaha: 'Fashion',
@@ -273,6 +379,11 @@ export const umkmDetailData: UmkmDetail[] = [
     cluster_name: 'Urban Digital Leaders',
     recommendations: ['Buat brand ambassador dari selebgram hijab', 'Live shopping di TikTok dan Shopee', 'Ekspansi ke modest fashion internasional', 'Buat koleksi seasonal yang trendi'],
     nearby_competitors: 13,
+    counterfactuals: [
+      { feature: 'Social Commerce Score', current: 60, target: 88, impact: 'Omset naik ~35%' },
+      { feature: 'International Market', current: 25, target: 60, impact: 'Skor potensi naik ~9 poin' },
+      { feature: 'Brand Value Score', current: 65, target: 85, impact: 'Skor potensi naik ~6 poin' },
+    ],
   },
   {
     id: 'UMKM-023', nama_usaha: 'Warnet dan Print Center', jenis_usaha: 'Jasa',
@@ -284,6 +395,11 @@ export const umkmDetailData: UmkmDetail[] = [
     cluster_name: 'High-Risk Underserved',
     recommendations: ['Pivot ke coworking space dan rental PC gaming', 'Tambah layanan desain grafis dan percetakan', 'Buat paket internet kecepatan tinggi', 'Sediakan ruang meeting kecil berbayar'],
     nearby_competitors: 8,
+    counterfactuals: [
+      { feature: 'Infrastructure Score', current: 50, target: 72, impact: 'Skor potensi naik ~15 poin' },
+      { feature: 'Akses Internet', current: 40, target: 75, impact: 'Skor potensi naik ~13 poin' },
+      { feature: 'Jarak ke Bank', current: 28, target: 15, impact: 'Skor kredit naik ~0.10 poin' },
+    ],
   },
   {
     id: 'UMKM-024', nama_usaha: 'Hidroponik Fresh Farm', jenis_usaha: 'Pertanian',
@@ -295,6 +411,11 @@ export const umkmDetailData: UmkmDetail[] = [
     cluster_name: 'Suburban Growth Hub',
     recommendations: ['Jual langsung ke konsumen via subscription box', 'Buat konten edukasi hidroponik di media sosial', 'Suplai ke restoran sehat dan salad bar', 'Buka kelas workshop hidroponik berbayar'],
     nearby_competitors: 6,
+    counterfactuals: [
+      { feature: 'Digital Marketing', current: 55, target: 80, impact: 'Skor potensi naik ~9 poin' },
+      { feature: 'Supply Chain Score', current: 50, target: 75, impact: 'Omset naik ~25%' },
+      { feature: 'Financial Access', current: 68, target: 82, impact: 'Skor kredit naik ~0.05 poin' },
+    ],
   },
   {
     id: 'UMKM-025', nama_usaha: 'Warung Kopi Nusantara', jenis_usaha: 'Makanan',
@@ -306,6 +427,11 @@ export const umkmDetailData: UmkmDetail[] = [
     cluster_name: 'Urban Digital Leaders',
     recommendations: ['Jual biji kopi roasting sendiri secara online', 'Buat program loyalty card digital', 'Adakan event kopi dan live music mingguan', 'Kolaborasi dengan UMKM makanan sekitar'],
     nearby_competitors: 15,
+    counterfactuals: [
+      { feature: 'E-commerce Score', current: 55, target: 82, impact: 'Omset naik ~20%' },
+      { feature: 'Customer Retention', current: 60, target: 85, impact: 'Skor potensi naik ~4 poin' },
+      { feature: 'Brand Value Score', current: 72, target: 90, impact: 'Skor potensi naik ~3 poin' },
+    ],
   },
   {
     id: 'UMKM-026', nama_usaha: 'Tas Kulit Garut Premium', jenis_usaha: 'Fashion',
@@ -317,6 +443,11 @@ export const umkmDetailData: UmkmDetail[] = [
     cluster_name: 'High-Risk Underserved',
     recommendations: ['Daftarkan produk di marketplace premium', 'Buat video proses pembuatan handmade', 'Ikuti pameran leather goods nasional', 'Jalin kemitraan dengan toko fashion di kota besar'],
     nearby_competitors: 3,
+    counterfactuals: [
+      { feature: 'Infrastructure Score', current: 40, target: 65, impact: 'Skor potensi naik ~18 poin' },
+      { feature: 'Akses Internet', current: 20, target: 55, impact: 'Skor potensi naik ~16 poin' },
+      { feature: 'Jarak ke Bank', current: 30, target: 15, impact: 'Skor kredit naik ~0.12 poin' },
+    ],
   },
   {
     id: 'UMKM-027', nama_usaha: 'Percetakan Digital Cepat', jenis_usaha: 'Jasa',
@@ -328,6 +459,11 @@ export const umkmDetailData: UmkmDetail[] = [
     cluster_name: 'Suburban Growth Hub',
     recommendations: ['Tambah layanan desain kemasan UMKM', 'Buat paket cetak untuk UMKM dengan harga khusus', 'Investasi mesin cetak UV untuk produk premium', 'Layanan desain dan cetak online dengan delivery'],
     nearby_competitors: 11,
+    counterfactuals: [
+      { feature: 'Service Diversification', current: 50, target: 78, impact: 'Omset naik ~25%' },
+      { feature: 'Digital Presence', current: 55, target: 80, impact: 'Skor potensi naik ~8 poin' },
+      { feature: 'Automation Level', current: 45, target: 72, impact: 'Skor potensi naik ~7 poin' },
+    ],
   },
   {
     id: 'UMKM-028', nama_usaha: 'Jamur Tiram Segar', jenis_usaha: 'Pertanian',
@@ -339,6 +475,11 @@ export const umkmDetailData: UmkmDetail[] = [
     cluster_name: 'Transitional Developing',
     recommendations: ['Proses jamur menjadi keripik dan produk olahan', 'Jual bibit dan media tanam ke petani pemula', 'Buat sistem pre-order untuk kesegaran produk', 'Kembangkan varietas jamur premium'],
     nearby_competitors: 9,
+    counterfactuals: [
+      { feature: 'Infrastructure Score', current: 75, target: 88, impact: 'Skor potensi naik ~10 poin' },
+      { feature: 'Akses Internet', current: 42, target: 68, impact: 'Skor potensi naik ~10 poin' },
+      { feature: 'Value Added Processing', current: 35, target: 70, impact: 'Omset naik ~30%' },
+    ],
   },
   {
     id: 'UMKM-029', nama_usaha: 'Depot Es Krim Homemade', jenis_usaha: 'Makanan',
@@ -350,6 +491,11 @@ export const umkmDetailData: UmkmDetail[] = [
     cluster_name: 'Urban Digital Leaders',
     recommendations: ['Buat varian rasa unik lokal sebagai signature', 'Jual es krim tub untuk retail', 'Kerjasama dengan cafe dan restoran', 'Buat konten behind the scene di Instagram'],
     nearby_competitors: 12,
+    counterfactuals: [
+      { feature: 'Brand Differentiation', current: 50, target: 80, impact: 'Skor potensi naik ~8 poin' },
+      { feature: 'Distribution Channel', current: 40, target: 70, impact: 'Omset naik ~30%' },
+      { feature: 'Financial Score', current: 76, target: 88, impact: 'Skor kredit naik ~0.05 poin' },
+    ],
   },
   {
     id: 'UMKM-030', nama_usaha: 'Keramik Art Studio', jenis_usaha: 'Kerajinan',
@@ -361,6 +507,11 @@ export const umkmDetailData: UmkmDetail[] = [
     cluster_name: 'Urban Digital Leaders',
     recommendations: ['Buka kelas pottery untuk umum', 'Jual karya di gallery dan marketplace seni', 'Custom order untuk gift dan corporate', 'Kolaborasi dengan interior designer'],
     nearby_competitors: 5,
+    counterfactuals: [
+      { feature: 'Revenue Diversification', current: 45, target: 75, impact: 'Omset naik ~25%' },
+      { feature: 'Online Sales Channel', current: 50, target: 80, impact: 'Skor potensi naik ~7 poin' },
+      { feature: 'Market Reach', current: 78, target: 90, impact: 'Skor potensi naik ~4 poin' },
+    ],
   },
   {
     id: 'UMKM-031', nama_usaha: 'Ayam Geprek Bu Sari', jenis_usaha: 'Makanan',
@@ -372,6 +523,11 @@ export const umkmDetailData: UmkmDetail[] = [
     cluster_name: 'Suburban Growth Hub',
     recommendations: ['Buat sistem franchise sederhana', 'Tambah menu frozen food untuk dijual online', 'Optimalkan review di Google Maps', 'Buat program promo di jam sepi'],
     nearby_competitors: 24,
+    counterfactuals: [
+      { feature: 'Digital Presence', current: 55, target: 78, impact: 'Skor potensi naik ~9 poin' },
+      { feature: 'Brand Scalability', current: 40, target: 70, impact: 'Omset naik ~35%' },
+      { feature: 'Financial Access', current: 68, target: 82, impact: 'Skor kredit naik ~0.05 poin' },
+    ],
   },
   {
     id: 'UMKM-032', nama_usaha: 'Tenun Majalaya Heritage', jenis_usaha: 'Fashion',
@@ -383,6 +539,11 @@ export const umkmDetailData: UmkmDetail[] = [
     cluster_name: 'Rural Developing',
     recommendations: ['Buat brand heritage premium dengan cerita budaya', 'Daftarkan di platform fashion sustainable', 'Kolaborasi dengan desainer untuk produk modern', 'Ajukan bantuan alat tenun dari Kemenperin'],
     nearby_competitors: 7,
+    counterfactuals: [
+      { feature: 'Infrastructure Score', current: 65, target: 80, impact: 'Skor potensi naik ~12 poin' },
+      { feature: 'Akses Internet', current: 35, target: 65, impact: 'Skor potensi naik ~13 poin' },
+      { feature: 'Jarak ke Bank', current: 20, target: 12, impact: 'Skor kredit naik ~0.07 poin' },
+    ],
   },
   {
     id: 'UMKM-033', nama_usaha: 'Service AC dan Elektronik', jenis_usaha: 'Jasa',
@@ -394,6 +555,11 @@ export const umkmDetailData: UmkmDetail[] = [
     cluster_name: 'Urban Digital Leaders',
     recommendations: ['Buat kontrak maintenance dengan perumahan dan apartemen', 'Layanan darurat 24 jam dengan premium price', 'Program referral dari pelanggan puas', 'Investasi training untuk teknisi'],
     nearby_competitors: 15,
+    counterfactuals: [
+      { feature: 'Service Coverage', current: 55, target: 80, impact: 'Omset naik ~25%' },
+      { feature: 'Digital Booking', current: 50, target: 78, impact: 'Skor potensi naik ~7 poin' },
+      { feature: 'Certification Score', current: 60, target: 82, impact: 'Skor kredit naik ~0.04 poin' },
+    ],
   },
   {
     id: 'UMKM-034', nama_usaha: 'Peternakan Lele Maju', jenis_usaha: 'Pertanian',
@@ -405,6 +571,11 @@ export const umkmDetailData: UmkmDetail[] = [
     cluster_name: 'Transitional Developing',
     recommendations: ['Olah lele menjadi abon dan nugget untuk nilai tambah', 'Jual bibit lele ke peternak pemula', 'Gunakan pakan organik sebagai diferensiasi', 'Buat kemitraan dengan rumah makan pecel lele'],
     nearby_competitors: 13,
+    counterfactuals: [
+      { feature: 'Infrastructure Score', current: 60, target: 78, impact: 'Skor potensi naik ~13 poin' },
+      { feature: 'Akses Internet', current: 32, target: 60, impact: 'Skor potensi naik ~12 poin' },
+      { feature: 'Jarak ke Bank', current: 22, target: 12, impact: 'Skor kredit naik ~0.08 poin' },
+    ],
   },
   {
     id: 'UMKM-035', nama_usaha: 'Toko Oleh-Oleh Bandung', jenis_usaha: 'Makanan',
@@ -416,6 +587,11 @@ export const umkmDetailData: UmkmDetail[] = [
     cluster_name: 'Urban Digital Leaders',
     recommendations: ['Buat layanan kirim oleh-oleh ke seluruh Indonesia', 'Tambah produk private label sendiri', 'Buat paket hampers untuk corporate', 'Optimalkan SEO untuk wisatawan yang searching'],
     nearby_competitors: 20,
+    counterfactuals: [
+      { feature: 'E-commerce Score', current: 60, target: 85, impact: 'Omset naik ~25%' },
+      { feature: 'Brand Value Score', current: 70, target: 88, impact: 'Skor potensi naik ~5 poin' },
+      { feature: 'Supply Chain Score', current: 75, target: 90, impact: 'Skor kredit naik ~0.03 poin' },
+    ],
   },
   {
     id: 'UMKM-036', nama_usaha: 'Wayang Golek Sunda', jenis_usaha: 'Kerajinan',
@@ -427,6 +603,11 @@ export const umkmDetailData: UmkmDetail[] = [
     cluster_name: 'High-Risk Underserved',
     recommendations: ['Ajukan bantuan modal dari program UMKM pemerintah', 'Buat produk souvenir versi mini yang affordable', 'Daftarkan sebagai warisan budaya untuk perlindungan', 'Buka kelas membuat wayang untuk wisatawan'],
     nearby_competitors: 2,
+    counterfactuals: [
+      { feature: 'Infrastructure Score', current: 42, target: 65, impact: 'Skor potensi naik ~17 poin' },
+      { feature: 'Akses Internet', current: 18, target: 50, impact: 'Skor potensi naik ~15 poin' },
+      { feature: 'Jarak ke Bank', current: 35, target: 18, impact: 'Skor kredit naik ~0.12 poin' },
+    ],
   },
   {
     id: 'UMKM-037', nama_usaha: 'Klinik Kecantikan Glow', jenis_usaha: 'Jasa',
@@ -438,6 +619,11 @@ export const umkmDetailData: UmkmDetail[] = [
     cluster_name: 'Urban Digital Leaders',
     recommendations: ['Buat membership dengan treatment rutin', 'Jual skincare brand sendiri', 'Investasi alat treatment terbaru', 'Program before-after di media sosial'],
     nearby_competitors: 8,
+    counterfactuals: [
+      { feature: 'Product Line Score', current: 55, target: 82, impact: 'Omset naik ~30%' },
+      { feature: 'Customer Retention', current: 65, target: 90, impact: 'Skor potensi naik ~4 poin' },
+      { feature: 'Brand Value Score', current: 78, target: 95, impact: 'Skor potensi naik ~3 poin' },
+    ],
   },
   {
     id: 'UMKM-038', nama_usaha: 'Kebun Teh Ciwidey', jenis_usaha: 'Pertanian',
@@ -449,6 +635,11 @@ export const umkmDetailData: UmkmDetail[] = [
     cluster_name: 'Rural Developing',
     recommendations: ['Kembangkan wisata kebun teh (agrowisata)', 'Buat brand teh premium dengan packaging menarik', 'Jual langsung ke konsumen via online', 'Sertifikasi organik untuk pasar ekspor'],
     nearby_competitors: 4,
+    counterfactuals: [
+      { feature: 'Infrastructure Score', current: 62, target: 78, impact: 'Skor potensi naik ~12 poin' },
+      { feature: 'Akses Internet', current: 35, target: 62, impact: 'Skor potensi naik ~12 poin' },
+      { feature: 'Jarak ke Bank', current: 20, target: 12, impact: 'Skor kredit naik ~0.07 poin' },
+    ],
   },
   {
     id: 'UMKM-039', nama_usaha: 'Martabak Manis Bangka', jenis_usaha: 'Makanan',
@@ -460,6 +651,11 @@ export const umkmDetailData: UmkmDetail[] = [
     cluster_name: 'Suburban Growth Hub',
     recommendations: ['Buat varian topping premium dan kekinian', 'Layanan pre-order untuk acara', 'Buka booth di food court mall', 'Buat konten mukbang di media sosial'],
     nearby_competitors: 10,
+    counterfactuals: [
+      { feature: 'Digital Marketing', current: 50, target: 78, impact: 'Skor potensi naik ~9 poin' },
+      { feature: 'Product Innovation', current: 45, target: 72, impact: 'Omset naik ~20%' },
+      { feature: 'Financial Access', current: 70, target: 84, impact: 'Skor kredit naik ~0.05 poin' },
+    ],
   },
   {
     id: 'UMKM-040', nama_usaha: 'Rajut Handmade Collection', jenis_usaha: 'Kerajinan',
@@ -471,6 +667,11 @@ export const umkmDetailData: UmkmDetail[] = [
     cluster_name: 'Suburban Growth Hub',
     recommendations: ['Jual pattern dan tutorial rajut online', 'Buat produk baby items yang selalu diminati', 'Terima custom order untuk acara pernikahan', 'Buka kelas rajut online dan offline'],
     nearby_competitors: 6,
+    counterfactuals: [
+      { feature: 'Digital Sales Channel', current: 50, target: 78, impact: 'Skor potensi naik ~9 poin' },
+      { feature: 'Product Diversification', current: 45, target: 72, impact: 'Omset naik ~25%' },
+      { feature: 'Market Reach', current: 82, target: 92, impact: 'Skor potensi naik ~4 poin' },
+    ],
   },
   {
     id: 'UMKM-041', nama_usaha: 'Bengkel Motor Cepat', jenis_usaha: 'Jasa',
@@ -482,6 +683,11 @@ export const umkmDetailData: UmkmDetail[] = [
     cluster_name: 'Transitional Developing',
     recommendations: ['Buat Google Business Profile untuk visibility', 'Tambah layanan servis panggilan', 'Jual spare part online di Tokopedia', 'Buat program servis berkala dengan reminder SMS'],
     nearby_competitors: 18,
+    counterfactuals: [
+      { feature: 'Digital Presence', current: 30, target: 68, impact: 'Skor potensi naik ~14 poin' },
+      { feature: 'Infrastructure Score', current: 66, target: 80, impact: 'Skor potensi naik ~10 poin' },
+      { feature: 'Jarak ke Bank', current: 18, target: 10, impact: 'Skor kredit naik ~0.06 poin' },
+    ],
   },
   {
     id: 'UMKM-042', nama_usaha: 'Mie Ayam Pak Darto', jenis_usaha: 'Makanan',
@@ -493,6 +699,11 @@ export const umkmDetailData: UmkmDetail[] = [
     cluster_name: 'Rural Developing',
     recommendations: ['Daftar di GoFood dan GrabFood', 'Buat mie ayam frozen untuk dijual', 'Perbaiki tampilan gerobak dan branding', 'Ikuti pelatihan food safety dan higienitas'],
     nearby_competitors: 22,
+    counterfactuals: [
+      { feature: 'Infrastructure Score', current: 52, target: 72, impact: 'Skor potensi naik ~14 poin' },
+      { feature: 'Akses Internet', current: 25, target: 55, impact: 'Skor potensi naik ~13 poin' },
+      { feature: 'Jarak ke Bank', current: 22, target: 12, impact: 'Skor kredit naik ~0.08 poin' },
+    ],
   },
   {
     id: 'UMKM-043', nama_usaha: 'Sepatu Handmade Cibaduyut', jenis_usaha: 'Fashion',
@@ -504,6 +715,11 @@ export const umkmDetailData: UmkmDetail[] = [
     cluster_name: 'Transitional Developing',
     recommendations: ['Buat custom order via website', 'Kolaborasi dengan brand fashion lokal', 'Jual di marketplace dengan brand story', 'Buat video craftsmanship untuk branding'],
     nearby_competitors: 14,
+    counterfactuals: [
+      { feature: 'E-commerce Score', current: 45, target: 75, impact: 'Skor potensi naik ~11 poin' },
+      { feature: 'Brand Storytelling', current: 40, target: 72, impact: 'Omset naik ~25%' },
+      { feature: 'Financial Access', current: 70, target: 84, impact: 'Skor kredit naik ~0.05 poin' },
+    ],
   },
   {
     id: 'UMKM-044', nama_usaha: 'Budidaya Ikan Nila', jenis_usaha: 'Pertanian',
@@ -515,6 +731,11 @@ export const umkmDetailData: UmkmDetail[] = [
     cluster_name: 'High-Risk Underserved',
     recommendations: ['Ajukan KUR mikro untuk modal pengembangan', 'Ikuti program pendampingan dari Dinas Perikanan', 'Gabung kelompok tani untuk bargaining power', 'Diversifikasi ke budidaya ikan hias'],
     nearby_competitors: 1,
+    counterfactuals: [
+      { feature: 'Infrastructure Score', current: 15, target: 45, impact: 'Skor potensi naik ~22 poin' },
+      { feature: 'Akses Internet', current: 5, target: 35, impact: 'Skor potensi naik ~18 poin' },
+      { feature: 'Jarak ke Bank', current: 40, target: 20, impact: 'Skor kredit naik ~0.15 poin' },
+    ],
   },
   {
     id: 'UMKM-045', nama_usaha: 'Kue Tradisional Sunda', jenis_usaha: 'Makanan',
@@ -526,6 +747,11 @@ export const umkmDetailData: UmkmDetail[] = [
     cluster_name: 'Suburban Growth Hub',
     recommendations: ['Buat packaging premium untuk gift', 'Jual hampers kue tradisional di hari raya', 'Buka pre-order harian via WhatsApp', 'Kolaborasi dengan hotel untuk breakfast menu'],
     nearby_competitors: 11,
+    counterfactuals: [
+      { feature: 'Digital Marketing', current: 52, target: 78, impact: 'Skor potensi naik ~9 poin' },
+      { feature: 'Product Packaging', current: 45, target: 75, impact: 'Omset naik ~20%' },
+      { feature: 'Distribution Channel', current: 55, target: 80, impact: 'Skor potensi naik ~7 poin' },
+    ],
   },
   {
     id: 'UMKM-046', nama_usaha: 'Furniture Jati Minimalis', jenis_usaha: 'Kerajinan',
@@ -537,6 +763,11 @@ export const umkmDetailData: UmkmDetail[] = [
     cluster_name: 'Rural Developing',
     recommendations: ['Buat katalog online dengan foto profesional', 'Tawarkan layanan custom design', 'Jual di platform furniture online', 'Ikuti pameran properti dan interior'],
     nearby_competitors: 5,
+    counterfactuals: [
+      { feature: 'Infrastructure Score', current: 58, target: 75, impact: 'Skor potensi naik ~13 poin' },
+      { feature: 'Akses Internet', current: 30, target: 60, impact: 'Skor potensi naik ~14 poin' },
+      { feature: 'Jarak ke Bank', current: 25, target: 14, impact: 'Skor kredit naik ~0.08 poin' },
+    ],
   },
   {
     id: 'UMKM-047', nama_usaha: 'Barbershop Modern Cut', jenis_usaha: 'Jasa',
@@ -548,6 +779,11 @@ export const umkmDetailData: UmkmDetail[] = [
     cluster_name: 'Urban Digital Leaders',
     recommendations: ['Buat sistem booking online dan membership', 'Tambah layanan grooming lengkap', 'Promosi portfolio potongan di Instagram', 'Buka cabang di area perumahan baru'],
     nearby_competitors: 16,
+    counterfactuals: [
+      { feature: 'Online Booking System', current: 50, target: 82, impact: 'Skor potensi naik ~8 poin' },
+      { feature: 'Social Media Score', current: 60, target: 85, impact: 'Omset naik ~20%' },
+      { feature: 'Service Diversification', current: 45, target: 72, impact: 'Skor potensi naik ~6 poin' },
+    ],
   },
   {
     id: 'UMKM-048', nama_usaha: 'Dodol Garut Asli', jenis_usaha: 'Makanan',
@@ -559,6 +795,11 @@ export const umkmDetailData: UmkmDetail[] = [
     cluster_name: 'High-Risk Underserved',
     recommendations: ['Modernisasi packaging dengan branding menarik', 'Jual online melalui marketplace', 'Ikuti program sertifikasi BPOM', 'Buat variasi rasa baru untuk pasar muda'],
     nearby_competitors: 9,
+    counterfactuals: [
+      { feature: 'Infrastructure Score', current: 45, target: 68, impact: 'Skor potensi naik ~16 poin' },
+      { feature: 'Akses Internet', current: 22, target: 55, impact: 'Skor potensi naik ~14 poin' },
+      { feature: 'Jarak ke Bank', current: 28, target: 15, impact: 'Skor kredit naik ~0.10 poin' },
+    ],
   },
   {
     id: 'UMKM-049', nama_usaha: 'Konter HP dan Aksesoris', jenis_usaha: 'Jasa',
@@ -570,6 +811,11 @@ export const umkmDetailData: UmkmDetail[] = [
     cluster_name: 'Transitional Developing',
     recommendations: ['Tambah layanan service HP dan laptop', 'Jual aksesoris branded di marketplace', 'Buat program tukar tambah HP bekas', 'Sediakan payment point dan PPOB'],
     nearby_competitors: 19,
+    counterfactuals: [
+      { feature: 'Service Diversification', current: 40, target: 70, impact: 'Omset naik ~25%' },
+      { feature: 'Infrastructure Score', current: 64, target: 78, impact: 'Skor potensi naik ~10 poin' },
+      { feature: 'Financial Access', current: 58, target: 75, impact: 'Skor kredit naik ~0.06 poin' },
+    ],
   },
   {
     id: 'UMKM-050', nama_usaha: 'Perkebunan Kopi Arabika', jenis_usaha: 'Pertanian',
@@ -581,6 +827,11 @@ export const umkmDetailData: UmkmDetail[] = [
     cluster_name: 'Transitional Developing',
     recommendations: ['Buat single origin brand untuk specialty market', 'Kembangkan coffee tourism di kebun', 'Jual green bean ke roaster lokal dan internasional', 'Ikuti kompetisi kopi specialty nasional'],
     nearby_competitors: 7,
+    counterfactuals: [
+      { feature: 'Infrastructure Score', current: 72, target: 85, impact: 'Skor potensi naik ~10 poin' },
+      { feature: 'Akses Internet', current: 45, target: 72, impact: 'Skor potensi naik ~10 poin' },
+      { feature: 'Brand Value Score', current: 50, target: 78, impact: 'Omset naik ~30%' },
+    ],
   },
 ];
 

@@ -1,0 +1,32 @@
+{
+  "id": "FEAT-002",
+  "type": "feat",
+  "description": "Create Model Documentation page, add it to sidebar navigation, enhance AI chat with new topic handlers, update suggested questions, and update MANUAL_SETUP_NOTES.md.",
+  "status": "pending",
+  "steps": [
+    "Create frontend/app/(dashboard)/model-docs/page.tsx - a documentation page with: Model Cards section (Location Scoring XGBoost and Credit Risk Logistic Regression in Google Model Card format), Business Impact Summary (from executive_summary.json data), Data Pipeline Overview (which notebook produces what - NB01 through NB08), Model Limitations and Ethical Considerations section, Deployment Readiness Checklist. Use the glass-card styling pattern from other pages. Use lucide-react BookOpen icon.",
+    "Update frontend/components/dashboard/Sidebar.tsx: Add 'modelDocs' nav item with href '/model-docs' and BookOpen icon from lucide-react. Place it after 'reports' and before 'settings'.",
+    "Update frontend/lib/translations/types.ts: Add 'modelDocs: string' to the sidebar interface.",
+    "Update frontend/lib/translations/en.ts: Add modelDocs: 'Model Docs' to sidebar.",
+    "Update frontend/lib/translations/id.ts: Add modelDocs: 'Dokumentasi Model' to sidebar.",
+    "Update frontend/components/chat/FloatingChatPanel.tsx getEnhancedResponse function to add new topic handlers: (a) 'model performance'/'performa model' -> show AUC-ROC, KS, R2 metrics; (b) 'dbscan'/'spatial cluster' -> explain DBSCAN results (408 clusters, noise ratio); (c) 'counterfactual'/'bagaimana meningkatkan'/'how to improve' -> general improvement advice based on feature importance; (d) 'model card'/'dokumentasi model' -> summarize model cards.",
+    "Update frontend/lib/knowledge-base.ts suggestedQuestions to add new topics per persona: bank gets 'Bagaimana performa model credit scoring?', government gets 'Bagaimana meningkatkan skor UMKM?', investor gets 'Apa dokumentasi model yang digunakan?'.",
+    "Update docs/MANUAL_SETUP_NOTES.md: Add a section about the new Model Documentation page, note that model performance data comes from ml/data/executive_summary.json, note that if notebooks are re-run the static frontend values should be updated."
+  ],
+  "acceptance_criteria": [
+    "Model Docs page renders at /model-docs with model cards, business impact, pipeline overview, limitations, and deployment checklist",
+    "Sidebar shows Model Docs link with BookOpen icon between Reports and Settings",
+    "i18n translations work for the new sidebar item in both EN and ID",
+    "AI chat responds to 'model performance', 'dbscan', 'counterfactual'/'bagaimana meningkatkan', and 'model card'/'dokumentasi model' queries",
+    "Suggested questions include new topics per persona",
+    "MANUAL_SETUP_NOTES.md has new section about Model Documentation page",
+    "pnpm build succeeds without errors",
+    "pnpm test:ci passes all existing tests"
+  ],
+  "verification": [
+    "cd /projects/sandbox/geoumkm-smart-3/frontend && pnpm build",
+    "cd /projects/sandbox/geoumkm-smart-3/frontend && pnpm test:ci"
+  ],
+  "blocked_reason": null,
+  "findings": ""
+}

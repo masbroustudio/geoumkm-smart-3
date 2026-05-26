@@ -6,6 +6,7 @@ import { creditData as staticCreditData, shapExplanations } from '@/lib/static-d
 import { fetchCredit } from '@/lib/api';
 import DownloadCSVButton from '@/components/ui/DownloadCSVButton';
 import SHAPWaterfallChart from '@/components/dashboard/SHAPWaterfallChart';
+import { modelMetrics, modelComparison } from '@/lib/model-performance-data';
 
 const riskDistribution = [
   { name: 'Low Risk (AAA-A)', value: 976 + 1534 + 1691, color: '#10B981' },
@@ -215,6 +216,100 @@ export default function CreditScoringPage() {
             bandName={selectedBand}
           />
         )}
+      </div>
+
+      {/* Model Performance Section */}
+      <div className="glass-card p-6">
+        <h3 className="text-lg font-semibold text-white mb-6">Model Performance</h3>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+          {/* AUC-ROC Gauge */}
+          <div className="flex flex-col items-center">
+            <div className="relative w-32 h-32">
+              <svg className="w-full h-full transform -rotate-90" viewBox="0 0 120 120">
+                <circle cx="60" cy="60" r="50" fill="none" stroke="#334155" strokeWidth="10" />
+                <circle
+                  cx="60" cy="60" r="50" fill="none" stroke="#3B82F6" strokeWidth="10"
+                  strokeDasharray={`${modelMetrics.auc_roc * 314.16} 314.16`}
+                  strokeLinecap="round"
+                />
+              </svg>
+              <div className="absolute inset-0 flex items-center justify-center">
+                <span className="text-xl font-bold text-white">{modelMetrics.auc_roc.toFixed(4)}</span>
+              </div>
+            </div>
+            <p className="mt-3 text-sm font-medium text-slate-300">AUC-ROC</p>
+            <p className="text-xs text-slate-500">Location Scoring Model</p>
+          </div>
+
+          {/* KS Statistic Gauge */}
+          <div className="flex flex-col items-center">
+            <div className="relative w-32 h-32">
+              <svg className="w-full h-full transform -rotate-90" viewBox="0 0 120 120">
+                <circle cx="60" cy="60" r="50" fill="none" stroke="#334155" strokeWidth="10" />
+                <circle
+                  cx="60" cy="60" r="50" fill="none" stroke="#10B981" strokeWidth="10"
+                  strokeDasharray={`${modelMetrics.ks_statistic * 314.16} 314.16`}
+                  strokeLinecap="round"
+                />
+              </svg>
+              <div className="absolute inset-0 flex items-center justify-center">
+                <span className="text-xl font-bold text-white">{modelMetrics.ks_statistic.toFixed(4)}</span>
+              </div>
+            </div>
+            <p className="mt-3 text-sm font-medium text-slate-300">KS Statistic</p>
+            <p className="text-xs text-slate-500">Discriminatory Power</p>
+          </div>
+
+          {/* R2 Gauge */}
+          <div className="flex flex-col items-center">
+            <div className="relative w-32 h-32">
+              <svg className="w-full h-full transform -rotate-90" viewBox="0 0 120 120">
+                <circle cx="60" cy="60" r="50" fill="none" stroke="#334155" strokeWidth="10" />
+                <circle
+                  cx="60" cy="60" r="50" fill="none" stroke="#8B5CF6" strokeWidth="10"
+                  strokeDasharray={`${modelMetrics.location_scoring_r2 * 314.16} 314.16`}
+                  strokeLinecap="round"
+                />
+              </svg>
+              <div className="absolute inset-0 flex items-center justify-center">
+                <span className="text-xl font-bold text-white">{modelMetrics.location_scoring_r2.toFixed(4)}</span>
+              </div>
+            </div>
+            <p className="mt-3 text-sm font-medium text-slate-300">R² Score</p>
+            <p className="text-xs text-slate-500">Location Scoring Fit</p>
+          </div>
+        </div>
+
+        {/* Model Comparison Table */}
+        <h4 className="text-md font-semibold text-white mb-4">Model Comparison</h4>
+        <div className="overflow-x-auto">
+          <table className="w-full text-sm">
+            <thead>
+              <tr className="border-b border-slate-700">
+                <th className="text-left py-3 px-4 text-slate-400 font-medium">Model</th>
+                <th className="text-left py-3 px-4 text-slate-400 font-medium">Algorithm</th>
+                <th className="text-right py-3 px-4 text-slate-400 font-medium">AUC-ROC</th>
+                <th className="text-right py-3 px-4 text-slate-400 font-medium">Accuracy</th>
+                <th className="text-right py-3 px-4 text-slate-400 font-medium">Precision</th>
+                <th className="text-right py-3 px-4 text-slate-400 font-medium">Recall</th>
+                <th className="text-right py-3 px-4 text-slate-400 font-medium">F1</th>
+              </tr>
+            </thead>
+            <tbody>
+              {modelComparison.map((model, i) => (
+                <tr key={i} className="border-b border-slate-800 hover:bg-slate-800/50">
+                  <td className="py-3 px-4 text-white font-medium">{model.model_name}</td>
+                  <td className="py-3 px-4 text-slate-300">{model.algorithm}</td>
+                  <td className="py-3 px-4 text-right text-accent font-medium">{model.auc_roc.toFixed(4)}</td>
+                  <td className="py-3 px-4 text-right text-slate-300">{(model.accuracy * 100).toFixed(0)}%</td>
+                  <td className="py-3 px-4 text-right text-slate-300">{(model.precision * 100).toFixed(0)}%</td>
+                  <td className="py-3 px-4 text-right text-slate-300">{(model.recall * 100).toFixed(0)}%</td>
+                  <td className="py-3 px-4 text-right text-slate-300">{model.f1_score.toFixed(3)}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   );

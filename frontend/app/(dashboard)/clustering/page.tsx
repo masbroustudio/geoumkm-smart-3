@@ -1,56 +1,17 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell } from 'recharts';
 import { clusterData as staticClusterData } from '@/lib/static-data';
 import { fetchClusters } from '@/lib/api';
+import { dbscanSummary, topDensestClusters, densityByKabupaten } from '@/lib/dbscan-data';
 import DownloadCSVButton from '@/components/ui/DownloadCSVButton';
 
 const clusterColors = ['#10B981', '#3B82F6', '#8B5CF6', '#EF4444', '#F59E0B'];
 
-export default function ClusteringPage() {
-  const [clusterData, setClusterData] = useState(staticClusterData);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    let cancelled = false;
-    async function loadData() {
-      try {
-        const data = await fetchClusters();
-        if (!cancelled) setClusterData(data);
-      } catch {
-        // Keep static data
-      } finally {
-        if (!cancelled) setLoading(false);
-      }
-    }
-    loadData();
-    return () => { cancelled = true; };
-  }, []);
-
-  if (loading) {
-    return (
-      <div className="space-y-6 mt-12 lg:mt-0">
-        <h1 className="text-2xl font-bold text-white">Clustering & Segmentation</h1>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {[1, 2, 3].map((i) => (
-            <div key={i} className="glass-card p-5 animate-pulse">
-              <div className="h-4 bg-slate-700 rounded w-2/3 mb-3" />
-              <div className="space-y-2">
-                {[1, 2, 3].map((j) => (
-                  <div key={j} className="h-4 bg-slate-700 rounded" />
-                ))}
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-    );
-  }
-
+function KMeansView({ clusterData }: { clusterData: typeof staticClusterData }) {
   return (
-    <div className="space-y-6 mt-12 lg:mt-0">
-      <h1 className="text-2xl font-bold text-white">Clustering & Segmentation</h1>
-
+    <>
       {/* Cluster Profile Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {clusterData.profiles.map((cluster, i) => (
@@ -166,6 +127,191 @@ export default function ClusteringPage() {
           </table>
         </div>
       </div>
+    </>
+  );
+}
+
+function DbscanView() {
+  return (
+    <>
+      {/* Summary Stats */}
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div className="glass-card p-4">
+          <p className="text-xs text-slate-400 mb-1">Total Clusters</p>
+          <p className="text-2xl font-bold text-white">{dbscanSummary.total_clusters}</p>
+        </div>
+        <div className="glass-card p-4">
+          <p className="text-xs text-slate-400 mb-1">Noise Ratio</p>
+          <p className="text-2xl font-bold text-white">{dbscanSummary.noise_ratio}%</p>
+        </div>
+        <div className="glass-card p-4">
+          <p className="text-xs text-slate-400 mb-1">Epsilon (eps)</p>
+          <p className="text-2xl font-bold text-white">{dbscanSummary.eps}</p>
+        </div>
+        <div className="glass-card p-4">
+          <p className="text-xs text-slate-400 mb-1">Min Samples</p>
+          <p className="text-2xl font-bold text-white">{dbscanSummary.min_samples}</p>
+        </div>
+      </div>
+
+      {/* Top 10 Densest Clusters Table */}
+      <div className="glass-card p-6">
+        <h3 className="text-lg font-semibold text-white mb-4">Top 10 Densest Spatial Clusters</h3>
+        <div className="overflow-x-auto">
+          <table className="w-full text-sm">
+            <thead>
+              <tr className="border-b border-slate-700">
+                <th className="text-left py-3 px-4 text-slate-400 font-medium">Cluster ID</th>
+                <th className="text-right py-3 px-4 text-slate-400 font-medium">Lat</th>
+                <th className="text-right py-3 px-4 text-slate-400 font-medium">Lng</th>
+                <th className="text-right py-3 px-4 text-slate-400 font-medium">UMKM</th>
+                <th className="text-right py-3 px-4 text-slate-400 font-medium">Avg Score</th>
+                <th className="text-left py-3 px-4 text-slate-400 font-medium">Dominant Jenis</th>
+              </tr>
+            </thead>
+            <tbody>
+              {topDensestClusters.map((cluster) => (
+                <tr key={cluster.cluster_id} className="border-b border-slate-800 hover:bg-slate-800/50">
+                  <td className="py-3 px-4 text-white font-medium">#{cluster.cluster_id}</td>
+                  <td className="py-3 px-4 text-right text-slate-300">{cluster.centroid_lat.toFixed(3)}</td>
+                  <td className="py-3 px-4 text-right text-slate-300">{cluster.centroid_lng.toFixed(3)}</td>
+                  <td className="py-3 px-4 text-right text-accent font-medium">{cluster.n_umkm}</td>
+                  <td className="py-3 px-4 text-right text-slate-300">{cluster.avg_score}</td>
+                  <td className="py-3 px-4 text-slate-300">{cluster.dominant_jenis_usaha}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      {/* Density by Kabupaten Bar Chart */}
+      <div className="glass-card p-6">
+        <h3 className="text-lg font-semibold text-white mb-4">Cluster Density by Kabupaten</h3>
+        <div className="h-[350px]">
+          <ResponsiveContainer width="100%" height="100%">
+            <BarChart data={densityByKabupaten} margin={{ top: 5, right: 20, left: 0, bottom: 60 }}>
+              <CartesianGrid strokeDasharray="3 3" stroke="#334155" />
+              <XAxis
+                dataKey="kabupaten"
+                tick={{ fill: '#94a3b8', fontSize: 10 }}
+                angle={-35}
+                textAnchor="end"
+                height={80}
+              />
+              <YAxis tick={{ fill: '#94a3b8', fontSize: 12 }} />
+              <Tooltip
+                contentStyle={{ backgroundColor: '#1e293b', border: '1px solid #334155', borderRadius: '8px' }}
+                labelStyle={{ color: '#f1f5f9' }}
+              />
+              <Bar dataKey="cluster_count" name="Clusters" radius={[4, 4, 0, 0]}>
+                {densityByKabupaten.map((_, index) => (
+                  <Cell key={index} fill={clusterColors[index % clusterColors.length]} />
+                ))}
+              </Bar>
+            </BarChart>
+          </ResponsiveContainer>
+        </div>
+      </div>
+
+      {/* Note Card */}
+      <div className="glass-card p-6 border-l-4 border-blue-500">
+        <h3 className="text-lg font-semibold text-white mb-2">DBSCAN vs K-Means</h3>
+        <div className="space-y-2 text-sm text-slate-300">
+          <p>
+            <strong className="text-white">DBSCAN</strong> (Density-Based Spatial Clustering of Applications with Noise)
+            mengelompokkan UMKM berdasarkan kedekatan spasial tanpa perlu menentukan jumlah cluster sebelumnya.
+            Algoritma ini cocok untuk menemukan cluster dengan bentuk tidak beraturan dan mengidentifikasi noise (outlier).
+          </p>
+          <p>
+            <strong className="text-white">K-Means</strong> mempartisi data ke dalam K cluster yang telah ditentukan
+            berdasarkan jarak ke centroid. Cocok untuk segmentasi bisnis berdasarkan karakteristik multi-dimensi
+            (skor lokasi, digital presence, omset, dll).
+          </p>
+          <p className="text-slate-400 mt-3">
+            Pada proyek ini, DBSCAN digunakan untuk analisis spatial density (408 cluster geografis),
+            sedangkan K-Means digunakan untuk segmentasi profil bisnis (5 cluster strategis).
+          </p>
+        </div>
+      </div>
+    </>
+  );
+}
+
+export default function ClusteringPage() {
+  const [clusterData, setClusterData] = useState(staticClusterData);
+  const [loading, setLoading] = useState(true);
+  const [activeTab, setActiveTab] = useState<'kmeans' | 'dbscan'>('kmeans');
+
+  useEffect(() => {
+    let cancelled = false;
+    async function loadData() {
+      try {
+        const data = await fetchClusters();
+        if (!cancelled) setClusterData(data);
+      } catch {
+        // Keep static data
+      } finally {
+        if (!cancelled) setLoading(false);
+      }
+    }
+    loadData();
+    return () => { cancelled = true; };
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="space-y-6 mt-12 lg:mt-0">
+        <h1 className="text-2xl font-bold text-white">Clustering & Segmentation</h1>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {[1, 2, 3].map((i) => (
+            <div key={i} className="glass-card p-5 animate-pulse">
+              <div className="h-4 bg-slate-700 rounded w-2/3 mb-3" />
+              <div className="space-y-2">
+                {[1, 2, 3].map((j) => (
+                  <div key={j} className="h-4 bg-slate-700 rounded" />
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="space-y-6 mt-12 lg:mt-0">
+      <div className="flex items-center justify-between flex-wrap gap-4">
+        <h1 className="text-2xl font-bold text-white">Clustering & Segmentation</h1>
+        <div className="flex rounded-lg overflow-hidden border border-slate-700">
+          <button
+            onClick={() => setActiveTab('kmeans')}
+            className={`px-4 py-2 text-sm font-medium transition-colors ${
+              activeTab === 'kmeans'
+                ? 'bg-blue-600 text-white'
+                : 'bg-slate-800 text-slate-400 hover:text-white'
+            }`}
+          >
+            K-Means
+          </button>
+          <button
+            onClick={() => setActiveTab('dbscan')}
+            className={`px-4 py-2 text-sm font-medium transition-colors ${
+              activeTab === 'dbscan'
+                ? 'bg-blue-600 text-white'
+                : 'bg-slate-800 text-slate-400 hover:text-white'
+            }`}
+          >
+            DBSCAN
+          </button>
+        </div>
+      </div>
+
+      {activeTab === 'kmeans' ? (
+        <KMeansView clusterData={clusterData} />
+      ) : (
+        <DbscanView />
+      )}
     </div>
   );
 }
