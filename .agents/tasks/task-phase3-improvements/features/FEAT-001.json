@@ -2,7 +2,7 @@
   "id": "FEAT-001",
   "type": "feat",
   "description": "Dynamic What-If Simulator Enhancement - Add a custom What-If API endpoint and update the frontend simulator to compute dynamic results using the linear approximation formula from the ML notebooks instead of only matching pre-computed scenarios.",
-  "status": "in_progress",
+  "status": "completed",
   "steps": [
     "Step 1: Create new API endpoint `api/src/functions/whatif-custom.ts`. Register as `app.http('whatif-custom', { methods: ['POST'], authLevel: 'anonymous', route: 'whatif-custom', handler })`. The endpoint accepts JSON body: { infrastructure_delta: number, internet_delta: number, bank_distance_delta: number, target_kabupaten: string }. It should: (a) Load UMKM data via getUmkmData() from api/src/data/loader.ts, (b) Filter UMKMs by target_kabupaten (match on kabupaten_kota field), (c) Compute new_score for each UMKM using formula: new_score = skor_potensi + (infrastructure_delta * 0.66) + (internet_delta * 0.33) + (bank_distance_delta * 0.01), cap at 100, (d) Return: { affected_count, avg_score_before, avg_score_after, avg_improvement, umkm_crossing_70_threshold (count of UMKMs that went from <70 to >=70), pct_improved, max_improvement }. Add WhatIfCustomRequest and WhatIfCustomResponse interfaces to api/src/shared/types.ts.",
     "Step 2: Update `frontend/lib/api.ts` to add a new function `postWhatIfCustom(body: { infrastructure_delta: number; internet_delta: number; bank_distance_delta: number; target_kabupaten: string })` that POSTs to `/api/whatif-custom`. On failure or if BASE_URL is empty, compute the result client-side using the same formula against kecamatanMapData from static-data.ts (use score as base, filter by kabupaten).",
@@ -22,5 +22,5 @@
     "Run `pnpm test:ci` in frontend/ directory and confirm all 25+ tests pass"
   ],
   "blocked_reason": null,
-  "findings": ""
+  "findings": "API requires pnpm install before build (node_modules not pre-installed). All 25 frontend tests pass. API compiles cleanly with tsc. Frontend static export succeeds with 16 pages."
 }
