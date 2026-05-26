@@ -1,0 +1,43 @@
+name: Deploy API to Azure Functions
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "api/**"
+
+env:
+  AZURE_FUNCTIONAPP_NAME: "geoumkm-api"
+
+jobs:
+  build_and_deploy:
+    runs-on: ubuntu-latest
+    name: Build and Deploy
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
+      - name: Install dependencies
+        working-directory: ./api
+        run: pnpm install --frozen-lockfile
+
+      - name: Build
+        working-directory: ./api
+        run: pnpm build
+
+      - name: Deploy to Azure Functions
+        uses: Azure/functions-action@v1
+        with:
+          app-name: ${{ env.AZURE_FUNCTIONAPP_NAME }}
+          package: "./api"
+          publish-profile: ${{ secrets.AZURE_FUNCTIONAPP_PUBLISH_PROFILE }}
