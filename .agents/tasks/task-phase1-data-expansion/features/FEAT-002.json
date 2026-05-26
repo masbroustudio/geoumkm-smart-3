@@ -2,7 +2,7 @@
   "id": "FEAT-002",
   "type": "docs",
   "description": "Create docs/MANUAL_SETUP_NOTES.md with practical checklist of everything the user needs to do manually for Azure setup, environment variables, running notebooks, and other manual steps",
-  "status": "in_progress",
+  "status": "completed",
   "steps": [
     "Step 1: Create docs/MANUAL_SETUP_NOTES.md with the following sections: (A) Prasyarat (prerequisites - Azure account, CLI tools), (B) Setup Lokal (clone, install deps, run dev), (C) Running ML Notebooks (order, dependencies, expected outputs), (D) Azure Portal Manual Steps (create resource group, Static Web App, Functions App, SQL Database, OpenAI, AI Search, Entra ID B2C, Key Vault - as a checklist format), (E) Environment Variables (list all .env.local variables for frontend and API with descriptions), (F) Deployment Checklist (GitHub Actions setup, SWA token, DNS), (G) Post-deployment Verification (endpoints to test). Reference the existing AZURE_SETUP_GUIDE.md for detailed steps but keep this as a quick-reference practical checklist format with checkboxes. Write in Indonesian with technical terms in English where standard."
   ],
@@ -15,5 +15,5 @@
     "Verify file exists and is valid markdown"
   ],
   "blocked_reason": null,
-  "findings": ""
+  "findings": "Documentation-only change. Created docs/MANUAL_SETUP_NOTES.md with all 8 sections (A-H) including checkboxes, environment variable tables, and references to AZURE_SETUP_GUIDE.md sections. Written in Indonesian with English technical terms."
 }
