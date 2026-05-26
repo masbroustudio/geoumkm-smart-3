@@ -201,15 +201,15 @@ body {
   50% { transform: translateY(-20px); }
 }
 
-.particle-1 { animation: floatParticle1 18s ease-in-out infinite; will-change: transform; }
-.particle-2 { animation: floatParticle2 22s ease-in-out infinite; animation-delay: -3s; will-change: transform; }
-.particle-3 { animation: floatParticle3 25s ease-in-out infinite; animation-delay: -7s; will-change: transform; }
-.particle-4 { animation: floatParticle4 20s ease-in-out infinite; animation-delay: -5s; will-change: transform; }
-.particle-5 { animation: floatParticle5 23s ease-in-out infinite; animation-delay: -9s; will-change: transform; }
-.particle-6 { animation: floatParticle6 19s ease-in-out infinite; animation-delay: -2s; will-change: transform; }
-.particle-7 { animation: floatParticle7 26s ease-in-out infinite; animation-delay: -11s; will-change: transform; }
-.particle-8 { animation: floatParticle8 21s ease-in-out infinite; animation-delay: -6s; will-change: transform; }
-.particle-9 { animation: floatParticle1 15s ease-in-out infinite; animation-delay: -4s; will-change: transform; }
-.particle-10 { animation: floatParticle5 28s ease-in-out infinite; animation-delay: -13s; will-change: transform; }
-.particle-11 { animation: floatParticle7 17s ease-in-out infinite; animation-delay: -8s; will-change: transform; }
-.particle-12 { animation: floatParticle8 24s ease-in-out infinite; animation-delay: -10s; will-change: transform; }
+.particle-1 { animation: floatParticle1 18s ease-in-out infinite; }
+.particle-2 { animation: floatParticle2 22s ease-in-out infinite; animation-delay: -3s; }
+.particle-3 { animation: floatParticle3 25s ease-in-out infinite; animation-delay: -7s; }
+.particle-4 { animation: floatParticle4 20s ease-in-out infinite; animation-delay: -5s; }
+.particle-5 { animation: floatParticle5 23s ease-in-out infinite; animation-delay: -9s; }
+.particle-6 { animation: floatParticle6 19s ease-in-out infinite; animation-delay: -2s; }
+.particle-7 { animation: floatParticle7 26s ease-in-out infinite; animation-delay: -11s; }
+.particle-8 { animation: floatParticle8 21s ease-in-out infinite; animation-delay: -6s; }
+.particle-9 { animation: floatParticle1 15s ease-in-out infinite; animation-delay: -4s; }
+.particle-10 { animation: floatParticle5 28s ease-in-out infinite; animation-delay: -13s; }
+.particle-11 { animation: floatParticle7 17s ease-in-out infinite; animation-delay: -8s; }
+.particle-12 { animation: floatParticle8 24s ease-in-out infinite; animation-delay: -10s; }
