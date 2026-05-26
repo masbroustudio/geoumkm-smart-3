@@ -30,9 +30,9 @@ export const overviewData = {
   cluster_distribution: [
     { name: 'Urban Digital Leaders', count: 2368 },
     { name: 'Rural Developing', count: 2684 },
-    { name: 'Urban Digital Leaders (2)', count: 926 },
+    { name: 'Suburban Growth Hub', count: 926 },
     { name: 'High-Risk Underserved', count: 2124 },
-    { name: 'High-Risk Underserved (4)', count: 1898 },
+    { name: 'Transitional Developing', count: 1898 },
   ],
 };
 
@@ -60,22 +60,22 @@ export const clusterData = {
   profiles: [
     { id: 0, name: 'Urban Digital Leaders', n_umkm: 2368, avg_score: 79.2, infra_score: 83.1, digital_pct: 74.1, survival_rate: 71.9, avg_omset: 76.9, income: 11.4 },
     { id: 1, name: 'Rural Developing', n_umkm: 2684, avg_score: 53.7, infra_score: 65.9, digital_pct: 41.5, survival_rate: 68.4, avg_omset: 51.4, income: 7.4 },
-    { id: 2, name: 'Urban Digital Leaders (2)', n_umkm: 926, avg_score: 66.0, infra_score: 81.6, digital_pct: 64.9, survival_rate: 66.8, avg_omset: 66.2, income: 10.8 },
+    { id: 2, name: 'Suburban Growth Hub', n_umkm: 926, avg_score: 66.0, infra_score: 81.6, digital_pct: 64.9, survival_rate: 66.8, avg_omset: 66.2, income: 10.8 },
     { id: 3, name: 'High-Risk Underserved', n_umkm: 2124, avg_score: 31.4, infra_score: 53.1, digital_pct: 31.4, survival_rate: 65.1, avg_omset: 45.0, income: 5.5 },
-    { id: 4, name: 'High-Risk Underserved (4)', n_umkm: 1898, avg_score: 54.1, infra_score: 66.9, digital_pct: 51.9, survival_rate: 66.4, avg_omset: 57.1, income: 7.8 },
+    { id: 4, name: 'Transitional Developing', n_umkm: 1898, avg_score: 54.1, infra_score: 66.9, digital_pct: 51.9, survival_rate: 66.4, avg_omset: 57.1, income: 7.8 },
   ],
   govPriority: [
     { rank: 1, cluster: 'High-Risk Underserved', n_umkm: 2124, priority_score: 0.968, budget_pct: 41.5 },
-    { rank: 2, cluster: 'High-Risk Underserved (4)', n_umkm: 1898, priority_score: 0.725, budget_pct: 27.8 },
+    { rank: 2, cluster: 'Transitional Developing', n_umkm: 1898, priority_score: 0.725, budget_pct: 27.8 },
     { rank: 3, cluster: 'Rural Developing', n_umkm: 2684, priority_score: 0.484, budget_pct: 26.2 },
-    { rank: 4, cluster: 'Urban Digital Leaders (2)', n_umkm: 926, priority_score: 0.191, budget_pct: 3.6 },
+    { rank: 4, cluster: 'Suburban Growth Hub', n_umkm: 926, priority_score: 0.191, budget_pct: 3.6 },
     { rank: 5, cluster: 'Urban Digital Leaders', n_umkm: 2368, priority_score: 0.019, budget_pct: 0.9 },
   ],
   investment: [
     { rank: 1, cluster: 'Urban Digital Leaders', n_umkm: 2368, investment_score: 0.962, market_size_juta: 182167 },
     { rank: 2, cluster: 'Rural Developing', n_umkm: 2684, investment_score: 0.525, market_size_juta: 137994 },
-    { rank: 3, cluster: 'Urban Digital Leaders (2)', n_umkm: 926, investment_score: 0.522, market_size_juta: 61278 },
-    { rank: 4, cluster: 'High-Risk Underserved (4)', n_umkm: 1898, investment_score: 0.489, market_size_juta: 108319 },
+    { rank: 3, cluster: 'Suburban Growth Hub', n_umkm: 926, investment_score: 0.522, market_size_juta: 61278 },
+    { rank: 4, cluster: 'Transitional Developing', n_umkm: 1898, investment_score: 0.489, market_size_juta: 108319 },
     { rank: 5, cluster: 'High-Risk Underserved', n_umkm: 2124, investment_score: 0.200, market_size_juta: 95654 },
   ],
 };

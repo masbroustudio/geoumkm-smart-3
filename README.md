@@ -1,10 +1,12 @@
-# 🗺️ GeoUMKM Smart V3.0
+# 🗺️ GeoUMKM Intelligence V4.0
 
 > **AI-Powered Location Intelligence & Credit Risk System for Indonesian MSMEs**  
 > *Urban Resilience & Smart City - METC Datathon 2026*
 
 ![Dicoding](https://img.shields.io/badge/Dicoding-Submission-blue)
 ![Azure](https://img.shields.io/badge/Azure-Static%20Web%20Apps-0078D4)
+![Next.js](https://img.shields.io/badge/Next.js-14-000000)
+![TypeScript](https://img.shields.io/badge/TypeScript-5.x-3178C6)
 ![Python](https://img.shields.io/badge/Python-3.9%2B-3776AB)
 ![XGBoost](https://img.shields.io/badge/XGBoost-ML-orange)
 ![License](https://img.shields.io/badge/License-MIT-green)
@@ -13,7 +15,7 @@
 
 ## 📋 Deskripsi Proyek
 
-**GeoUMKM Smart V3.0** adalah sistem intelijen lokasi dan penilaian risiko kredit berbasis **AI dan geospatial analytics** yang melayani **3 target pengguna utama**:
+**GeoUMKM Intelligence V4.0** adalah sistem intelijen lokasi dan penilaian risiko kredit berbasis **AI dan geospatial analytics** yang melayani **3 target pengguna utama**:
 
 ### 🏦 Bank (Credit Risk)
 - Model credit risk scoring dengan Probability of Default (PD) buckets
@@ -74,18 +76,32 @@ Notebooks harus dijalankan secara berurutan (sequential) karena setiap notebook 
 | **LLM/RIG Preparation** | Knowledge base terstruktur untuk integrasi dengan Large Language Models |
 | **SHAP Explainability** | Feature importance dan model interpretability |
 | **Executive Summary** | Model cards dan ringkasan untuk pengambil keputusan |
+| **Interactive Dashboard** | Frontend Next.js 14 dengan visualisasi interaktif |
+| **AI Chat Assistant** | Chat berbasis Azure OpenAI dengan RAG |
 
 ---
 
 ## 🛠️ Technology Stack
 
+### Machine Learning & Data
 - **XGBoost / LightGBM** - Gradient boosting models
 - **scikit-learn** - ML pipeline, preprocessing, clustering
 - **SHAP** - Model explainability
 - **Pandas / NumPy / SciPy** - Data processing & statistics
 - **Matplotlib / Seaborn** - Visualization
 - **nbformat** - Programmatic notebook generation
-- **Azure Static Web Apps** - Deployment & hosting
+
+### Frontend
+- **Next.js 14** - React framework with App Router
+- **TypeScript** - Type-safe JavaScript
+- **Tailwind CSS** - Utility-first CSS
+- **Recharts** - Chart visualizations
+- **React-Leaflet** - Interactive maps
+- **Framer Motion** - UI animations
+
+### Backend & Deployment
+- **Azure Functions (TypeScript)** - Serverless API
+- **Azure Static Web Apps** - Frontend hosting
 - **GitHub Actions** - CI/CD pipeline
 
 ---
@@ -94,37 +110,43 @@ Notebooks harus dijalankan secara berurutan (sequential) karena setiap notebook 
 
 ```
 geoumkm-smart-3/
-├── notebooks/                    # Jupyter Notebooks (harus dijalankan berurutan)
-│   ├── 01_Data_Foundation.ipynb
-│   ├── 02_EDA_Feature_Engineering.ipynb
-│   ├── 03_Location_Scoring_Model.ipynb
-│   ├── 04_Credit_Risk_Model.ipynb
-│   ├── 05_Clustering_Segmentation.ipynb
-│   ├── 06_Recommendation_WhatIf.ipynb
-│   ├── 07_LLM_RIG_Preparation.ipynb
-│   └── 08_Executive_Summary.ipynb
-│
-├── data/                         # Generated data (dari notebook execution)
-│   ├── umkm_dataset.csv
-│   ├── umkm_engineered.csv
-│   ├── umkm_clustered.csv
-│   ├── location_scores_predicted.csv
-│   ├── credit_score_bands.csv
-│   ├── recommendations_by_kecamatan.csv
-│   ├── whatif_simulation_results.csv
-│   └── knowledge_base/          # Knowledge base untuk LLM/RIG
-│
-├── models/                       # Trained ML models
-│   ├── location_scoring_model.joblib
-│   └── credit_risk_model.joblib
-│
-├── docs/                         # HTML exports & visualizations
-│
-├── scripts/                      # Build scripts untuk notebook generation
-│
-├── index.html                    # Landing page (Azure Static Web Apps)
-├── README.md
-└── .gitignore
+├── frontend/                    # Next.js 14 application (App Router)
+│   ├── app/                     # App Router pages
+│   │   ├── (landing)/           # Landing page routes
+│   │   ├── (dashboard)/         # Dashboard routes
+│   │   └── (auth)/              # Authentication routes
+│   ├── components/              # React components
+│   │   ├── landing/             # Landing page components
+│   │   ├── dashboard/           # Dashboard components
+│   │   └── chat/                # Chat panel components
+│   ├── lib/                     # Utility functions & static data
+│   ├── public/                  # Static assets
+│   ├── package.json             # Dependencies
+│   ├── next.config.js           # Next.js configuration
+│   ├── tailwind.config.ts       # Tailwind CSS config
+│   └── tsconfig.json            # TypeScript config
+├── api/                         # Azure Functions (TypeScript)
+│   ├── src/
+│   │   ├── functions/           # Function endpoints
+│   │   ├── data/                # Data loader
+│   │   └── shared/              # Shared types & utilities
+│   ├── host.json                # Functions host config
+│   ├── package.json             # Dependencies
+│   └── tsconfig.json            # TypeScript config
+├── ml/                          # Machine Learning assets
+│   ├── notebooks/               # Jupyter notebooks (01-08, berurutan)
+│   ├── data/                    # Generated data & knowledge base
+│   ├── models/                  # Trained model files (.joblib)
+│   └── scripts/                 # ML pipeline build scripts
+├── docs/                        # Documentation
+│   ├── ARCHITECTURE.md          # System architecture
+│   ├── AZURE_SETUP_GUIDE.md     # Azure setup instructions
+│   ├── PROJECT_STATUS_AND_ROADMAP.md
+│   └── assets/                  # Documentation images & charts
+├── .github/
+│   └── workflows/
+│       └── deploy-frontend.yml  # CI/CD workflow
+└── README.md                    # Project overview (this file)
 ```
 
 ---
@@ -138,42 +160,42 @@ git clone https://github.com/masbroustudio/geoumkm-smart-3.git
 cd geoumkm-smart-3
 ```
 
-### 2. Install Dependencies
+### 2. Jalankan ML Notebooks
 
 ```bash
+# Install Python dependencies
 pip install pandas numpy scikit-learn xgboost lightgbm scipy matplotlib seaborn shapely nbformat nbconvert jupyter-client ipykernel
-```
 
-### 3. Jalankan Notebooks (Berurutan)
-
-```bash
 # Notebook HARUS dijalankan secara berurutan (01 -> 02 -> ... -> 08)
-jupyter nbconvert --to notebook --execute notebooks/01_Data_Foundation.ipynb
-jupyter nbconvert --to notebook --execute notebooks/02_EDA_Feature_Engineering.ipynb
-jupyter nbconvert --to notebook --execute notebooks/03_Location_Scoring_Model.ipynb
-jupyter nbconvert --to notebook --execute notebooks/04_Credit_Risk_Model.ipynb
-jupyter nbconvert --to notebook --execute notebooks/05_Clustering_Segmentation.ipynb
-jupyter nbconvert --to notebook --execute notebooks/06_Recommendation_WhatIf.ipynb
-jupyter nbconvert --to notebook --execute notebooks/07_LLM_RIG_Preparation.ipynb
-jupyter nbconvert --to notebook --execute notebooks/08_Executive_Summary.ipynb
+jupyter nbconvert --to notebook --execute ml/notebooks/01_Data_Foundation.ipynb
+jupyter nbconvert --to notebook --execute ml/notebooks/02_EDA_Feature_Engineering.ipynb
+jupyter nbconvert --to notebook --execute ml/notebooks/03_Location_Scoring_Model.ipynb
+jupyter nbconvert --to notebook --execute ml/notebooks/04_Credit_Risk_Model.ipynb
+jupyter nbconvert --to notebook --execute ml/notebooks/05_Clustering_Segmentation.ipynb
+jupyter nbconvert --to notebook --execute ml/notebooks/06_Recommendation_WhatIf.ipynb
+jupyter nbconvert --to notebook --execute ml/notebooks/07_LLM_RIG_Preparation.ipynb
+jupyter nbconvert --to notebook --execute ml/notebooks/08_Executive_Summary.ipynb
 ```
 
-### 4. Export ke HTML
+> **Catatan:** Notebooks harus dijalankan secara berurutan karena setiap notebook menghasilkan file data (CSV) di folder `ml/data/` yang dibutuhkan oleh notebook berikutnya.
+
+### 3. Jalankan Frontend (Development)
 
 ```bash
-jupyter nbconvert --to html notebooks/*.ipynb --output-dir docs/
+cd frontend
+pnpm install
+pnpm dev
 ```
 
-### 5. Buka Landing Page
+Frontend akan berjalan di `http://localhost:3000`.
+
+### 4. Jalankan API (Development)
 
 ```bash
-# Buka index.html di browser
-open index.html           # macOS
-xdg-open index.html       # Linux
-start index.html          # Windows
+cd api
+pnpm install
+pnpm start
 ```
-
-> **Catatan:** Notebooks harus dijalankan secara berurutan karena setiap notebook menghasilkan file data (CSV) di folder `data/` yang dibutuhkan oleh notebook berikutnya.
 
 ---
 
