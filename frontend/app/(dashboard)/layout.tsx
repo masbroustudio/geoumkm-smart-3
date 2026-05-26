@@ -4,6 +4,7 @@ import BackToTop from "@/components/ui/BackToTop";
 import ToastContainer from "@/components/ui/Toast";
 import ErrorBoundary from "@/components/ui/ErrorBoundary";
 import { ToastProvider } from "@/lib/toast-context";
+import PageViewTracker from "@/components/dashboard/PageViewTracker";
 
 export default function DashboardLayout({
   children,
@@ -13,6 +14,7 @@ export default function DashboardLayout({
   return (
     <ToastProvider>
       <div className="min-h-screen bg-[var(--background)]">
+        <PageViewTracker />
         <Sidebar />
         <main className="lg:ml-[260px] min-h-screen p-4 sm:p-6 lg:p-8">
           <ErrorBoundary>

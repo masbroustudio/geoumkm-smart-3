@@ -12,6 +12,7 @@ import {
   suggestedQuestions,
 } from '@/lib/knowledge-base';
 import { useLanguage } from '@/lib/i18n-context';
+import { analytics } from '@/lib/analytics';
 
 type Message = {
   role: 'user' | 'assistant';
@@ -239,6 +240,7 @@ export default function FloatingChatPanel() {
   const handleSend = async (messageOverride?: string) => {
     const userMessage = (messageOverride || input).trim();
     if (!userMessage || isLoading || isTyping) return;
+    analytics.trackEvent('chat_message_sent', { persona });
     setMessages((prev) => [...prev, { role: 'user', content: userMessage }]);
     setInput('');
     setIsLoading(true);

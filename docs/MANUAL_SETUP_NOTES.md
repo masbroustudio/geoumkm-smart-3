@@ -301,3 +301,95 @@ For local development, add the variables to `api/local.settings.json`:
 - **With env vars set:** The chat API calls Azure OpenAI with a persona-specific system prompt and knowledge base context. Responses are AI-generated and contextual.
 - **Without env vars:** The chat API falls back to keyword matching against the knowledge base. No external API calls are made.
 - **On error (timeout, network issue):** The API logs the error and falls back to keyword matching automatically. The 15-second timeout prevents long hangs.
+
+---
+
+## K. Application Insights Setup
+
+GeoUMKM includes a lightweight analytics wrapper that logs page views, events, and errors. By default it is a no-op (zero overhead). When you set the environment variable, it activates and logs with an `[Analytics]` prefix as a placeholder for a real Application Insights SDK.
+
+### 1. Create Application Insights Resource
+
+1. Go to [Azure Portal](https://portal.azure.com)
+2. Search for **"Application Insights"** and click **Create**
+3. Resource Group: `rg-geoumkm-prod`
+4. Name: `appi-geoumkm`
+5. Region: **Southeast Asia**
+6. Click **Review + Create**
+
+### 2. Get the Instrumentation Key
+
+1. Open the Application Insights resource
+2. Go to **Overview** and copy the **Instrumentation Key** (or Connection String)
+
+### 3. Set Environment Variable
+
+Add to `frontend/.env.local` for local development:
+
+```env
+NEXT_PUBLIC_APPINSIGHTS_KEY=<your-instrumentation-key>
+```
+
+For production, add this to your Azure Static Web Apps environment variables.
+
+### 4. Tracked Events
+
+| Event | Location | Properties |
+|-------|----------|------------|
+| Page View | Dashboard navigation | `pageName` |
+| `chat_message_sent` | AI Chat panel | `persona` |
+| `report_exported` | Reports page | `reportType` |
+| `theme_toggled` | Theme toggle | `newTheme` |
+
+### 5. Expected Behavior
+
+- **Without `NEXT_PUBLIC_APPINSIGHTS_KEY`:** All analytics calls are no-ops (no console output, no errors)
+- **With the key set:** Events are logged to `console.log` with `[Analytics]` prefix
+- **Production upgrade:** Replace the console.log calls in `frontend/lib/analytics.ts` with the real Application Insights SDK (`@microsoft/applicationinsights-web`)
+
+---
+
+## L. PWA Support
+
+GeoUMKM is configured as a Progressive Web App (PWA), allowing users to install it on mobile and desktop devices and use it offline.
+
+### 1. Manifest
+
+The web app manifest is at `frontend/public/manifest.json`. It defines:
+
+- App name and short name
+- Start URL (`/overview`)
+- Display mode (`standalone`)
+- Theme and background colors
+- App icon (SVG)
+
+### 2. Service Worker
+
+The service worker (`frontend/public/sw.js`) provides:
+
+- **Install:** Caches the app shell (all main dashboard routes + offline page)
+- **Static assets:** Cache-first strategy for same-origin requests
+- **API calls:** Network-first strategy for URLs containing `/api/`
+- **Offline fallback:** Serves `/offline` page when navigation fails without network
+
+### 3. Service Worker Registration
+
+The service worker is registered in `frontend/app/layout.tsx` only when:
+
+- The browser supports service workers (`'serviceWorker' in navigator`)
+- The app is NOT running on localhost (development mode)
+
+This prevents caching issues during development.
+
+### 4. Offline Page
+
+The offline fallback page is at `frontend/app/offline/page.tsx`. It displays a simple message informing the user they are offline, with a "Try Again" button to reload.
+
+### 5. Testing PWA Locally
+
+To test the PWA behavior locally:
+
+1. Run `pnpm build` in the `frontend/` directory
+2. Serve the `out/` directory with a static file server (e.g., `npx serve out`)
+3. Open Chrome DevTools > Application tab to inspect the service worker and manifest
+4. Use the "Offline" checkbox in the Network tab to test offline behavior

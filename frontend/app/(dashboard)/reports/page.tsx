@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { FileBarChart, Building2, Landmark, TrendingUp, FileDown } from 'lucide-react';
 import { creditData, clusterData, policyData } from '@/lib/static-data';
 import { generateCreditReport, generateGovernmentReport, generateInvestmentReport } from '@/lib/pdf-report';
+import { analytics } from '@/lib/analytics';
 
 type ReportType = 'credit' | 'government' | 'investment';
 
@@ -42,6 +43,9 @@ export default function ReportsPage() {
   };
 
   const handleDownloadPDF = () => {
+    if (selectedReport) {
+      analytics.trackEvent('report_exported', { reportType: selectedReport });
+    }
     if (selectedReport === 'credit') {
       generateCreditReport(creditData);
     } else if (selectedReport === 'government') {

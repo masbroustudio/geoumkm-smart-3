@@ -1,6 +1,7 @@
 'use client';
 
 import { createContext, useContext, useState, useEffect, useCallback } from 'react';
+import { analytics } from '@/lib/analytics';
 
 type Theme = 'dark' | 'light';
 
@@ -33,6 +34,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
       document.documentElement.classList.toggle('dark', next === 'dark');
       document.documentElement.classList.toggle('light', next === 'light');
       localStorage.setItem('theme', next);
+      analytics.trackEvent('theme_toggled', { newTheme: next });
       return next;
     });
   }, []);
