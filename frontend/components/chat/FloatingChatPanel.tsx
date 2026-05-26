@@ -200,15 +200,43 @@ export default function FloatingChatPanel() {
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [persona, setPersona] = useState<Persona>('government');
+  const [isTyping, setIsTyping] = useState(false);
+  const [typingText, setTypingText] = useState('');
+  const [typingFullText, setTypingFullText] = useState('');
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [messages]);
+  }, [messages, typingText]);
+
+  // Word-by-word typing effect
+  useEffect(() => {
+    if (!typingFullText) return;
+
+    const words = typingFullText.split(' ');
+    let currentIndex = 0;
+    setTypingText('');
+    setIsTyping(true);
+
+    const interval = setInterval(() => {
+      currentIndex++;
+      if (currentIndex >= words.length) {
+        clearInterval(interval);
+        setIsTyping(false);
+        setTypingText('');
+        setTypingFullText('');
+        setMessages((prev) => [...prev, { role: 'assistant', content: typingFullText }]);
+      } else {
+        setTypingText(words.slice(0, currentIndex).join(' '));
+      }
+    }, 30);
+
+    return () => clearInterval(interval);
+  }, [typingFullText]);
 
   const handleSend = async (messageOverride?: string) => {
     const userMessage = (messageOverride || input).trim();
-    if (!userMessage || isLoading) return;
+    if (!userMessage || isLoading || isTyping) return;
     setMessages((prev) => [...prev, { role: 'user', content: userMessage }]);
     setInput('');
     setIsLoading(true);
@@ -220,17 +248,13 @@ export default function FloatingChatPanel() {
         history: messages.map((m) => ({ role: m.role, content: m.content })),
       });
 
-      if (result.response) {
-        setMessages((prev) => [...prev, { role: 'assistant', content: result.response }]);
-      } else {
-        const response = getEnhancedResponse(userMessage, persona);
-        setMessages((prev) => [...prev, { role: 'assistant', content: response }]);
-      }
+      const responseText = result.response || getEnhancedResponse(userMessage, persona);
+      setIsLoading(false);
+      setTypingFullText(responseText);
     } catch {
       const response = getEnhancedResponse(userMessage, persona);
-      setMessages((prev) => [...prev, { role: 'assistant', content: response }]);
-    } finally {
       setIsLoading(false);
+      setTypingFullText(response);
     }
   };
 
@@ -312,6 +336,17 @@ export default function FloatingChatPanel() {
                   </div>
                 </motion.div>
               ))}
+              {isTyping && typingText && (
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="flex justify-start"
+                >
+                  <div className="max-w-[85%] px-4 py-2.5 rounded-xl text-sm bg-slate-800 text-slate-300 rounded-bl-sm">
+                    {typingText}<span className="inline-block w-0.5 h-4 bg-accent ml-0.5 animate-pulse" />
+                  </div>
+                </motion.div>
+              )}
               {isLoading && (
                 <div className="flex justify-start">
                   <div className="bg-slate-800 text-slate-300 px-4 py-3 rounded-xl rounded-bl-sm">
