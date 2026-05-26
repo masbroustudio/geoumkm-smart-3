@@ -1,13 +1,17 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { TrendingUp, Target, ArrowUpRight } from 'lucide-react';
-import { policyData as staticPolicyData } from '@/lib/static-data';
+import { TrendingUp, Target, ArrowUpRight, Wallet } from 'lucide-react';
+import { policyData as staticPolicyData, clusterData } from '@/lib/static-data';
 import { fetchPolicy } from '@/lib/api';
+
+const RECOMMENDED_ALLOCATIONS = clusterData.govPriority.map(c => c.budget_pct);
 
 export default function PolicySimulationPage() {
   const [policyData, setPolicyData] = useState(staticPolicyData);
   const [loading, setLoading] = useState(true);
+  const [allocations, setAllocations] = useState<number[]>(RECOMMENDED_ALLOCATIONS);
+  const [totalBudget, setTotalBudget] = useState(100_000_000_000);
 
   useEffect(() => {
     let cancelled = false;
@@ -80,6 +84,138 @@ export default function PolicySimulationPage() {
             </div>
           </div>
         ))}
+      </div>
+
+      {/* Budget Allocation Simulator */}
+      <div className="glass-card p-6">
+        <div className="flex items-center gap-2 mb-4">
+          <Wallet className="w-5 h-5 text-accent" />
+          <h3 className="text-lg font-semibold text-white">Simulator Alokasi Anggaran</h3>
+        </div>
+
+        {/* Total Budget Input */}
+        <div className="mb-6">
+          <label className="block text-sm text-slate-400 mb-2">Total Anggaran (Rp)</label>
+          <input
+            type="number"
+            value={totalBudget}
+            onChange={(e) => setTotalBudget(Number(e.target.value) || 0)}
+            className="w-full md:w-80 bg-slate-800 border border-slate-700 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-accent"
+          />
+          <p className="text-xs text-slate-400 mt-1">
+            Rp {totalBudget.toLocaleString('id-ID')}
+          </p>
+        </div>
+
+        {/* Cluster Allocation Sliders */}
+        <div className="space-y-4 mb-6">
+          {clusterData.govPriority.map((cluster, idx) => {
+            const pct = allocations[idx];
+            const allocated = totalBudget * (pct / 100);
+            const predicted_umkm_improved = Math.round(allocated / 50_000_000 * cluster.priority_score * cluster.n_umkm / 1000);
+            const predicted_new_jobs = Math.round(predicted_umkm_improved * 2.5);
+            const predicted_score_increase = totalBudget > 0 ? ((allocated / totalBudget) * 15 * cluster.priority_score).toFixed(1) : '0.0';
+            const roi = allocated > 0 ? (predicted_umkm_improved * 12_000_000 / allocated * 100).toFixed(0) : '0';
+
+            return (
+              <div key={idx} className="bg-slate-800/50 rounded-lg p-4">
+                <div className="flex flex-col lg:flex-row lg:items-center gap-4">
+                  <div className="lg:w-1/4">
+                    <p className="text-sm font-medium text-white">{cluster.cluster}</p>
+                    <p className="text-xs text-slate-400">{cluster.n_umkm.toLocaleString()} UMKM</p>
+                  </div>
+                  <div className="lg:w-1/4 flex items-center gap-3">
+                    <input
+                      type="range"
+                      min={0}
+                      max={100}
+                      step={1}
+                      value={pct}
+                      onChange={(e) => {
+                        const newAllocations = [...allocations];
+                        newAllocations[idx] = Number(e.target.value);
+                        setAllocations(newAllocations);
+                      }}
+                      className="flex-1 accent-emerald-500 h-2 rounded-lg cursor-pointer"
+                    />
+                    <span className="text-sm font-mono text-white w-12 text-right">{pct}%</span>
+                  </div>
+                  <div className="lg:w-1/4">
+                    <p className="text-xs text-slate-400">Alokasi</p>
+                    <p className="text-sm font-medium text-white">Rp {allocated.toLocaleString('id-ID')}</p>
+                  </div>
+                  <div className="lg:w-1/4 grid grid-cols-2 gap-2">
+                    <div>
+                      <p className="text-xs text-slate-400">UMKM Meningkat</p>
+                      <p className="text-sm font-medium text-emerald-400">+{predicted_umkm_improved}</p>
+                    </div>
+                    <div>
+                      <p className="text-xs text-slate-400">Lapangan Kerja</p>
+                      <p className="text-sm font-medium text-emerald-400">+{predicted_new_jobs}</p>
+                    </div>
+                    <div>
+                      <p className="text-xs text-slate-400">Skor +</p>
+                      <p className="text-sm font-medium text-emerald-400">+{predicted_score_increase}</p>
+                    </div>
+                    <div>
+                      <p className="text-xs text-slate-400">ROI</p>
+                      <p className="text-sm font-medium text-emerald-400">{roi}%</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+
+        {/* Validation */}
+        {(() => {
+          const totalPct = allocations.reduce((sum, v) => sum + v, 0);
+          const totalImproved = clusterData.govPriority.reduce((sum, cluster, idx) => {
+            const allocated = totalBudget * (allocations[idx] / 100);
+            return sum + Math.round(allocated / 50_000_000 * cluster.priority_score * cluster.n_umkm / 1000);
+          }, 0);
+          const totalJobs = clusterData.govPriority.reduce((sum, cluster, idx) => {
+            const allocated = totalBudget * (allocations[idx] / 100);
+            const improved = Math.round(allocated / 50_000_000 * cluster.priority_score * cluster.n_umkm / 1000);
+            return sum + Math.round(improved * 2.5);
+          }, 0);
+          const avgScoreIncrease = totalBudget > 0
+            ? (clusterData.govPriority.reduce((sum, cluster, idx) => {
+                const allocated = totalBudget * (allocations[idx] / 100);
+                return sum + (allocated / totalBudget) * 15 * cluster.priority_score;
+              }, 0) / clusterData.govPriority.length).toFixed(1)
+            : '0.0';
+
+          return (
+            <div className="space-y-3">
+              <div className="flex items-center gap-4">
+                <span className="text-sm text-slate-400">Total Alokasi:</span>
+                <span className={`text-sm font-bold ${totalPct === 100 ? 'text-emerald-400' : 'text-red-400'}`}>
+                  {totalPct}%
+                </span>
+                {totalPct !== 100 && (
+                  <span className="text-xs text-red-400">
+                    Total alokasi harus 100%
+                  </span>
+                )}
+              </div>
+
+              {/* Summary */}
+              <p className="text-sm text-slate-200">
+                Dengan alokasi ini, diperkirakan <span className="font-bold text-emerald-400">{totalImproved}</span> UMKM akan meningkat skornya rata-rata <span className="font-bold text-emerald-400">{avgScoreIncrease}</span> poin, menciptakan <span className="font-bold text-emerald-400">{totalJobs}</span> lapangan kerja baru
+              </p>
+
+              {/* Reset Button */}
+              <button
+                onClick={() => setAllocations([...RECOMMENDED_ALLOCATIONS])}
+                className="px-4 py-2 bg-accent/20 text-accent rounded-lg text-sm font-medium hover:bg-accent/30 transition-colors"
+              >
+                Reset to Recommended
+              </button>
+            </div>
+          );
+        })()}
       </div>
 
       {/* Priority Kecamatan Table */}
