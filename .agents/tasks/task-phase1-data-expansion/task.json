@@ -1,0 +1,7 @@
+{
+  "task_id": "task-phase1-data-expansion",
+  "task_description": "GeoUMKM V4.0 Phase 1 improvements: expand map data to all 595 kecamatan, fix cluster names in knowledge-base.ts, expand filter options (27 kabupaten, all jenis_usaha), and create practical manual setup notes",
+  "status": "in_progress",
+  "feature_order": ["FEAT-001", "FEAT-002"],
+  "blocked_reason": null
+}

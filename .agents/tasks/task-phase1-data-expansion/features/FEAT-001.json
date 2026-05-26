@@ -1,0 +1,26 @@
+{
+  "id": "FEAT-001",
+  "type": "fix",
+  "description": "Expand map data from 20 to all 595 kecamatan, fix knowledge-base cluster names, expand kabupaten filter to all 27 options, add all jenis_usaha options, and expand kecamatanDetailData",
+  "status": "in_progress",
+  "steps": [
+    "Step 1: Write a Python script that reads ml/data/knowledge_base/location_profiles.json and generates the full kecamatanMapData array (595 entries) with fields: kecamatan, kabupaten, lat, lng, score. Also generate an expanded kecamatanDetailData array with fields: kecamatan, kabupaten, infrastructure, risk, competition, digital_readiness, financial_access. Use the location profiles data to compute: infrastructure = skor_infrastruktur (rounded), risk = risk_composite * 100 (rounded), competition = min(n_umkm * 2, 100) (approximate), digital_readiness = akses_internet_pct (rounded), financial_access = financial_access_score * 100 (rounded). Run the script and embed the output into frontend/lib/static-data.ts, replacing the existing 20-entry kecamatanMapData and 13-entry kecamatanDetailData.",
+    "Step 2: In frontend/lib/knowledge-base.ts, update clusterSummaries array: change id=2 from name 'Urban Digital Leaders (2)' to 'Suburban Growth Hub' and update description to 'Suburban areas with growing digital adoption and strong infrastructure base'. Change id=4 from name 'High-Risk Underserved (4)' to 'Transitional Developing' and update description to 'Transitional areas with moderate infrastructure and growing digital presence, at risk of flooding'.",
+    "Step 3: In frontend/app/(dashboard)/location-intelligence/page.tsx, expand kabupatenOptions to include all 27 kabupaten/kota: 'Semua', 'Kab. Bandung', 'Kab. Bandung Barat', 'Kab. Bekasi', 'Kab. Bogor', 'Kab. Ciamis', 'Kab. Cirebon', 'Kab. Garut', 'Kab. Indramayu', 'Kab. Karawang', 'Kab. Kuningan', 'Kab. Majalengka', 'Kab. Pangandaran', 'Kab. Purwakarta', 'Kab. Subang', 'Kab. Sukabumi', 'Kab. Sumedang', 'Kab. Tasikmalaya', 'Kota Bandung', 'Kota Banjar', 'Kota Bekasi', 'Kota Bogor', 'Kota Cimahi', 'Kota Cirebon', 'Kota Depok', 'Kota Sukabumi', 'Kota Tasikmalaya'. Also ensure jenisUsahaOptions already has all 5 types plus 'Semua': ['Semua', 'Makanan', 'Fashion', 'Kerajinan', 'Jasa', 'Pertanian'] (already correct, just verify).",
+    "Step 4: Also update the FilteredMapView component (frontend/components/dashboard/FilteredMapView.tsx) jenisUsahaOptions to ensure all 5 business types are listed (already correct but verify).",
+    "Step 5: Run pnpm build in frontend/ to verify no TypeScript errors and all pages compile successfully."
+  ],
+  "acceptance_criteria": [
+    "kecamatanMapData in static-data.ts has exactly 595 entries covering all kecamatan from the location_profiles.json",
+    "kecamatanDetailData in static-data.ts has at least 50 entries (representative sample across all clusters)",
+    "knowledge-base.ts cluster id=2 is named 'Suburban Growth Hub' and id=4 is named 'Transitional Developing'",
+    "kabupatenOptions in location-intelligence page lists all 27 kabupaten/kota from the dataset",
+    "pnpm build succeeds without errors"
+  ],
+  "verification": [
+    "Run 'pnpm build' in frontend/ and confirm all routes compile successfully",
+    "Verify kecamatanMapData.length === 595 by searching for the array in the built file"
+  ],
+  "blocked_reason": null,
+  "findings": ""
+}

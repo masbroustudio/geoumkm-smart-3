@@ -1,0 +1,25 @@
+{
+  "project_type": "Next.js 14 static site with Azure Functions API and ML pipeline",
+  "language": "TypeScript (frontend + API), Python (ML notebooks)",
+  "build_system": "pnpm for frontend, npm for API",
+  "test_framework": "No tests yet - linting via next lint",
+  "build_command": "pnpm build",
+  "test_command": "pnpm lint",
+  "verification_instructions": "Run 'pnpm build' in frontend/ to confirm static export succeeds with all 13 routes compiled",
+  "snapshot_or_generated_files": null,
+  "setup_instructions": "cd frontend && pnpm install && pnpm build",
+  "environment_constraints": "Node v22.22.3 with pnpm available. No Docker. Static export mode means all data must be embedded at build time.",
+  "contribution_requirements": "Dark theme maintained. Indonesian text where appropriate. Static data fallback pattern preserved.",
+  "key_patterns": "frontend/lib/static-data.ts contains all static fallback data as exported constants. Components use useState initialized with static data, then attempt API fetch. ml/data/knowledge_base/location_profiles.json has all 595 location profiles with coordinates, scores, infrastructure, and cluster info. Cluster names in static-data.ts use 'Suburban Growth Hub' (id=2) and 'Transitional Developing' (id=4) but knowledge-base.ts still uses old names 'Urban Digital Leaders (2)' and 'High-Risk Underserved (4)' from the original ML output.",
+  "relevant_files": [
+    "frontend/lib/static-data.ts",
+    "frontend/lib/knowledge-base.ts",
+    "frontend/app/(dashboard)/location-intelligence/page.tsx",
+    "frontend/app/(dashboard)/overview/page.tsx",
+    "frontend/components/dashboard/FilteredMapView.tsx",
+    "ml/data/knowledge_base/location_profiles.json",
+    "ml/data/knowledge_base/cluster_summaries.json",
+    "docs/AZURE_SETUP_GUIDE.md"
+  ],
+  "directory_structure": "frontend/ - Next.js 14 app with app router. api/ - Azure Functions TS. ml/ - notebooks and data. docs/ - Architecture and Azure guides."
+}

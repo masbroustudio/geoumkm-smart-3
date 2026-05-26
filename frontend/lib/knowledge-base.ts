@@ -22,7 +22,7 @@ export const clusterSummaries = [
     actions: ['Digital literacy programs', 'Scale-up support']
   },
   {
-    id: 2, name: 'Urban Digital Leaders (2)', description: 'Secondary urban digital segment',
+    id: 2, name: 'Suburban Growth Hub', description: 'Suburban areas with growing digital adoption and strong infrastructure base',
     n_umkm: 926, characteristics: { infra: 81.6, income: 10.76, omset: 66.17, digital: 64.9, survival: 66.8, kur: 30.2 },
     strengths: ['Strong infrastructure', 'High digital adoption'],
     weaknesses: ['Smaller segment size'],
@@ -42,7 +42,7 @@ export const clusterSummaries = [
     actions: ['Infrastructure development', 'Digital literacy', 'KUR expansion']
   },
   {
-    id: 4, name: 'High-Risk Underserved (4)', description: 'Secondary high-risk segment with moderate infrastructure',
+    id: 4, name: 'Transitional Developing', description: 'Transitional areas with moderate infrastructure and growing digital presence, at risk of flooding',
     n_umkm: 1898, characteristics: { infra: 66.9, income: 7.81, omset: 57.07, digital: 51.9, survival: 66.4, kur: 31.1 },
     strengths: ['Strong revenue'],
     weaknesses: ['High flood risk'],
