@@ -1,8 +1,10 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { MapPin, Menu, X } from "lucide-react";
+import { MapPin, Menu, X, Sun, Moon } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
+import { useTheme } from "@/lib/theme-context";
 
 const navLinks = [
   { label: "Fitur", href: "#fitur" },
@@ -10,6 +12,42 @@ const navLinks = [
   { label: "Teknologi", href: "#teknologi" },
   { label: "Harga", href: "#harga" },
 ];
+
+function ThemeToggle() {
+  const { theme, toggle } = useTheme();
+
+  return (
+    <button
+      onClick={toggle}
+      className="relative p-2 rounded-lg bg-white/10 dark:bg-white/10 hover:bg-white/20 dark:hover:bg-white/20 transition-colors"
+      aria-label="Toggle dark mode"
+    >
+      <AnimatePresence mode="wait" initial={false}>
+        {theme === "dark" ? (
+          <motion.div
+            key="sun"
+            initial={{ rotate: -90, opacity: 0 }}
+            animate={{ rotate: 0, opacity: 1 }}
+            exit={{ rotate: 90, opacity: 0 }}
+            transition={{ duration: 0.2 }}
+          >
+            <Sun className="w-5 h-5 text-amber-400" />
+          </motion.div>
+        ) : (
+          <motion.div
+            key="moon"
+            initial={{ rotate: 90, opacity: 0 }}
+            animate={{ rotate: 0, opacity: 1 }}
+            exit={{ rotate: -90, opacity: 0 }}
+            transition={{ duration: 0.2 }}
+          >
+            <Moon className="w-5 h-5 text-slate-700" />
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </button>
+  );
+}
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
@@ -50,16 +88,16 @@ export default function Navbar() {
               <a
                 key={link.href}
                 href={link.href}
-                className="text-sm font-medium text-slate-300 hover:text-accent transition-colors"
+                className="text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-accent transition-colors"
               >
                 {link.label}
               </a>
             ))}
           </div>
 
-          {/* CTA + Dark Mode Toggle Placeholder */}
+          {/* CTA + Dark Mode Toggle */}
           <div className="hidden md:flex items-center gap-3">
-            {/* Dark mode toggle will be added in FEAT-003 */}
+            <ThemeToggle />
             <a
               href="#harga"
               className="px-5 py-2.5 rounded-lg bg-gradient-to-r from-primary to-accent text-white text-sm font-semibold hover:shadow-lg hover:shadow-accent/25 transition-all"
@@ -70,7 +108,7 @@ export default function Navbar() {
 
           {/* Mobile Toggle */}
           <button
-            className="md:hidden p-2 text-slate-300"
+            className="md:hidden p-2 text-slate-600 dark:text-slate-300"
             onClick={() => setMobileOpen(!mobileOpen)}
             aria-label="Toggle menu"
           >
@@ -80,25 +118,28 @@ export default function Navbar() {
 
         {/* Mobile Menu */}
         {mobileOpen && (
-          <div className="md:hidden mt-4 pb-4 border-t border-white/10">
+          <div className="md:hidden mt-4 pb-4 border-t border-black/10 dark:border-white/10">
             <div className="flex flex-col gap-3 pt-4">
               {navLinks.map((link) => (
                 <a
                   key={link.href}
                   href={link.href}
-                  className="text-sm font-medium text-slate-300 hover:text-accent transition-colors"
+                  className="text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-accent transition-colors"
                   onClick={() => setMobileOpen(false)}
                 >
                   {link.label}
                 </a>
               ))}
-              <a
-                href="#harga"
-                className="mt-2 px-5 py-2.5 rounded-lg bg-gradient-to-r from-primary to-accent text-white text-sm font-semibold text-center"
-                onClick={() => setMobileOpen(false)}
-              >
-                Mulai Sekarang
-              </a>
+              <div className="flex items-center gap-3 mt-2">
+                <ThemeToggle />
+                <a
+                  href="#harga"
+                  className="flex-1 px-5 py-2.5 rounded-lg bg-gradient-to-r from-primary to-accent text-white text-sm font-semibold text-center"
+                  onClick={() => setMobileOpen(false)}
+                >
+                  Mulai Sekarang
+                </a>
+              </div>
             </div>
           </div>
         )}

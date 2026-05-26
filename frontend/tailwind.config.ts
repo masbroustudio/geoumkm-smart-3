@@ -46,6 +46,7 @@ const config: Config = {
         "fade-in-up": "fadeInUp 0.6s ease-out forwards",
         "pulse-glow": "pulseGlow 2s ease-in-out infinite",
         "chat-bounce": "chatBounce 1.2s ease-in-out infinite",
+        "float-404": "float404 3s ease-in-out infinite",
       },
       keyframes: {
         meshGradient: {
@@ -69,6 +70,10 @@ const config: Config = {
         chatBounce: {
           "0%, 60%, 100%": { transform: "translateY(0)" },
           "30%": { transform: "translateY(-4px)" },
+        },
+        float404: {
+          "0%, 100%": { transform: "translateY(0)" },
+          "50%": { transform: "translateY(-20px)" },
         },
       },
     },

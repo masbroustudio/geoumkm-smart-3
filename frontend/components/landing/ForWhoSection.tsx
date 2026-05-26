@@ -72,7 +72,7 @@ export default function ForWhoSection() {
           <h2 className="text-3xl sm:text-4xl font-bold mb-4">
             <span className="gradient-text">Untuk Siapa?</span>
           </h2>
-          <p className="text-slate-400 max-w-2xl mx-auto">
+          <p className="text-slate-600 dark:text-slate-400 max-w-2xl mx-auto">
             Dirancang khusus untuk kebutuhan profesional di sektor finansial dan
             pemerintahan
           </p>
@@ -80,15 +80,15 @@ export default function ForWhoSection() {
 
         {/* Tabs */}
         <div className="flex justify-center mb-12">
-          <div className="inline-flex glass rounded-xl p-1.5 gap-1">
+          <div className="inline-flex glass rounded-xl p-1.5 gap-1 overflow-x-auto flex-nowrap max-w-full">
             {tabs.map((tab) => (
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
-                className={`flex items-center gap-2 px-5 py-3 rounded-lg text-sm font-medium transition-all ${
+                className={`flex items-center gap-2 px-5 py-3 rounded-lg text-sm font-medium transition-all whitespace-nowrap ${
                   activeTab === tab.id
                     ? "bg-gradient-to-r from-primary to-accent text-white shadow-lg"
-                    : "text-slate-400 hover:text-white"
+                    : "text-slate-600 dark:text-slate-400 hover:text-accent dark:hover:text-white"
                 }`}
               >
                 <tab.icon className="w-4 h-4" />
@@ -121,7 +121,7 @@ export default function ForWhoSection() {
                 <h3 className="text-2xl font-bold mb-2 text-foreground">
                   {activeContent.title}
                 </h3>
-                <p className="text-slate-400 text-sm mb-6 italic">
+                <p className="text-slate-600 dark:text-slate-400 text-sm mb-6 italic">
                   {activeContent.subtitle}
                 </p>
                 <ul className="space-y-4">
@@ -130,7 +130,7 @@ export default function ForWhoSection() {
                       <div className="w-5 h-5 rounded-full bg-accent/20 flex items-center justify-center flex-shrink-0 mt-0.5">
                         <div className="w-2 h-2 rounded-full bg-accent" />
                       </div>
-                      <span className="text-sm text-slate-300">{benefit}</span>
+                      <span className="text-sm text-slate-700 dark:text-slate-300">{benefit}</span>
                     </li>
                   ))}
                 </ul>

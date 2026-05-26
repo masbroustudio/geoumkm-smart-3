@@ -14,7 +14,7 @@ export default function DashboardLayout({
     <ToastProvider>
       <div className="min-h-screen bg-[var(--background)]">
         <Sidebar />
-        <main className="lg:ml-[260px] min-h-screen p-6 lg:p-8">
+        <main className="lg:ml-[260px] min-h-screen p-4 sm:p-6 lg:p-8">
           <PageTransition>
             {children}
           </PageTransition>

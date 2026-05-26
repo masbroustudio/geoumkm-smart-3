@@ -103,7 +103,7 @@ export default function PricingSection() {
           <h2 className="text-3xl sm:text-4xl font-bold mb-4">
             <span className="gradient-text">Pilih Paket Sesuai Kebutuhan</span>
           </h2>
-          <p className="text-slate-400 max-w-2xl mx-auto">
+          <p className="text-slate-600 dark:text-slate-400 max-w-2xl mx-auto">
             Flexible pricing for every scale of operation
           </p>
         </motion.div>
@@ -134,7 +134,7 @@ export default function PricingSection() {
                 <h3 className="text-xl font-bold text-foreground">
                   {plan.name}
                 </h3>
-                <p className="text-sm text-slate-400 mt-1">
+                <p className="text-sm text-slate-600 dark:text-slate-400 mt-1">
                   {plan.description}
                 </p>
               </div>
@@ -143,14 +143,14 @@ export default function PricingSection() {
                 <span className="text-3xl font-bold text-foreground">
                   {plan.price}
                 </span>
-                <span className="text-slate-400 text-sm">{plan.period}</span>
+                <span className="text-slate-600 dark:text-slate-400 text-sm">{plan.period}</span>
               </div>
 
               <ul className="space-y-3 mb-8 flex-1">
                 {plan.features.map((feature, i) => (
                   <li key={i} className="flex items-start gap-2">
                     <Check className="w-4 h-4 text-accent mt-0.5 flex-shrink-0" />
-                    <span className="text-sm text-slate-300">{feature}</span>
+                    <span className="text-sm text-slate-700 dark:text-slate-300">{feature}</span>
                   </li>
                 ))}
               </ul>
@@ -159,7 +159,7 @@ export default function PricingSection() {
                 className={`w-full py-3 rounded-lg font-semibold text-sm transition-all ${
                   plan.highlighted
                     ? "bg-gradient-to-r from-accent to-accent-600 text-white hover:shadow-lg hover:shadow-accent/30"
-                    : "border border-slate-600 text-slate-300 hover:border-accent hover:text-accent"
+                    : "border border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-300 hover:border-accent hover:text-accent"
                 }`}
               >
                 {plan.cta}

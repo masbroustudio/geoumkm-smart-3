@@ -85,7 +85,7 @@ export default function FeaturesSection() {
           <h2 className="text-3xl sm:text-4xl font-bold mb-4">
             <span className="gradient-text">Fitur Unggulan</span>
           </h2>
-          <p className="text-slate-400 max-w-2xl mx-auto">
+          <p className="text-slate-600 dark:text-slate-400 max-w-2xl mx-auto">
             Solusi lengkap untuk analisis UMKM berbasis AI dan data geospasial
           </p>
         </motion.div>
@@ -108,7 +108,7 @@ export default function FeaturesSection() {
               <h3 className="text-lg font-semibold mb-2 text-foreground">
                 {feature.title}
               </h3>
-              <p className="text-sm text-slate-400 leading-relaxed">
+              <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
                 {feature.description}
               </p>
             </motion.div>
