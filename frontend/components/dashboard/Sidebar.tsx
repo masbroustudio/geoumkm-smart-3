@@ -7,6 +7,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import {
   LayoutDashboard,
   ShieldCheck,
+  PieChart,
   MapPin,
   Layers,
   TrendingUp,
@@ -20,6 +21,7 @@ import { cn } from "@/lib/utils";
 const navItems = [
   { label: "Overview", href: "/overview", icon: LayoutDashboard },
   { label: "Credit Scoring", href: "/credit-scoring", icon: ShieldCheck },
+  { label: "Portfolio Analytics", href: "/portfolio-analytics", icon: PieChart },
   { label: "Location Intelligence", href: "/location-intelligence", icon: MapPin },
   { label: "Clustering", href: "/clustering", icon: Layers },
   { label: "Policy Simulation", href: "/policy-simulation", icon: TrendingUp },
