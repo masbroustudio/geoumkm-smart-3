@@ -2,7 +2,7 @@
   "id": "FEAT-001",
   "type": "chore",
   "description": "Reorganize repository structure: move ML content to ml/ subdirectory, create new directory structure for v4.0 architecture, update .gitignore for Next.js",
-  "status": "in_progress",
+  "status": "completed",
   "steps": [
     "Create ml/ directory and move notebooks/, data/, models/, scripts/ into ml/ (e.g., ml/notebooks/, ml/data/, ml/models/, ml/scripts/)",
     "Create the following empty directories: frontend/, api/, docs/assets/",
@@ -29,5 +29,5 @@
     "Run: cat .gitignore and verify it has both Python and Next.js sections"
   ],
   "blocked_reason": null,
-  "findings": ""
+  "findings": "All moves done via git mv preserving history. CSV files in data/ are gitignored by *.csv pattern but were already tracked so remain in git. Root __pycache__ and scripts/__pycache__ were not tracked (already in .gitignore) so just removed from working tree. The .gitignore was reorganized with separate PYTHON and NODE.JS/NEXT.JS sections. node_modules/ was already in the old .gitignore under Azure section, moved to the Next.js section for clarity."
 }
