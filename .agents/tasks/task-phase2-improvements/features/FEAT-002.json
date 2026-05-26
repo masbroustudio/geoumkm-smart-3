@@ -1,0 +1,29 @@
+{
+  "id": "FEAT-002",
+  "type": "feat",
+  "description": "Add Vitest testing framework with 5+ meaningful unit tests covering cn() utility, CSV export, API client fallback, theme context toggle, and KPICard component rendering",
+  "status": "pending",
+  "steps": [
+    "1. Install dev dependencies: vitest, @testing-library/react, @testing-library/jest-dom, jsdom, @vitejs/plugin-react. Run: pnpm add -D vitest @testing-library/react @testing-library/jest-dom jsdom @vitejs/plugin-react in frontend/.",
+    "2. Create frontend/vitest.config.ts: Configure with jsdom environment, react plugin, path alias (@/* -> ./*) matching tsconfig paths, and setup file.",
+    "3. Create frontend/vitest.setup.ts: Import @testing-library/jest-dom for extended matchers.",
+    "4. Update frontend/package.json scripts: Add 'test': 'vitest' and 'test:ci': 'vitest run'.",
+    "5. Create frontend/__tests__/lib/utils.test.ts: Test cn() function - merging classes, handling conflicts (e.g. cn('p-4', 'p-2') should produce 'p-2'), handling falsy values, combining with clsx conditions.",
+    "6. Create frontend/__tests__/lib/csv-export.test.ts: Test downloadCSV function - verify it handles empty data (returns early), generates correct CSV string with headers, escapes quotes properly. Mock document.createElement, URL.createObjectURL, etc.",
+    "7. Create frontend/__tests__/lib/api.test.ts: Test fetchWithFallback behavior - when BASE_URL is empty it returns fallback immediately, test the API envelope unwrapping logic. Mock global fetch.",
+    "8. Create frontend/__tests__/lib/theme-context.test.tsx: Test ThemeProvider and useTheme - renders children, toggle function switches theme, localStorage is read on mount and written on toggle.",
+    "9. Create frontend/__tests__/components/KPICard.test.tsx: Test KPICard renders label, value, subtitle correctly. Test trend variants show correct arrow icons."
+  ],
+  "acceptance_criteria": [
+    "pnpm test:ci in frontend/ runs and all tests pass",
+    "At least 5 test files exist with meaningful assertions",
+    "Tests cover the actual logic (not just smoke tests)",
+    "pnpm build in frontend/ still passes (vitest config does not break the build)"
+  ],
+  "verification": [
+    "Run pnpm test:ci in frontend/ and confirm all tests pass",
+    "Run pnpm build in frontend/ and confirm 16 routes still generate"
+  ],
+  "blocked_reason": null,
+  "findings": ""
+}

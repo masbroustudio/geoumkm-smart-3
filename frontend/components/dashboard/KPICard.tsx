@@ -29,13 +29,13 @@ export default function KPICard({ icon: Icon, label, value, subtitle, color = '#
     >
       <div className="flex items-start justify-between">
         <div>
-          <p className="text-sm text-slate-400 mb-1">{label}</p>
+          <p className="text-sm text-[var(--text-secondary)] mb-1">{label}</p>
           <div className="flex items-center gap-2">
-            <p className="text-2xl font-bold text-white">{value}</p>
+            <p className="text-2xl font-bold text-[var(--foreground)]">{value}</p>
             {trend === 'up' && <ArrowUpRight className="w-4 h-4 text-emerald-400" />}
             {trend === 'down' && <ArrowDownRight className="w-4 h-4 text-red-400" />}
           </div>
-          <p className="text-xs text-slate-500 mt-1">{subtitle}</p>
+          <p className="text-xs text-[var(--text-muted)] mt-1">{subtitle}</p>
         </div>
         <div
           className="w-12 h-12 rounded-xl flex items-center justify-center"

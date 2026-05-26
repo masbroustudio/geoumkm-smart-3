@@ -1,0 +1,32 @@
+{
+  "project_type": "Fullstack app: Next.js 14 static export frontend + Azure Functions TypeScript API + ML notebooks",
+  "language": "TypeScript",
+  "build_system": "pnpm for both frontend/ and api/. Frontend uses next build with output: export (static site). API uses tsc to compile.",
+  "test_framework": "None currently - Phase 2 adds Vitest with @testing-library/react",
+  "build_command": "pnpm build (in frontend/ directory)",
+  "test_command": "pnpm test:ci (in frontend/ directory - to be created)",
+  "verification_instructions": "1. Run pnpm build in frontend/ - should produce 16 static routes without errors. 2. After adding vitest, run pnpm test:ci in frontend/.",
+  "snapshot_or_generated_files": null,
+  "setup_instructions": "cd frontend && pnpm install. No additional setup needed - uses static fallback data.",
+  "environment_constraints": "Static export mode (output: export) means no server-side rendering, no API routes in Next.js. All pages must be statically renderable. Docker not available in this sandbox.",
+  "contribution_requirements": "Build must pass (16 routes). Dark mode uses CSS variables approach to avoid touching every component file. Manual setup steps documented in docs/MANUAL_SETUP_NOTES.md.",
+  "key_patterns": "Components use 'use client' directive. Tailwind with darkMode: class strategy. CSS variables defined in globals.css (:root and .dark). glass-card and glass utility classes. framer-motion for animations. lucide-react for icons. cn() utility for className merging.",
+  "relevant_files": [
+    "frontend/app/layout.tsx",
+    "frontend/app/globals.css",
+    "frontend/app/(dashboard)/layout.tsx",
+    "frontend/lib/theme-context.tsx",
+    "frontend/lib/utils.ts",
+    "frontend/lib/api.ts",
+    "frontend/lib/csv-export.ts",
+    "frontend/components/dashboard/Sidebar.tsx",
+    "frontend/components/dashboard/KPICard.tsx",
+    "frontend/components/ui/BackToTop.tsx",
+    "frontend/tailwind.config.ts",
+    "frontend/tsconfig.json",
+    "frontend/package.json",
+    ".github/workflows/deploy-frontend.yml",
+    "docs/MANUAL_SETUP_NOTES.md"
+  ],
+  "directory_structure": "Root: api/, docs/, frontend/, ml/, README.md. Frontend: app/(dashboard)/ has pages (overview, credit-scoring, etc.), components/dashboard/ has chart/card components, components/ui/ has utility components, lib/ has api client, utils, context providers."
+}

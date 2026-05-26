@@ -1,0 +1,23 @@
+{
+  "id": "FEAT-003",
+  "type": "feat",
+  "description": "Loading States and Error Boundaries - Add reusable Skeleton component, React error boundary with retry, and wrap dashboard pages with error boundary",
+  "status": "pending",
+  "steps": [
+    "1. Create frontend/components/ui/Skeleton.tsx: A reusable skeleton loading component with variants (text, card, circle, rect). Should accept className for sizing. Uses Tailwind animate-pulse with a gray/slate shimmer effect. Should adapt to light/dark theme using CSS variables. Example usage: <Skeleton className='h-4 w-32' /> for a text line, <Skeleton variant='card' /> for a card-sized skeleton.",
+    "2. Create frontend/components/ui/ErrorBoundary.tsx: A React class component (error boundaries require class components) that catches render errors. Shows a friendly error message with an icon (AlertTriangle from lucide-react), the error message, and a 'Coba Lagi' (Try Again) retry button that calls this.setState to reset. Style it with glass-card, centered layout. Must be a 'use client' component.",
+    "3. Update frontend/app/(dashboard)/layout.tsx: Import ErrorBoundary and wrap the {children} with it. Keep the existing ToastProvider, Sidebar, FloatingChatPanel, BackToTop, and ToastContainer structure intact. The ErrorBoundary should wrap just the main content area (children inside the <main> tag).",
+    "4. Verify the build passes with the new components."
+  ],
+  "acceptance_criteria": [
+    "Skeleton component exists at frontend/components/ui/Skeleton.tsx with configurable variants",
+    "ErrorBoundary component exists at frontend/components/ui/ErrorBoundary.tsx with retry functionality",
+    "Dashboard layout wraps children with ErrorBoundary",
+    "pnpm build in frontend/ passes without errors"
+  ],
+  "verification": [
+    "Run pnpm build in frontend/ and confirm 16 routes still generate without errors"
+  ],
+  "blocked_reason": null,
+  "findings": ""
+}

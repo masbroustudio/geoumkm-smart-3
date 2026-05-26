@@ -1,0 +1,7 @@
+{
+  "task_id": "task-phase2-improvements",
+  "task_description": "GeoUMKM V4.0 Phase 2: Add dark/light mode toggle, Vitest testing framework with unit tests, loading states and error boundaries, and API deployment workflow",
+  "status": "in_progress",
+  "feature_order": ["FEAT-001", "FEAT-002", "FEAT-003", "FEAT-004"],
+  "blocked_reason": null
+}
