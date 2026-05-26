@@ -1,6 +1,7 @@
 'use client';
 
 import { MapContainer, TileLayer, CircleMarker, Popup } from 'react-leaflet';
+import { useRouter } from 'next/navigation';
 import 'leaflet/dist/leaflet.css';
 
 interface MapInnerProps {
@@ -15,6 +16,8 @@ function getColor(score: number): string {
 }
 
 export default function MapInner({ data }: MapInnerProps) {
+  const router = useRouter();
+
   return (
     <MapContainer
       center={[-6.9, 107.6]}
@@ -36,6 +39,12 @@ export default function MapInner({ data }: MapInnerProps) {
           weight={2}
           opacity={0.8}
           fillOpacity={0.6}
+          pathOptions={{ className: 'cursor-pointer' }}
+          eventHandlers={{
+            click: () => {
+              router.push(`/kecamatan?name=${encodeURIComponent(item.kecamatan)}&kabupaten=${encodeURIComponent(item.kabupaten)}`);
+            },
+          }}
         >
           <Popup>
             <div className="text-sm">
