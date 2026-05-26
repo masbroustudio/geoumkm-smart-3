@@ -22,8 +22,8 @@ export default function LocationIntelligencePage() {
   const [recommendData, setRecommendData] = useState(staticRecommendData);
   const [whatifScenarios, setWhatifScenarios] = useState(staticPolicyData.whatifScenarios);
   const [loading, setLoading] = useState(true);
-  const [compareA, setCompareA] = useState(kecamatanDetailData[0].kecamatan);
-  const [compareB, setCompareB] = useState(kecamatanDetailData[1].kecamatan);
+  const [compareA, setCompareA] = useState(`${kecamatanDetailData[0].kecamatan}|${kecamatanDetailData[0].kabupaten}`);
+  const [compareB, setCompareB] = useState(`${kecamatanDetailData[1].kecamatan}|${kecamatanDetailData[1].kabupaten}`);
 
   useEffect(() => {
     let cancelled = false;
@@ -278,7 +278,7 @@ export default function LocationIntelligencePage() {
               className="w-full px-4 py-2 rounded-lg bg-slate-800 border border-slate-700 text-white text-sm focus:outline-none focus:border-accent"
             >
               {kecamatanDetailData.map((k) => (
-                <option key={k.kecamatan} value={k.kecamatan}>{k.kecamatan} ({k.kabupaten})</option>
+                <option key={`${k.kecamatan}-${k.kabupaten}`} value={`${k.kecamatan}|${k.kabupaten}`}>{k.kecamatan} ({k.kabupaten})</option>
               ))}
             </select>
           </div>
@@ -290,16 +290,21 @@ export default function LocationIntelligencePage() {
               className="w-full px-4 py-2 rounded-lg bg-slate-800 border border-slate-700 text-white text-sm focus:outline-none focus:border-accent"
             >
               {kecamatanDetailData.map((k) => (
-                <option key={k.kecamatan} value={k.kecamatan}>{k.kecamatan} ({k.kabupaten})</option>
+                <option key={`${k.kecamatan}-${k.kabupaten}`} value={`${k.kecamatan}|${k.kabupaten}`}>{k.kecamatan} ({k.kabupaten})</option>
               ))}
             </select>
           </div>
         </div>
 
         {(() => {
-          const dataA = kecamatanDetailData.find((k) => k.kecamatan === compareA);
-          const dataB = kecamatanDetailData.find((k) => k.kecamatan === compareB);
+          const [nameA, kabA] = compareA.split('|');
+          const [nameB, kabB] = compareB.split('|');
+          const dataA = kecamatanDetailData.find((k) => k.kecamatan === nameA && k.kabupaten === kabA);
+          const dataB = kecamatanDetailData.find((k) => k.kecamatan === nameB && k.kabupaten === kabB);
           if (!dataA || !dataB) return null;
+
+          const labelA = `${nameA} (${kabA})`;
+          const labelB = `${nameB} (${kabB})`;
 
           const dimensions = [
             { subject: 'Infrastructure', key: 'infrastructure' as const },
@@ -311,13 +316,13 @@ export default function LocationIntelligencePage() {
 
           const radarData = dimensions.map((dim) => ({
             subject: dim.subject,
-            [compareA]: dim.key === 'risk' ? 100 - dataA[dim.key] : dataA[dim.key],
-            [compareB]: dim.key === 'risk' ? 100 - dataB[dim.key] : dataB[dim.key],
+            [labelA]: dim.key === 'risk' ? 100 - dataA[dim.key] : dataA[dim.key],
+            [labelB]: dim.key === 'risk' ? 100 - dataB[dim.key] : dataB[dim.key],
           }));
 
           return (
             <>
-              <ComparisonRadarChart data={radarData} kecamatanNames={[compareA, compareB]} />
+              <ComparisonRadarChart data={radarData} kecamatanNames={[labelA, labelB]} />
 
               {/* Comparison Table */}
               <div className="overflow-x-auto mt-6">
@@ -325,8 +330,8 @@ export default function LocationIntelligencePage() {
                   <thead>
                     <tr className="border-b border-slate-700">
                       <th className="text-left py-3 px-4 text-slate-400 font-medium">Dimension</th>
-                      <th className="text-right py-3 px-4 text-slate-400 font-medium">{compareA}</th>
-                      <th className="text-right py-3 px-4 text-slate-400 font-medium">{compareB}</th>
+                      <th className="text-right py-3 px-4 text-slate-400 font-medium">{labelA}</th>
+                      <th className="text-right py-3 px-4 text-slate-400 font-medium">{labelB}</th>
                     </tr>
                   </thead>
                   <tbody>
