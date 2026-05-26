@@ -107,6 +107,31 @@ export default function PolicySimulationPage() {
           </p>
         </div>
 
+        {/* Invalid allocation warning */}
+        {allocations.reduce((sum, v) => sum + v, 0) !== 100 && (
+          <div className="mb-4 px-3 py-2 bg-red-500/10 border border-red-500/30 rounded-lg">
+            <p className="text-xs text-red-400">Alokasi harus 100% untuk prediksi yang valid</p>
+          </div>
+        )}
+
+        {/*
+          Budget Allocation Formula Assumptions:
+          ----------------------------------------
+          predicted_umkm_improved = allocated / 50_000_000 * priority_score * n_umkm / 1000
+            - 50M (Rp 50,000,000) = estimated cost per UMKM intervention program
+            - priority_score = cluster-specific impact multiplier derived from ML clustering
+            - n_umkm / 1000 = normalized cluster size factor
+
+          predicted_new_jobs = predicted_umkm_improved * 2.5
+            - 2.5 = average job creation multiplier per improved UMKM (BPS 2023 estimate)
+
+          predicted_score_increase = (allocated / totalBudget) * 15 * priority_score
+            - 15 = maximum score improvement ceiling (out of 100-point scale)
+
+          roi = predicted_umkm_improved * 12_000_000 / allocated * 100
+            - 12M (Rp 12,000,000) = estimated annual revenue increase per improved UMKM
+        */}
+
         {/* Cluster Allocation Sliders */}
         <div className="space-y-4 mb-6">
           {clusterData.govPriority.map((cluster, idx) => {
@@ -144,7 +169,7 @@ export default function PolicySimulationPage() {
                     <p className="text-xs text-slate-400">Alokasi</p>
                     <p className="text-sm font-medium text-white">Rp {allocated.toLocaleString('id-ID')}</p>
                   </div>
-                  <div className="lg:w-1/4 grid grid-cols-2 gap-2">
+                  <div className={`lg:w-1/4 grid grid-cols-2 gap-2${allocations.reduce((sum, v) => sum + v, 0) !== 100 ? ' opacity-50' : ''}`}>
                     <div>
                       <p className="text-xs text-slate-400">UMKM Meningkat</p>
                       <p className="text-sm font-medium text-emerald-400">+{predicted_umkm_improved}</p>
@@ -202,7 +227,7 @@ export default function PolicySimulationPage() {
               </div>
 
               {/* Summary */}
-              <p className="text-sm text-slate-200">
+              <p className={`text-sm text-slate-200${totalPct !== 100 ? ' opacity-50' : ''}`}>
                 Dengan alokasi ini, diperkirakan <span className="font-bold text-emerald-400">{totalImproved}</span> UMKM akan meningkat skornya rata-rata <span className="font-bold text-emerald-400">{avgScoreIncrease}</span> poin, menciptakan <span className="font-bold text-emerald-400">{totalJobs}</span> lapangan kerja baru
               </p>
 

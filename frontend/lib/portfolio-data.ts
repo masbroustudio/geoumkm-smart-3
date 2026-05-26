@@ -1,16 +1,37 @@
+const exposureByKabupaten = [
+  { name: 'Kota Bekasi', value: 125000 },
+  { name: 'Kota Depok', value: 112000 },
+  { name: 'Kota Bandung', value: 98000 },
+  { name: 'Kab. Bogor', value: 78000 },
+  { name: 'Kota Cimahi', value: 65000 },
+  { name: 'Lainnya', value: 107000 },
+];
+
+// Compute HHI (Herfindahl-Hirschman Index) from exposure distribution
+// HHI = sum of (marketShare * 100)^2 where marketShare = entry.value / total
+const exposureTotal = exposureByKabupaten.reduce((sum, e) => sum + e.value, 0);
+const hhi = Math.round(
+  exposureByKabupaten.reduce((sum, e) => {
+    const share = (e.value / exposureTotal) * 100;
+    return sum + share * share;
+  }, 0)
+);
+
+// Diversification score: 100 = perfectly diversified (HHI near min), 0 = highly concentrated
+// Min HHI for N segments = 10000/N, Max = 10000
+const minHHI = 10000 / exposureByKabupaten.length;
+const diversificationScore = Math.round(((10000 - hhi) / (10000 - minHHI)) * 100);
+
+// Stress test: stressedExpectedLoss is always baseExpectedLoss * 1.5 (50% increase scenario)
+const baseExpectedLoss = 175_500_000_000;
+const stressedExpectedLoss = baseExpectedLoss * 1.5;
+
 export const portfolioData = {
   totalUmkm: 10000,
   totalExposure: 585_000_000_000,
   weightedAvgPD: 43.2,
-  expectedLoss: 175_500_000_000,
-  exposureByKabupaten: [
-    { name: 'Kota Bekasi', value: 125000 },
-    { name: 'Kota Depok', value: 112000 },
-    { name: 'Kota Bandung', value: 98000 },
-    { name: 'Kab. Bogor', value: 78000 },
-    { name: 'Kota Cimahi', value: 65000 },
-    { name: 'Lainnya', value: 107000 },
-  ],
+  expectedLoss: baseExpectedLoss,
+  exposureByKabupaten,
   exposureByJenisUsaha: [
     { name: 'Makanan', value: 195000 },
     { name: 'Fashion', value: 120000 },
@@ -30,13 +51,13 @@ export const portfolioData = {
     { kecamatan: 'Singajaya', kabupaten: 'Kab. Garut', avgPD: 63.4, exposure: 3900, riskRating: 'High' },
     { kecamatan: 'Kertajati', kabupaten: 'Kab. Majalengka', avgPD: 61.2, exposure: 5600, riskRating: 'High' },
   ],
-  hhi: 1850,
-  diversificationScore: 62,
+  hhi,
+  diversificationScore,
   stressTest: {
-    baseExpectedLoss: 175_500_000_000,
+    baseExpectedLoss,
     stressedDefaultRate: 64.8,
-    stressedExpectedLoss: 263_250_000_000,
-    additionalLoss: 87_750_000_000,
+    stressedExpectedLoss,
+    additionalLoss: stressedExpectedLoss - baseExpectedLoss,
     changePercent: 50,
   },
 };
