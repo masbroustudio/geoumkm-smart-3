@@ -1,0 +1,30 @@
+{
+  "id": "FEAT-003",
+  "type": "feat",
+  "description": "Azure OpenAI Integration Preparation - Update the chat API endpoint to support real Azure OpenAI when env vars are set (with keyword-matching fallback), add streaming-like UX to the frontend chat, and document the setup process.",
+  "status": "pending",
+  "steps": [
+    "Step 1: Update `api/src/functions/chat.ts` to add Azure OpenAI integration. The logic should: (a) Check if env vars AZURE_OPENAI_ENDPOINT and AZURE_OPENAI_KEY are set, (b) If set, construct a system prompt that includes the persona context and relevant knowledge base entries (load from getKnowledgeBase()), then call the Azure OpenAI API (POST to `${endpoint}/openai/deployments/${deployment}/chat/completions?api-version=2024-02-01`) with the system prompt + user message, max_tokens=500, temperature=0.7, (c) If env vars not set, fall back to existing keyword matching behavior, (d) Add proper error handling with try/catch around the OpenAI call - if it fails, fall back to keyword matching, (e) Add a 15-second timeout using AbortController. The deployment name should come from env var AZURE_OPENAI_DEPLOYMENT (default 'gpt-4o'). The system prompt should vary by persona: Bank gets credit risk focus, Government gets policy/priority focus, Investor gets opportunity focus. Include a brief summary of relevant knowledge base data in the system prompt.",
+    "Step 2: Update `api/src/shared/types.ts` to add the Azure OpenAI related interfaces if needed (AzureOpenAIConfig, etc.).",
+    "Step 3: Update `frontend/components/chat/FloatingChatPanel.tsx` to add a streaming-like display effect. When a response arrives, instead of showing it all at once, reveal it word by word using a setInterval (50ms per word). Add a state `isTyping` that shows a typing indicator while the response is being 'streamed'. Keep the existing message formatting logic (formatMessage, formatInline). The typing effect should use the raw text, then once complete, render with full formatting.",
+    "Step 4: Update `docs/MANUAL_SETUP_NOTES.md` to add a new section 'J. Azure OpenAI Integration' explaining: (a) How to request Azure OpenAI access, (b) How to deploy gpt-4o model in Azure OpenAI Studio, (c) Which environment variables to set in Azure Functions (AZURE_OPENAI_ENDPOINT, AZURE_OPENAI_KEY, AZURE_OPENAI_DEPLOYMENT), (d) How to test locally (set env vars in local.settings.json), (e) Expected behavior when vars are not set (falls back to keyword matching).",
+    "Step 5: Verify API compiles with `pnpm build` in api/. Verify frontend builds with `pnpm build` in frontend/. Run `pnpm test:ci`."
+  ],
+  "acceptance_criteria": [
+    "api/src/functions/chat.ts checks for AZURE_OPENAI_ENDPOINT and AZURE_OPENAI_KEY before calling Azure OpenAI",
+    "If env vars are not set, the existing keyword matching fallback works unchanged",
+    "The Azure OpenAI call includes persona-specific system prompts with knowledge base context",
+    "The call has a 15-second timeout and falls back to keyword matching on error",
+    "Frontend chat shows a word-by-word typing effect for responses",
+    "docs/MANUAL_SETUP_NOTES.md has a new section documenting Azure OpenAI setup",
+    "API compiles (pnpm build in api/)",
+    "Frontend builds (pnpm build in frontend/) and tests pass (pnpm test:ci)"
+  ],
+  "verification": [
+    "Run `pnpm build` in api/ directory and confirm no TypeScript errors",
+    "Run `pnpm build` in frontend/ directory and confirm static export succeeds",
+    "Run `pnpm test:ci` in frontend/ directory and confirm all tests pass"
+  ],
+  "blocked_reason": null,
+  "findings": ""
+}

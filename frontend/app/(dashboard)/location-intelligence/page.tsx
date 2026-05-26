@@ -1,9 +1,9 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { MapPin, Search, Sliders } from 'lucide-react';
+import { MapPin, Search, Sliders, Zap } from 'lucide-react';
 import { recommendData as staticRecommendData, policyData as staticPolicyData, kecamatanDetailData } from '@/lib/static-data';
-import { fetchRecommendations, fetchPolicy } from '@/lib/api';
+import { fetchRecommendations, fetchPolicy, postWhatIfCustom, WhatIfCustomResult } from '@/lib/api';
 import DownloadCSVButton from '@/components/ui/DownloadCSVButton';
 import ComparisonRadarChart from '@/components/dashboard/ComparisonRadarChart';
 
@@ -24,6 +24,12 @@ export default function LocationIntelligencePage() {
   const [loading, setLoading] = useState(true);
   const [compareA, setCompareA] = useState(`${kecamatanDetailData[0].kecamatan}|${kecamatanDetailData[0].kabupaten}`);
   const [compareB, setCompareB] = useState(`${kecamatanDetailData[1].kecamatan}|${kecamatanDetailData[1].kabupaten}`);
+  const [customKabupaten, setCustomKabupaten] = useState(kabupatenOptions[1]);
+  const [infraDelta, setInfraDelta] = useState(0);
+  const [internetDelta, setInternetDelta] = useState(0);
+  const [bankDistDelta, setBankDistDelta] = useState(0);
+  const [customResult, setCustomResult] = useState<WhatIfCustomResult | null>(null);
+  const [customLoading, setCustomLoading] = useState(false);
 
   useEffect(() => {
     let cancelled = false;
@@ -82,6 +88,21 @@ export default function LocationIntelligencePage() {
     }
 
     setSimResult(bestScenario);
+  };
+
+  const handleCustomSimulate = async () => {
+    setCustomLoading(true);
+    try {
+      const result = await postWhatIfCustom({
+        infrastructure_delta: infraDelta,
+        internet_delta: internetDelta,
+        bank_distance_delta: bankDistDelta,
+        target_kabupaten: customKabupaten,
+      });
+      setCustomResult(result);
+    } finally {
+      setCustomLoading(false);
+    }
   };
 
   if (loading) {
@@ -228,6 +249,123 @@ export default function LocationIntelligencePage() {
               <div>
                 <span className="text-slate-400">Improvement</span>
                 <p className="text-emerald-400 font-medium">+{simResult.improvement.toFixed(2)}</p>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* Custom Simulation */}
+      <div className="glass-card p-6">
+        <div className="flex items-center gap-2 mb-4">
+          <Zap className="w-5 h-5 text-accent" />
+          <h3 className="text-lg font-semibold text-white">Custom Simulation</h3>
+        </div>
+        <p className="text-xs text-slate-400 mb-4">
+          Select a target kabupaten and adjust delta values to dynamically compute score impacts using the ML-derived linear formula.
+        </p>
+        <div className="mb-4">
+          <label className="text-sm text-slate-400 mb-1 block">Target Kabupaten</label>
+          <select
+            value={customKabupaten}
+            onChange={(e) => setCustomKabupaten(e.target.value)}
+            className="w-full px-4 py-2 rounded-lg bg-slate-800 border border-slate-700 text-white text-sm focus:outline-none focus:border-accent"
+          >
+            {kabupatenOptions.filter((opt) => opt !== 'Semua').map((opt) => (
+              <option key={opt} value={opt}>{opt}</option>
+            ))}
+          </select>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+          <div>
+            <label className="text-sm text-slate-400 mb-2 block">Infrastructure Delta: {infraDelta > 0 ? `+${infraDelta}` : infraDelta}</label>
+            <input
+              type="range"
+              min="-30"
+              max="30"
+              value={infraDelta}
+              onChange={(e) => setInfraDelta(Number(e.target.value))}
+              className="w-full accent-emerald-500"
+            />
+            <div className="flex justify-between text-xs text-slate-500 mt-1">
+              <span>-30</span>
+              <span>0</span>
+              <span>+30</span>
+            </div>
+          </div>
+          <div>
+            <label className="text-sm text-slate-400 mb-2 block">Internet Delta: {internetDelta > 0 ? `+${internetDelta}` : internetDelta}</label>
+            <input
+              type="range"
+              min="-30"
+              max="30"
+              value={internetDelta}
+              onChange={(e) => setInternetDelta(Number(e.target.value))}
+              className="w-full accent-emerald-500"
+            />
+            <div className="flex justify-between text-xs text-slate-500 mt-1">
+              <span>-30</span>
+              <span>0</span>
+              <span>+30</span>
+            </div>
+          </div>
+          <div>
+            <label className="text-sm text-slate-400 mb-2 block">Bank Distance Delta: {bankDistDelta > 0 ? `+${bankDistDelta}` : bankDistDelta}</label>
+            <input
+              type="range"
+              min="-50"
+              max="50"
+              value={bankDistDelta}
+              onChange={(e) => setBankDistDelta(Number(e.target.value))}
+              className="w-full accent-emerald-500"
+            />
+            <div className="flex justify-between text-xs text-slate-500 mt-1">
+              <span>-50</span>
+              <span>0</span>
+              <span>+50</span>
+            </div>
+          </div>
+        </div>
+        <button
+          onClick={handleCustomSimulate}
+          disabled={customLoading}
+          className="px-6 py-2 rounded-lg bg-accent text-white font-medium hover:bg-accent-600 transition-colors disabled:opacity-50"
+        >
+          {customLoading ? 'Computing...' : 'Run Custom Simulation'}
+        </button>
+        {customResult && (
+          <div className="mt-4 p-4 rounded-lg bg-slate-800 border border-slate-700 space-y-2">
+            <p className="text-sm text-accent font-medium">
+              Simulation Results for {customKabupaten}
+            </p>
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 text-xs">
+              <div>
+                <span className="text-slate-400">Affected UMKMs</span>
+                <p className="text-white font-medium">{customResult.affected_count}</p>
+              </div>
+              <div>
+                <span className="text-slate-400">Avg Score Before</span>
+                <p className="text-white font-medium">{customResult.avg_score_before.toFixed(1)}</p>
+              </div>
+              <div>
+                <span className="text-slate-400">Avg Score After</span>
+                <p className="text-emerald-400 font-medium">{customResult.avg_score_after.toFixed(1)}</p>
+              </div>
+              <div>
+                <span className="text-slate-400">Avg Improvement</span>
+                <p className="text-emerald-400 font-medium">+{customResult.avg_improvement.toFixed(2)}</p>
+              </div>
+              <div>
+                <span className="text-slate-400">Crossing 70 Threshold</span>
+                <p className="text-white font-medium">{customResult.umkm_crossing_70_threshold}</p>
+              </div>
+              <div>
+                <span className="text-slate-400">% Improved</span>
+                <p className="text-emerald-400 font-medium">{customResult.pct_improved.toFixed(1)}%</p>
+              </div>
+              <div>
+                <span className="text-slate-400">Max Improvement</span>
+                <p className="text-emerald-400 font-medium">+{customResult.max_improvement.toFixed(2)}</p>
               </div>
             </div>
           </div>

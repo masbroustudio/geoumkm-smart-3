@@ -1,0 +1,26 @@
+{
+  "id": "FEAT-004",
+  "type": "feat",
+  "description": "Geospatial Heatmap Layer - Add a toggle on the Overview page map to switch between Markers view and Heatmap view. The heatmap uses colored circles with radius proportional to UMKM count and color based on average score.",
+  "status": "pending",
+  "steps": [
+    "Step 1: Create `frontend/components/dashboard/HeatmapMapInner.tsx` - a new map component that renders circles with: (a) radius proportional to a normalized score (e.g., higher score = larger radius, range 6-18px), (b) fillColor based on score gradient (red < 40, orange 40-55, yellow 55-70, green > 70), (c) Higher fillOpacity (0.5-0.7) to create a heatmap effect, (d) No click handlers - this is view-only. Use the same MapContainer/TileLayer setup as MapInner.tsx but with different circle rendering.",
+    "Step 2: Create `frontend/components/dashboard/HeatmapMapView.tsx` - wrapper component (like MapView.tsx) that uses dynamic import of HeatmapMapInner. Add a color-scale legend showing: Red (Low <40), Orange (40-55), Yellow (55-70), Green (High >70), and a note about circle size representing relative intensity.",
+    "Step 3: Update `frontend/app/(dashboard)/overview/page.tsx` to add a toggle button above the map section. Use a state `mapMode: 'markers' | 'heatmap'` defaulting to 'markers'. Add two buttons styled as a button group (like tabs) to switch between modes. When 'markers' is selected, show the existing FilteredMapView. When 'heatmap' is selected, show the new HeatmapMapView with the same kecamatanMapData. Import HeatmapMapView with next/dynamic to avoid SSR issues with leaflet.",
+    "Step 4: Verify frontend builds with `pnpm build` and tests pass with `pnpm test:ci`."
+  ],
+  "acceptance_criteria": [
+    "New file frontend/components/dashboard/HeatmapMapInner.tsx exists and renders colored circles",
+    "New file frontend/components/dashboard/HeatmapMapView.tsx exists with legend",
+    "Overview page has a visible toggle between 'Markers' and 'Heatmap' views",
+    "Heatmap view displays 595 kecamatan points as colored circles with score-based coloring",
+    "Frontend builds without errors (pnpm build)",
+    "All tests pass (pnpm test:ci)"
+  ],
+  "verification": [
+    "Run `pnpm build` in frontend/ directory and confirm static export succeeds",
+    "Run `pnpm test:ci` in frontend/ directory and confirm all tests pass"
+  ],
+  "blocked_reason": null,
+  "findings": ""
+}

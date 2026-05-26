@@ -7,6 +7,16 @@ import {
   kecamatanMapData,
 } from './static-data';
 
+export interface WhatIfCustomResult {
+  affected_count: number;
+  avg_score_before: number;
+  avg_score_after: number;
+  avg_improvement: number;
+  umkm_crossing_70_threshold: number;
+  pct_improved: number;
+  max_improvement: number;
+}
+
 const BASE_URL = typeof window !== 'undefined'
   ? (process.env.NEXT_PUBLIC_API_URL || '')
   : '';
@@ -115,5 +125,89 @@ export async function postChat(body: { message: string; persona: string; history
     return { response: '' };
   } catch {
     return { response: '' };
+  }
+}
+
+export async function postWhatIfCustom(body: {
+  infrastructure_delta: number;
+  internet_delta: number;
+  bank_distance_delta: number;
+  target_kabupaten: string;
+}): Promise<WhatIfCustomResult> {
+  // Client-side fallback computation
+  function computeClientSide(): WhatIfCustomResult {
+    const filtered = kecamatanMapData.filter(
+      (k) => k.kabupaten === body.target_kabupaten
+    );
+
+    if (filtered.length === 0) {
+      return {
+        affected_count: 0,
+        avg_score_before: 0,
+        avg_score_after: 0,
+        avg_improvement: 0,
+        umkm_crossing_70_threshold: 0,
+        pct_improved: 0,
+        max_improvement: 0,
+      };
+    }
+
+    let totalBefore = 0;
+    let totalAfter = 0;
+    let crossingThreshold = 0;
+    let improvedCount = 0;
+    let maxImprovement = 0;
+
+    for (const item of filtered) {
+      const scoreBefore = item.score;
+      const rawNew = scoreBefore +
+        (body.infrastructure_delta * 0.66) +
+        (body.internet_delta * 0.33) +
+        (body.bank_distance_delta * 0.01);
+      const scoreAfter = Math.min(100, rawNew);
+      const improvement = scoreAfter - scoreBefore;
+
+      totalBefore += scoreBefore;
+      totalAfter += scoreAfter;
+
+      if (improvement > 0) {
+        improvedCount++;
+      }
+      if (improvement > maxImprovement) {
+        maxImprovement = improvement;
+      }
+      if (scoreBefore < 70 && scoreAfter >= 70) {
+        crossingThreshold++;
+      }
+    }
+
+    const affected_count = filtered.length;
+    return {
+      affected_count,
+      avg_score_before: totalBefore / affected_count,
+      avg_score_after: totalAfter / affected_count,
+      avg_improvement: (totalAfter - totalBefore) / affected_count,
+      umkm_crossing_70_threshold: crossingThreshold,
+      pct_improved: (improvedCount / affected_count) * 100,
+      max_improvement: maxImprovement,
+    };
+  }
+
+  if (!BASE_URL) return computeClientSide();
+
+  try {
+    const res = await fetch(`${BASE_URL}/api/whatif-custom`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body),
+    });
+    if (!res.ok) return computeClientSide();
+    const json = await res.json();
+    if (json && json.success && json.data) {
+      return json.data as WhatIfCustomResult;
+    }
+    return computeClientSide();
+  } catch {
+    return computeClientSide();
   }
 }

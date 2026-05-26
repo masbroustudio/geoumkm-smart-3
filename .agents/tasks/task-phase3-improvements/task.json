@@ -1,0 +1,7 @@
+{
+  "task_id": "task-phase3-improvements",
+  "task_description": "GeoUMKM Intelligence V4.0 Phase 3 improvements: Dynamic What-If Simulator, Individual UMKM Detail Page, Azure OpenAI Integration Preparation, and Geospatial Heatmap Layer",
+  "status": "in_progress",
+  "feature_order": ["FEAT-001", "FEAT-002", "FEAT-003", "FEAT-004"],
+  "blocked_reason": null
+}

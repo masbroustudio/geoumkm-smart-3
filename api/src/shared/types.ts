@@ -281,3 +281,20 @@ export interface KnowledgeBase {
   government_examples: KnowledgeBaseEntry[];
   investor_examples: KnowledgeBaseEntry[];
 }
+
+export interface WhatIfCustomRequest {
+  infrastructure_delta: number;
+  internet_delta: number;
+  bank_distance_delta: number;
+  target_kabupaten: string;
+}
+
+export interface WhatIfCustomResponse {
+  affected_count: number;
+  avg_score_before: number;
+  avg_score_after: number;
+  avg_improvement: number;
+  umkm_crossing_70_threshold: number;
+  pct_improved: number;
+  max_improvement: number;
+}
