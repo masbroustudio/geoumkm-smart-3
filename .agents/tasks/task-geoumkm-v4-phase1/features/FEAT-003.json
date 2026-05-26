@@ -2,7 +2,7 @@
   "id": "FEAT-003",
   "type": "docs",
   "description": "Create comprehensive Azure Setup Guide, Architecture documentation, and update GitHub Actions workflow for Next.js deployment to Azure Static Web Apps",
-  "status": "pending",
+  "status": "in_progress",
   "steps": [
     "Create docs/AZURE_SETUP_GUIDE.md with complete step-by-step Azure setup instructions. Include: Prerequisites (Azure CLI install, az login), Step 1: Create Resource Group (rg-geoumkm-prod in Southeast Asia), Step 2: Create Azure Static Web Apps (for Next.js frontend), Step 3: Create Azure Functions App (Python runtime for API), Step 4: Create Azure SQL Database (Basic tier DTU-based, ~$5/month), Step 5: Create Azure OpenAI Service (request access instructions + deploy gpt-4o), Step 6: Create Azure AI Search (Free/Basic tier), Step 7: Create Azure Blob Storage (LRS, hot tier for models), Step 8: Create Azure Entra ID B2C tenant (for user auth), Step 9: Setup Azure Key Vault (store all secrets), Step 10: Configure environment variables and connections between services, Step 11: Deploy via GitHub Actions (link to workflow file). Each step must have: Azure Portal clickthrough instructions, Azure CLI alternative commands, expected values to enter, expected outcome/screenshot description, and estimated cost. Include Quick Start section for local development without Azure, and total monthly cost estimation table.",
     "Create docs/ARCHITECTURE.md documenting the v4.0 system architecture: frontend (Next.js on Static Web Apps), backend (Azure Functions), database (Azure SQL), AI services (OpenAI + AI Search), storage (Blob), auth (Entra ID B2C), with a text-based architecture diagram showing data flow",
