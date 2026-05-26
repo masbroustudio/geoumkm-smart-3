@@ -2,9 +2,10 @@
 
 import { useState, useEffect } from 'react';
 import { MapPin, Search, Sliders } from 'lucide-react';
-import { recommendData as staticRecommendData, policyData as staticPolicyData } from '@/lib/static-data';
+import { recommendData as staticRecommendData, policyData as staticPolicyData, kecamatanDetailData } from '@/lib/static-data';
 import { fetchRecommendations, fetchPolicy } from '@/lib/api';
 import DownloadCSVButton from '@/components/ui/DownloadCSVButton';
+import ComparisonRadarChart from '@/components/dashboard/ComparisonRadarChart';
 
 const jenisUsahaOptions = ['Semua', 'Makanan', 'Fashion', 'Kerajinan', 'Jasa', 'Pertanian'];
 const kabupatenOptions = ['Semua', 'Kota Bekasi', 'Kota Depok', 'Kota Bandung', 'Kab. Bogor', 'Kota Cimahi'];
@@ -21,6 +22,8 @@ export default function LocationIntelligencePage() {
   const [recommendData, setRecommendData] = useState(staticRecommendData);
   const [whatifScenarios, setWhatifScenarios] = useState(staticPolicyData.whatifScenarios);
   const [loading, setLoading] = useState(true);
+  const [compareA, setCompareA] = useState(kecamatanDetailData[0].kecamatan);
+  const [compareB, setCompareB] = useState(kecamatanDetailData[1].kecamatan);
 
   useEffect(() => {
     let cancelled = false;
@@ -258,6 +261,98 @@ export default function LocationIntelligencePage() {
             </tbody>
           </table>
         </div>
+      </div>
+
+      {/* Kecamatan Comparison */}
+      <div className="glass-card p-6">
+        <h3 className="text-lg font-semibold text-white mb-4">Kecamatan Comparison</h3>
+        <p className="text-xs text-slate-400 mb-4">
+          Select two kecamatan to compare their multi-dimensional profiles.
+        </p>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
+          <div>
+            <label className="text-sm text-slate-400 mb-1 block">Kecamatan A</label>
+            <select
+              value={compareA}
+              onChange={(e) => setCompareA(e.target.value)}
+              className="w-full px-4 py-2 rounded-lg bg-slate-800 border border-slate-700 text-white text-sm focus:outline-none focus:border-accent"
+            >
+              {kecamatanDetailData.map((k) => (
+                <option key={k.kecamatan} value={k.kecamatan}>{k.kecamatan} ({k.kabupaten})</option>
+              ))}
+            </select>
+          </div>
+          <div>
+            <label className="text-sm text-slate-400 mb-1 block">Kecamatan B</label>
+            <select
+              value={compareB}
+              onChange={(e) => setCompareB(e.target.value)}
+              className="w-full px-4 py-2 rounded-lg bg-slate-800 border border-slate-700 text-white text-sm focus:outline-none focus:border-accent"
+            >
+              {kecamatanDetailData.map((k) => (
+                <option key={k.kecamatan} value={k.kecamatan}>{k.kecamatan} ({k.kabupaten})</option>
+              ))}
+            </select>
+          </div>
+        </div>
+
+        {(() => {
+          const dataA = kecamatanDetailData.find((k) => k.kecamatan === compareA);
+          const dataB = kecamatanDetailData.find((k) => k.kecamatan === compareB);
+          if (!dataA || !dataB) return null;
+
+          const dimensions = [
+            { subject: 'Infrastructure', key: 'infrastructure' as const },
+            { subject: 'Safety', key: 'risk' as const },
+            { subject: 'Competition', key: 'competition' as const },
+            { subject: 'Digital Readiness', key: 'digital_readiness' as const },
+            { subject: 'Financial Access', key: 'financial_access' as const },
+          ];
+
+          const radarData = dimensions.map((dim) => ({
+            subject: dim.subject,
+            [compareA]: dim.key === 'risk' ? 100 - dataA[dim.key] : dataA[dim.key],
+            [compareB]: dim.key === 'risk' ? 100 - dataB[dim.key] : dataB[dim.key],
+          }));
+
+          return (
+            <>
+              <ComparisonRadarChart data={radarData} kecamatanNames={[compareA, compareB]} />
+
+              {/* Comparison Table */}
+              <div className="overflow-x-auto mt-6">
+                <table className="w-full text-sm">
+                  <thead>
+                    <tr className="border-b border-slate-700">
+                      <th className="text-left py-3 px-4 text-slate-400 font-medium">Dimension</th>
+                      <th className="text-right py-3 px-4 text-slate-400 font-medium">{compareA}</th>
+                      <th className="text-right py-3 px-4 text-slate-400 font-medium">{compareB}</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {dimensions.map((dim) => {
+                      const valA = dim.key === 'risk' ? 100 - dataA[dim.key] : dataA[dim.key];
+                      const valB = dim.key === 'risk' ? 100 - dataB[dim.key] : dataB[dim.key];
+                      const aWins = valA > valB;
+                      const bWins = valB > valA;
+                      return (
+                        <tr key={dim.subject} className="border-b border-slate-800">
+                          <td className="py-3 px-4 text-slate-200">{dim.subject}</td>
+                          <td className={`py-3 px-4 text-right ${aWins ? 'text-emerald-400 font-medium' : 'text-slate-300'}`}>
+                            {valA}
+                          </td>
+                          <td className={`py-3 px-4 text-right ${bWins ? 'text-emerald-400 font-medium' : 'text-slate-300'}`}>
+                            {valB}
+                          </td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+              </div>
+            </>
+          );
+        })()}
       </div>
     </div>
   );

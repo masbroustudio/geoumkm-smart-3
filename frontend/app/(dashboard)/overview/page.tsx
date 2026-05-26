@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { Users, TrendingUp, AlertTriangle, Activity } from 'lucide-react';
 import KPICard from '@/components/dashboard/KPICard';
-import MapView from '@/components/dashboard/MapView';
+import FilteredMapView from '@/components/dashboard/FilteredMapView';
 import ScoreDistributionChart from '@/components/dashboard/ScoreDistributionChart';
 import ClusterDonutChart from '@/components/dashboard/ClusterDonutChart';
 import TopKabupatenChart from '@/components/dashboard/TopKabupatenChart';
@@ -112,7 +112,7 @@ export default function OverviewPage() {
       </div>
 
       {/* Map */}
-      <MapView data={kecamatanMapData} />
+      <FilteredMapView data={kecamatanMapData} />
 
       {/* Charts Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">

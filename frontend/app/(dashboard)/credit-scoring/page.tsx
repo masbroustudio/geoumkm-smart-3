@@ -2,9 +2,10 @@
 
 import { useState, useEffect } from 'react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, Legend } from 'recharts';
-import { creditData as staticCreditData } from '@/lib/static-data';
+import { creditData as staticCreditData, shapExplanations } from '@/lib/static-data';
 import { fetchCredit } from '@/lib/api';
 import DownloadCSVButton from '@/components/ui/DownloadCSVButton';
+import SHAPWaterfallChart from '@/components/dashboard/SHAPWaterfallChart';
 
 const riskDistribution = [
   { name: 'Low Risk (AAA-A)', value: 976 + 1534 + 1691, color: '#10B981' },
@@ -16,6 +17,7 @@ const riskDistribution = [
 export default function CreditScoringPage() {
   const [creditData, setCreditData] = useState(staticCreditData);
   const [loading, setLoading] = useState(true);
+  const [selectedBand, setSelectedBand] = useState('AAA (Excellent)');
 
   useEffect(() => {
     let cancelled = false;
@@ -187,6 +189,32 @@ export default function CreditScoringPage() {
             </tbody>
           </table>
         </div>
+      </div>
+
+      {/* Score Explanation (SHAP Analysis) */}
+      <div className="glass-card p-6">
+        <h3 className="text-lg font-semibold text-white mb-4">Score Explanation (SHAP Analysis)</h3>
+        <p className="text-xs text-slate-400 mb-4">
+          Explore which features drive the credit score up or down for each rating band.
+        </p>
+        <div className="mb-4">
+          <label className="text-sm text-slate-400 mb-1 block">Select Credit Band</label>
+          <select
+            value={selectedBand}
+            onChange={(e) => setSelectedBand(e.target.value)}
+            className="w-full sm:w-64 px-4 py-2 rounded-lg bg-slate-800 border border-slate-700 text-white text-sm focus:outline-none focus:border-accent"
+          >
+            {Object.keys(shapExplanations).map((band) => (
+              <option key={band} value={band}>{band}</option>
+            ))}
+          </select>
+        </div>
+        {shapExplanations[selectedBand] && (
+          <SHAPWaterfallChart
+            explanations={shapExplanations[selectedBand]}
+            bandName={selectedBand}
+          />
+        )}
       </div>
     </div>
   );
