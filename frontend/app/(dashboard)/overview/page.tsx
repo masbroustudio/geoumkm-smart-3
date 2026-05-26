@@ -1,26 +1,60 @@
-import { LayoutDashboard } from "lucide-react";
+'use client';
+
+import { Users, TrendingUp, AlertTriangle, Activity } from 'lucide-react';
+import KPICard from '@/components/dashboard/KPICard';
+import MapView from '@/components/dashboard/MapView';
+import ScoreDistributionChart from '@/components/dashboard/ScoreDistributionChart';
+import ClusterDonutChart from '@/components/dashboard/ClusterDonutChart';
+import TopKabupatenChart from '@/components/dashboard/TopKabupatenChart';
+import { overviewData, kecamatanMapData } from '@/lib/static-data';
 
 export default function OverviewPage() {
   return (
-    <div className="max-w-4xl mx-auto mt-12 lg:mt-0">
-      <h1 className="text-2xl font-bold text-foreground mb-8">
-        Dashboard Overview
-      </h1>
-      <div className="glass-card p-12 text-center">
-        <div className="w-16 h-16 mx-auto mb-6 rounded-2xl bg-gradient-to-br from-primary/20 to-accent/20 flex items-center justify-center">
-          <LayoutDashboard className="w-8 h-8 text-accent" />
-        </div>
-        <h2 className="text-xl font-semibold text-foreground mb-2">
-          Coming Soon
-        </h2>
-        <p className="text-slate-400 max-w-md mx-auto">
-          Dashboard overview dengan ringkasan metrik utama, grafik tren, dan
-          notifikasi penting akan segera hadir.
-        </p>
-        <div className="mt-6 inline-block px-4 py-2 rounded-full bg-accent/10 text-accent text-sm font-medium">
-          Dalam Pengembangan
-        </div>
+    <div className="space-y-6 mt-12 lg:mt-0">
+      <h1 className="text-2xl font-bold text-white">Dashboard Overview</h1>
+
+      {/* KPI Cards */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <KPICard
+          icon={Users}
+          label="Total UMKM"
+          value={overviewData.total_umkm.toLocaleString()}
+          subtitle="West Java region"
+          color="#3B82F6"
+        />
+        <KPICard
+          icon={TrendingUp}
+          label="Avg Score"
+          value={overviewData.avg_score.toFixed(1)}
+          subtitle="Skor potensi rata-rata"
+          color="#10B981"
+        />
+        <KPICard
+          icon={AlertTriangle}
+          label="High Risk Areas"
+          value={overviewData.high_risk_count}
+          subtitle="Kecamatan skor < 30"
+          color="#EF4444"
+        />
+        <KPICard
+          icon={Activity}
+          label="Survival Rate"
+          value={`${overviewData.survival_rate}%`}
+          subtitle="Rata-rata tingkat kelangsungan"
+          color="#8B5CF6"
+        />
       </div>
+
+      {/* Map */}
+      <MapView data={kecamatanMapData} />
+
+      {/* Charts Grid */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <ScoreDistributionChart data={overviewData.score_distribution} />
+        <ClusterDonutChart data={overviewData.cluster_distribution} />
+      </div>
+
+      <TopKabupatenChart data={overviewData.top_kabupaten} />
     </div>
   );
 }
