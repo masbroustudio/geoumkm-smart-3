@@ -2,7 +2,7 @@
   "id": "FEAT-003",
   "type": "feat",
   "description": "Azure OpenAI Integration Preparation - Update the chat API endpoint to support real Azure OpenAI when env vars are set (with keyword-matching fallback), add streaming-like UX to the frontend chat, and document the setup process.",
-  "status": "in_progress",
+  "status": "completed",
   "steps": [
     "Step 1: Update `api/src/functions/chat.ts` to add Azure OpenAI integration. The logic should: (a) Check if env vars AZURE_OPENAI_ENDPOINT and AZURE_OPENAI_KEY are set, (b) If set, construct a system prompt that includes the persona context and relevant knowledge base entries (load from getKnowledgeBase()), then call the Azure OpenAI API (POST to `${endpoint}/openai/deployments/${deployment}/chat/completions?api-version=2024-02-01`) with the system prompt + user message, max_tokens=500, temperature=0.7, (c) If env vars not set, fall back to existing keyword matching behavior, (d) Add proper error handling with try/catch around the OpenAI call - if it fails, fall back to keyword matching, (e) Add a 15-second timeout using AbortController. The deployment name should come from env var AZURE_OPENAI_DEPLOYMENT (default 'gpt-4o'). The system prompt should vary by persona: Bank gets credit risk focus, Government gets policy/priority focus, Investor gets opportunity focus. Include a brief summary of relevant knowledge base data in the system prompt.",
     "Step 2: Update `api/src/shared/types.ts` to add the Azure OpenAI related interfaces if needed (AzureOpenAIConfig, etc.).",
@@ -26,5 +26,5 @@
     "Run `pnpm test:ci` in frontend/ directory and confirm all tests pass"
   ],
   "blocked_reason": null,
-  "findings": ""
+  "findings": "All changes implemented successfully. API builds (tsc clean), frontend builds (static export 17 pages), all 25 tests pass. The Azure OpenAI integration uses fetch with AbortController for 15s timeout. The typing effect uses 30ms interval revealing word by word. No new types needed in shared/types.ts since the existing interfaces suffice."
 }
