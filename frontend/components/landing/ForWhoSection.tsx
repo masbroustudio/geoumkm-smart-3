@@ -18,6 +18,7 @@ const tabs = [
       "Regulatory compliance report untuk Basel III dan PSAK 71",
     ],
     cta: "Lihat Demo Credit Scoring",
+    gradient: "from-blue-500/5 to-cyan-500/5",
   },
   {
     id: "pemerintah",
@@ -32,6 +33,7 @@ const tabs = [
       "Optimasi alokasi anggaran berdasarkan analisis klaster",
     ],
     cta: "Lihat Demo Policy Simulation",
+    gradient: "from-amber-500/5 to-orange-500/5",
   },
   {
     id: "investor",
@@ -46,6 +48,7 @@ const tabs = [
       "Growth prediction model untuk proyeksi return on investment",
     ],
     cta: "Lihat Demo Opportunity Map",
+    gradient: "from-purple-500/5 to-pink-500/5",
   },
 ];
 
@@ -99,11 +102,11 @@ export default function ForWhoSection() {
         <AnimatePresence mode="wait">
           <motion.div
             key={activeTab}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.3 }}
-            className="glass-card p-8 md:p-12"
+            initial={{ opacity: 0, x: 30 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: -30 }}
+            transition={{ duration: 0.35, ease: "easeInOut" }}
+            className={`glass-card p-8 md:p-12 bg-gradient-to-br ${activeContent.gradient}`}
           >
             <div className="grid md:grid-cols-2 gap-8 items-center">
               {/* Icon placeholder */}

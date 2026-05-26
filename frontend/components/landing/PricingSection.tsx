@@ -68,6 +68,24 @@ const plans = [
   },
 ];
 
+const containerVariants = {
+  hidden: {},
+  visible: {
+    transition: {
+      staggerChildren: 0.15,
+    },
+  },
+};
+
+const cardVariants = {
+  hidden: { opacity: 0, y: 30 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.5 },
+  },
+};
+
 export default function PricingSection() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-50px" });
@@ -90,16 +108,19 @@ export default function PricingSection() {
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 items-stretch">
-          {plans.map((plan, index) => (
+        <motion.div
+          className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 items-stretch"
+          variants={containerVariants}
+          initial="hidden"
+          animate={isInView ? "visible" : "hidden"}
+        >
+          {plans.map((plan) => (
             <motion.div
               key={plan.name}
-              initial={{ opacity: 0, y: 30 }}
-              animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.5, delay: index * 0.15 }}
-              className={`glass-card p-8 relative flex flex-col hover:scale-[1.02] transition-all duration-300 ${
+              variants={cardVariants}
+              className={`glass-card p-8 relative flex flex-col hover:scale-[1.03] hover:border-accent/40 transition-all duration-300 ${
                 plan.highlighted
-                  ? "border-accent/40 shadow-xl shadow-accent/10 ring-1 ring-accent/20"
+                  ? "border-accent/40 shadow-xl shadow-accent/10 ring-1 ring-accent/20 pulse-glow"
                   : ""
               }`}
             >
@@ -145,7 +166,7 @@ export default function PricingSection() {
               </button>
             </motion.div>
           ))}
-        </div>
+        </motion.div>
       </div>
     </section>
   );

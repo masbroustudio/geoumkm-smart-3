@@ -1,3 +1,5 @@
+"use client";
+
 import { MapPin } from "lucide-react";
 
 const footerLinks = {
@@ -23,7 +25,7 @@ const footerLinks = {
 
 export default function Footer() {
   return (
-    <footer className="bg-slate-950 border-t border-slate-800 pt-16 pb-8">
+    <footer className="bg-slate-950 border-t border-slate-800 pt-16 pb-8 relative wave-border-top">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-12">
           {/* Brand */}
@@ -49,7 +51,7 @@ export default function Footer() {
                   <li key={link.label}>
                     <a
                       href={link.href}
-                      className="text-sm text-slate-400 hover:text-accent transition-colors"
+                      className="text-sm text-slate-400 hover:text-accent hover:translate-x-1 inline-block transition-all duration-200"
                     >
                       {link.label}
                     </a>

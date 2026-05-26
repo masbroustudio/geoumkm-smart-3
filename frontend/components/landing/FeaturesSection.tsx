@@ -50,6 +50,24 @@ const features = [
   },
 ];
 
+const containerVariants = {
+  hidden: {},
+  visible: {
+    transition: {
+      staggerChildren: 0.1,
+    },
+  },
+};
+
+const cardVariants = {
+  hidden: { opacity: 0, y: 30 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.5 },
+  },
+};
+
 export default function FeaturesSection() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-50px" });
@@ -72,17 +90,20 @@ export default function FeaturesSection() {
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {features.map((feature, index) => (
+        <motion.div
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+          variants={containerVariants}
+          initial="hidden"
+          animate={isInView ? "visible" : "hidden"}
+        >
+          {features.map((feature) => (
             <motion.div
               key={feature.title}
-              initial={{ opacity: 0, y: 30 }}
-              animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
-              className="glass-card p-6 group hover:scale-[1.02] hover:shadow-xl hover:shadow-accent/10 transition-all duration-300 hover:border-accent/30"
+              variants={cardVariants}
+              className="glass-card p-6 group hover:-translate-y-2 hover:shadow-xl hover:shadow-accent/10 transition-all duration-300 hover:border-accent/30"
             >
               <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-primary/20 to-accent/20 flex items-center justify-center mb-4 group-hover:from-primary/30 group-hover:to-accent/30 transition-colors">
-                <feature.icon className="w-6 h-6 text-accent" />
+                <feature.icon className="w-6 h-6 text-accent group-hover:scale-110 group-hover:rotate-3 transition-transform duration-300" />
               </div>
               <h3 className="text-lg font-semibold mb-2 text-foreground">
                 {feature.title}
@@ -92,7 +113,7 @@ export default function FeaturesSection() {
               </p>
             </motion.div>
           ))}
-        </div>
+        </motion.div>
       </div>
     </section>
   );

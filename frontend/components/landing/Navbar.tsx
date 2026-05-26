@@ -57,8 +57,9 @@ export default function Navbar() {
             ))}
           </div>
 
-          {/* CTA */}
-          <div className="hidden md:block">
+          {/* CTA + Dark Mode Toggle Placeholder */}
+          <div className="hidden md:flex items-center gap-3">
+            {/* Dark mode toggle will be added in FEAT-003 */}
             <a
               href="#harga"
               className="px-5 py-2.5 rounded-lg bg-gradient-to-r from-primary to-accent text-white text-sm font-semibold hover:shadow-lg hover:shadow-accent/25 transition-all"
