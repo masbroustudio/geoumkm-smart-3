@@ -55,8 +55,49 @@
   },
   "credit_risk_model": {
     "description": "Predicts 3-year survival probability for UMKM businesses",
-    "model_type": "LogisticRegression",
-    "top_features": [],
+    "model_type": "LGBMClassifier",
+    "top_features": [
+      {
+        "feature": "omset_bulanan",
+        "importance": 858.0
+      },
+      {
+        "feature": "omset_per_karyawan",
+        "importance": 808.0
+      },
+      {
+        "feature": "tahun_berdiri",
+        "importance": 362.0
+      },
+      {
+        "feature": "digital_readiness_index",
+        "importance": 300.0
+      },
+      {
+        "feature": "penetrasi_kur_pct",
+        "importance": 285.0
+      },
+      {
+        "feature": "jarak_ke_jalan_utama",
+        "importance": 271.0
+      },
+      {
+        "feature": "risk_composite",
+        "importance": 257.0
+      },
+      {
+        "feature": "market_gap_score",
+        "importance": 235.0
+      },
+      {
+        "feature": "jumlah_karyawan",
+        "importance": 229.0
+      },
+      {
+        "feature": "skor_infrastruktur",
+        "importance": 229.0
+      }
+    ],
     "credit_score_bands": [
       {
         "rating": "AAA (Excellent)",
@@ -131,7 +172,7 @@
         "avg_score_improvement": 0.88,
         "pct_improved": 93.9,
         "new_above_70": 14,
-        "additional_survivors": 0
+        "additional_survivors": 23
       },
       {
         "policy": "Infrastructure +30",
@@ -139,7 +180,7 @@
         "avg_score_improvement": 19.87,
         "pct_improved": 100.0,
         "new_above_70": 244,
-        "additional_survivors": 0
+        "additional_survivors": 88
       },
       {
         "policy": "Digital Training (50%)",
@@ -147,7 +188,7 @@
         "avg_score_improvement": 9.63,
         "pct_improved": 100.0,
         "new_above_70": 325,
-        "additional_survivors": 0
+        "additional_survivors": 58
       }
     ],
     "key_findings": [
