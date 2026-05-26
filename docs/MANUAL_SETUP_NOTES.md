@@ -393,3 +393,72 @@ To test the PWA behavior locally:
 2. Serve the `out/` directory with a static file server (e.g., `npx serve out`)
 3. Open Chrome DevTools > Application tab to inspect the service worker and manifest
 4. Use the "Offline" checkbox in the Network tab to test offline behavior
+
+---
+
+## M. Azure AD B2C Authentication Setup
+
+GeoUMKM includes a prepared authentication scaffold (AuthProvider + AuthGuard) that currently uses mock state for demo purposes. When you are ready to enable real authentication, follow these steps to configure Azure AD B2C.
+
+### 1. Create a B2C Tenant
+
+1. Go to [Azure Portal](https://portal.azure.com)
+2. Search for **"Azure AD B2C"** and click **Create**
+3. Select **"Create a new Azure AD B2C Tenant"**
+4. Organization name: `GeoUMKM Auth` (or your preferred name)
+5. Initial domain name: `geoumkmauth` (this becomes `geoumkmauth.onmicrosoft.com`)
+6. Region: **Southeast Asia** (or nearest)
+7. Click **Review + Create**
+
+### 2. Register the Application
+
+1. Switch to your new B2C tenant directory
+2. Go to **Azure AD B2C** > **App registrations** > **New registration**
+3. Name: `GeoUMKM Frontend`
+4. Supported account types: **Accounts in any identity provider or organizational directory (for authenticating users with user flows)**
+5. Redirect URI: Select **Single-page application (SPA)** and enter:
+   - `http://localhost:3000` (for development)
+   - `https://<your-production-url>` (for production)
+6. Click **Register**
+7. Note the **Application (client) ID** - this is your `NEXT_PUBLIC_AZURE_AD_B2C_CLIENT_ID`
+
+### 3. Create User Flows
+
+1. In Azure AD B2C, go to **User flows** > **New user flow**
+2. Select **Sign up and sign in** (Recommended version)
+3. Name: `susi` (the full policy name will be `B2C_1_susi`)
+4. Identity providers: Select **Email signup**
+5. User attributes to collect: **Display Name**, **Email Address**
+6. Application claims to return: **Display Name**, **Email Addresses**, **User's Object ID**
+7. Click **Create**
+
+### 4. Environment Variables
+
+Add these to `frontend/.env.local`:
+
+```env
+NEXT_PUBLIC_AZURE_AD_B2C_TENANT_NAME=geoumkmauth
+NEXT_PUBLIC_AZURE_AD_B2C_CLIENT_ID=<client-id-from-app-registration>
+NEXT_PUBLIC_AZURE_AD_B2C_POLICY_NAME=B2C_1_susi
+```
+
+| Variable | Description |
+|----------|-------------|
+| `NEXT_PUBLIC_AZURE_AD_B2C_TENANT_NAME` | The initial domain name of your B2C tenant (without `.onmicrosoft.com`) |
+| `NEXT_PUBLIC_AZURE_AD_B2C_CLIENT_ID` | Application (client) ID from the app registration |
+| `NEXT_PUBLIC_AZURE_AD_B2C_POLICY_NAME` | The name of your sign-up/sign-in user flow (e.g., `B2C_1_susi`) |
+
+### 5. Enable AuthGuard in Dashboard
+
+Once B2C is configured and environment variables are set:
+
+1. Open `frontend/app/(dashboard)/layout.tsx`
+2. Follow the TODO comment to wrap the layout with `<AuthProvider>` and `<AuthGuard>`
+3. Update `frontend/lib/auth-context.tsx` to replace mock login/logout with MSAL calls:
+   - Install `@azure/msal-browser` and `@azure/msal-react`
+   - Initialize MSAL with B2C configuration
+   - Replace `login()` with `msalInstance.loginRedirect()`
+   - Replace `logout()` with `msalInstance.logoutRedirect()`
+4. Test the full sign-up/sign-in flow
+
+> **Note:** Until B2C is configured, the dashboard remains fully accessible without authentication. The AuthGuard component is available but not active.

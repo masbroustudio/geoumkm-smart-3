@@ -11,6 +11,13 @@ export default function DashboardLayout({
 }: {
   children: React.ReactNode;
 }) {
+  // TODO: Wrap with <AuthGuard> when Azure AD B2C is configured.
+  // Currently disabled for demo access. To enable authentication:
+  // 1. Import AuthGuard from '@/components/ui/AuthGuard'
+  // 2. Import AuthProvider from '@/lib/auth-context'
+  // 3. Wrap the return JSX with <AuthProvider><AuthGuard>...</AuthGuard></AuthProvider>
+  //    or add AuthProvider at the root layout level and AuthGuard here.
+
   return (
     <ToastProvider>
       <div className="min-h-screen bg-[var(--background)]">
