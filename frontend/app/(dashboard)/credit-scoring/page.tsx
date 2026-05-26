@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, Legend } from 'recharts';
 import { creditData as staticCreditData } from '@/lib/static-data';
 import { fetchCredit } from '@/lib/api';
+import DownloadCSVButton from '@/components/ui/DownloadCSVButton';
 
 const riskDistribution = [
   { name: 'Low Risk (AAA-A)', value: 976 + 1534 + 1691, color: '#10B981' },
@@ -54,7 +55,10 @@ export default function CreditScoringPage() {
 
       {/* Credit Score Bands Table */}
       <div className="glass-card p-6">
-        <h3 className="text-lg font-semibold text-white mb-4">Credit Score Bands</h3>
+        <div className="flex items-center justify-between mb-4">
+          <h3 className="text-lg font-semibold text-white">Credit Score Bands</h3>
+          <DownloadCSVButton data={creditData.bands as unknown as Record<string, unknown>[]} filename="credit-score-bands" />
+        </div>
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
@@ -153,7 +157,10 @@ export default function CreditScoringPage() {
 
       {/* PD Regulatory Buckets Table */}
       <div className="glass-card p-6">
-        <h3 className="text-lg font-semibold text-white mb-4">PD Regulatory Buckets</h3>
+        <div className="flex items-center justify-between mb-4">
+          <h3 className="text-lg font-semibold text-white">PD Regulatory Buckets</h3>
+          <DownloadCSVButton data={creditData.pdBuckets as unknown as Record<string, unknown>[]} filename="pd-regulatory-buckets" />
+        </div>
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>

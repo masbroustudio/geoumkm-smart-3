@@ -7,8 +7,9 @@ import MapView from '@/components/dashboard/MapView';
 import ScoreDistributionChart from '@/components/dashboard/ScoreDistributionChart';
 import ClusterDonutChart from '@/components/dashboard/ClusterDonutChart';
 import TopKabupatenChart from '@/components/dashboard/TopKabupatenChart';
-import { overviewData as staticOverview, kecamatanMapData as staticMapData } from '@/lib/static-data';
+import { overviewData as staticOverview, kecamatanMapData as staticMapData, creditData, clusterData, policyData, recommendData } from '@/lib/static-data';
 import { fetchOverview, fetchKecamatan } from '@/lib/api';
+import DownloadCSVButton from '@/components/ui/DownloadCSVButton';
 
 export default function OverviewPage() {
   const [overviewData, setOverviewData] = useState(staticOverview);
@@ -56,7 +57,19 @@ export default function OverviewPage() {
 
   return (
     <div className="space-y-6 mt-12 lg:mt-0">
-      <h1 className="text-2xl font-bold text-white">Dashboard Overview</h1>
+      <div className="flex items-center justify-between">
+        <h1 className="text-2xl font-bold text-white">Dashboard Overview</h1>
+        <DownloadCSVButton
+          data={[
+            ...creditData.bands.map(b => ({ ...b, source: 'credit_bands' })),
+            ...clusterData.govPriority.map(g => ({ ...g, source: 'gov_priority' })),
+            ...clusterData.investment.map(inv => ({ ...inv, source: 'investment' })),
+            ...recommendData.map(r => ({ ...r, source: 'recommendations' })),
+          ] as unknown as Record<string, unknown>[]}
+          filename="geoumkm-all-data"
+          label="Export All Data"
+        />
+      </div>
 
       {/* KPI Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">

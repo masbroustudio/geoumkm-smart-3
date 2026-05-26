@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { clusterData as staticClusterData } from '@/lib/static-data';
 import { fetchClusters } from '@/lib/api';
+import DownloadCSVButton from '@/components/ui/DownloadCSVButton';
 
 const clusterColors = ['#10B981', '#3B82F6', '#8B5CF6', '#EF4444', '#F59E0B'];
 
@@ -90,7 +91,10 @@ export default function ClusteringPage() {
 
       {/* Government Priority Table */}
       <div className="glass-card p-6">
-        <h3 className="text-lg font-semibold text-white mb-4">Government Priority Ranking</h3>
+        <div className="flex items-center justify-between mb-4">
+          <h3 className="text-lg font-semibold text-white">Government Priority Ranking</h3>
+          <DownloadCSVButton data={clusterData.govPriority as unknown as Record<string, unknown>[]} filename="government-priority" />
+        </div>
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
@@ -126,7 +130,10 @@ export default function ClusteringPage() {
 
       {/* Investment Opportunity Table */}
       <div className="glass-card p-6">
-        <h3 className="text-lg font-semibold text-white mb-4">Investment Opportunity Matrix</h3>
+        <div className="flex items-center justify-between mb-4">
+          <h3 className="text-lg font-semibold text-white">Investment Opportunity Matrix</h3>
+          <DownloadCSVButton data={clusterData.investment as unknown as Record<string, unknown>[]} filename="investment-opportunity" />
+        </div>
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>

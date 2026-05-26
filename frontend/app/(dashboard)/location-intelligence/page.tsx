@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { MapPin, Search, Sliders } from 'lucide-react';
 import { recommendData as staticRecommendData, policyData as staticPolicyData } from '@/lib/static-data';
 import { fetchRecommendations, fetchPolicy } from '@/lib/api';
+import DownloadCSVButton from '@/components/ui/DownloadCSVButton';
 
 const jenisUsahaOptions = ['Semua', 'Makanan', 'Fashion', 'Kerajinan', 'Jasa', 'Pertanian'];
 const kabupatenOptions = ['Semua', 'Kota Bekasi', 'Kota Depok', 'Kota Bandung', 'Kab. Bogor', 'Kota Cimahi'];
@@ -99,9 +100,12 @@ export default function LocationIntelligencePage() {
 
       {/* Filters */}
       <div className="glass-card p-6">
-        <div className="flex items-center gap-2 mb-4">
-          <Search className="w-5 h-5 text-accent" />
-          <h3 className="text-lg font-semibold text-white">Filter Recommendations</h3>
+        <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center gap-2">
+            <Search className="w-5 h-5 text-accent" />
+            <h3 className="text-lg font-semibold text-white">Filter Recommendations</h3>
+          </div>
+          <DownloadCSVButton data={filtered as unknown as Record<string, unknown>[]} filename="location-recommendations" />
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
