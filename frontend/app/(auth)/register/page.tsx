@@ -1,9 +1,17 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
 import { MapPin } from "lucide-react";
 
 export default function RegisterPage() {
+  const [submitted, setSubmitted] = useState(false);
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setSubmitted(true);
+  };
+
   return (
     <div className="min-h-screen flex items-center justify-center p-4 relative">
       {/* Background */}
@@ -27,7 +35,15 @@ export default function RegisterPage() {
           Mulai gunakan platform intelijen UMKM
         </p>
 
-        <form className="space-y-5" onSubmit={(e) => e.preventDefault()}>
+        {submitted && (
+          <div className="mb-5 p-3 rounded-lg bg-accent/10 border border-accent/30 text-center">
+            <p className="text-sm text-accent font-medium">
+              Fitur autentikasi akan segera tersedia
+            </p>
+          </div>
+        )}
+
+        <form className="space-y-5" onSubmit={handleSubmit}>
           <div>
             <label className="block text-sm font-medium text-slate-300 mb-1.5">
               Nama Lengkap
