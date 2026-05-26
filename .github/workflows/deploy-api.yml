@@ -6,6 +6,12 @@ on:
       - main
     paths:
       - "api/**"
+  pull_request:
+    types: [opened, synchronize, reopened]
+    branches:
+      - main
+    paths:
+      - "api/**"
 
 env:
   AZURE_FUNCTIONAPP_NAME: "geoumkm-api"
@@ -36,6 +42,7 @@ jobs:
         run: pnpm build
 
       - name: Deploy to Azure Functions
+        if: github.event_name == 'push'
         uses: Azure/functions-action@v1
         with:
           app-name: ${{ env.AZURE_FUNCTIONAPP_NAME }}

@@ -1,7 +1,24 @@
 {
   "task_id": "task-phase2-improvements",
   "task_description": "GeoUMKM V4.0 Phase 2: Add dark/light mode toggle, Vitest testing framework with unit tests, loading states and error boundaries, and API deployment workflow",
-  "status": "in_progress",
+  "status": "completed",
   "feature_order": ["FEAT-001", "FEAT-002", "FEAT-003", "FEAT-004"],
-  "blocked_reason": null
+  "blocked_reason": null,
+  "verification": {
+    "build": "pass",
+    "tests": "pass",
+    "test_quality": "pass",
+    "docker_build": "skipped",
+    "summary": "pnpm build produces 16 static routes successfully. pnpm test:ci passes all 25 tests across 5 test files. Tests exercise real logic (cn merging, CSV generation, API fallback/envelope, theme toggle, component rendering). Docker build skipped (no Docker in sandbox)."
+  },
+  "review_fixes": {
+    "applied": [
+      "ErrorBoundary retry now uses resetKey counter to force remount of children on reset, preventing infinite error loops",
+      "API workflow now triggers on pull_request events for PR validation; deploy step gated with if: github.event_name == 'push'"
+    ],
+    "deferred": [
+      "API workflow package path (./api vs ./api/dist) - depends on Azure Functions runtime config, no change needed unless deployment fails",
+      "Theme flash prevention testing - inline script is SSR concern not testable in jsdom"
+    ]
+  }
 }
