@@ -2,7 +2,7 @@
   "id": "FEAT-003",
   "type": "feat",
   "description": "Auth scaffolding (preparation only) - AuthProvider context with mock state, AuthGuard component, and documentation. NOT wired into dashboard layout to keep demo accessible.",
-  "status": "in_progress",
+  "status": "completed",
   "steps": [
     "Create frontend/lib/auth-context.tsx following the same pattern as theme-context.tsx: (1) AuthProvider that stores user state (null = not logged in, object = logged in with {name, email, role}), (2) login() function that sets mock user {name: 'Demo User', email: 'demo@geoumkm.id', role: 'admin'}, (3) logout() function that clears user to null, (4) isAuthenticated boolean derived from user !== null, (5) Ready for real Azure AD B2C when NEXT_PUBLIC_AZURE_AD_B2C_CLIENT_ID is set and not 'placeholder' (add a TODO comment noting where to initialize MSAL), (6) useAuth() hook export",
     "Create frontend/components/ui/AuthGuard.tsx: (1) A wrapper component that uses useAuth(), (2) If not authenticated, shows a card with 'Please log in to access this section' message and a 'Login' button that calls auth.login() (mock), (3) If authenticated, renders children, (4) Add a comment explaining that when real B2C is configured this will redirect to the B2C login page instead",
@@ -23,5 +23,5 @@
     "pnpm build"
   ],
   "blocked_reason": null,
-  "findings": ""
+  "findings": "All existing 32 tests pass. Build generates all 18 static pages. No new dependencies required for mock auth."
 }
