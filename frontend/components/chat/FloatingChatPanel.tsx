@@ -121,11 +121,11 @@ export default function FloatingChatPanel() {
       <AnimatePresence>
         {isOpen && (
           <motion.div
-            initial={{ opacity: 0, scale: 0.9, y: 20 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.9, y: 20 }}
-            transition={{ duration: 0.2 }}
-            className="fixed bottom-24 right-6 z-50 w-[380px] h-[500px] glass-card flex flex-col overflow-hidden shadow-2xl"
+            initial={{ opacity: 0, x: 200 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: 200 }}
+            transition={{ type: "spring", damping: 25, stiffness: 300 }}
+            className="fixed bottom-0 right-0 sm:bottom-24 sm:right-6 z-50 w-full sm:w-[380px] h-[80vh] sm:h-[500px] rounded-none sm:rounded-2xl glass-card flex flex-col overflow-hidden shadow-2xl"
           >
             {/* Header */}
             <div className="p-4 border-b border-slate-700 bg-slate-900/80">
@@ -159,8 +159,11 @@ export default function FloatingChatPanel() {
             {/* Messages */}
             <div className="flex-1 overflow-y-auto p-4 space-y-4">
               {messages.map((msg, i) => (
-                <div
+                <motion.div
                   key={i}
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.2, delay: i * 0.05 }}
                   className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
                 >
                   <div
@@ -172,15 +175,15 @@ export default function FloatingChatPanel() {
                   >
                     {msg.content}
                   </div>
-                </div>
+                </motion.div>
               ))}
               {isLoading && (
                 <div className="flex justify-start">
-                  <div className="bg-slate-800 text-slate-300 px-4 py-2.5 rounded-xl rounded-bl-sm text-sm">
-                    <span className="inline-flex gap-1">
-                      <span className="animate-bounce">.</span>
-                      <span className="animate-bounce" style={{ animationDelay: '0.1s' }}>.</span>
-                      <span className="animate-bounce" style={{ animationDelay: '0.2s' }}>.</span>
+                  <div className="bg-slate-800 text-slate-300 px-4 py-3 rounded-xl rounded-bl-sm">
+                    <span className="inline-flex items-center gap-1.5">
+                      <span className="w-2 h-2 rounded-full bg-slate-400 animate-chat-bounce" />
+                      <span className="w-2 h-2 rounded-full bg-slate-400 animate-chat-bounce [animation-delay:0.15s]" />
+                      <span className="w-2 h-2 rounded-full bg-slate-400 animate-chat-bounce [animation-delay:0.3s]" />
                     </span>
                   </div>
                 </div>

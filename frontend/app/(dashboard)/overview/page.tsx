@@ -66,6 +66,8 @@ export default function OverviewPage() {
           value={overviewData.total_umkm.toLocaleString()}
           subtitle="West Java region"
           color="#3B82F6"
+          trend="up"
+          delay={0}
         />
         <KPICard
           icon={TrendingUp}
@@ -73,6 +75,8 @@ export default function OverviewPage() {
           value={overviewData.avg_score.toFixed(1)}
           subtitle="Skor potensi rata-rata"
           color="#10B981"
+          trend="up"
+          delay={0.1}
         />
         <KPICard
           icon={AlertTriangle}
@@ -80,6 +84,8 @@ export default function OverviewPage() {
           value={overviewData.high_risk_count}
           subtitle="Kecamatan skor < 30"
           color="#EF4444"
+          trend="down"
+          delay={0.2}
         />
         <KPICard
           icon={Activity}
@@ -87,6 +93,8 @@ export default function OverviewPage() {
           value={`${overviewData.survival_rate}%`}
           subtitle="Rata-rata tingkat kelangsungan"
           color="#8B5CF6"
+          trend="up"
+          delay={0.3}
         />
       </div>
 

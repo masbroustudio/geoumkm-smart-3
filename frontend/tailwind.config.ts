@@ -45,6 +45,7 @@ const config: Config = {
         "float-particle": "floatParticle 20s ease-in-out infinite",
         "fade-in-up": "fadeInUp 0.6s ease-out forwards",
         "pulse-glow": "pulseGlow 2s ease-in-out infinite",
+        "chat-bounce": "chatBounce 1.2s ease-in-out infinite",
       },
       keyframes: {
         meshGradient: {
@@ -64,6 +65,10 @@ const config: Config = {
         pulseGlow: {
           "0%, 100%": { boxShadow: "0 0 20px rgba(16, 185, 129, 0.3)" },
           "50%": { boxShadow: "0 0 40px rgba(16, 185, 129, 0.6)" },
+        },
+        chatBounce: {
+          "0%, 60%, 100%": { transform: "translateY(0)" },
+          "30%": { transform: "translateY(-4px)" },
         },
       },
     },

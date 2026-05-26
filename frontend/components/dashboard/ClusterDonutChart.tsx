@@ -1,5 +1,6 @@
 'use client';
 
+import { motion } from 'framer-motion';
 import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer, Legend } from 'recharts';
 
 const COLORS = ['#10B981', '#3B82F6', '#8B5CF6', '#EF4444', '#F59E0B'];
@@ -10,7 +11,12 @@ interface ClusterDonutChartProps {
 
 export default function ClusterDonutChart({ data }: ClusterDonutChartProps) {
   return (
-    <div className="glass-card p-6">
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5, delay: 0.3 }}
+      className="glass-card p-6"
+    >
       <h3 className="text-lg font-semibold text-white mb-4">Cluster Distribution</h3>
       <div className="h-[300px]">
         <ResponsiveContainer width="100%" height="100%">
@@ -40,6 +46,6 @@ export default function ClusterDonutChart({ data }: ClusterDonutChartProps) {
           </PieChart>
         </ResponsiveContainer>
       </div>
-    </div>
+    </motion.div>
   );
 }

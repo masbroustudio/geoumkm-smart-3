@@ -1,5 +1,6 @@
 'use client';
 
+import { motion } from 'framer-motion';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 
 interface ScoreDistributionChartProps {
@@ -8,7 +9,12 @@ interface ScoreDistributionChartProps {
 
 export default function ScoreDistributionChart({ data }: ScoreDistributionChartProps) {
   return (
-    <div className="glass-card p-6">
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5, delay: 0.2 }}
+      className="glass-card p-6"
+    >
       <h3 className="text-lg font-semibold text-white mb-4">Score Distribution</h3>
       <div className="h-[300px]">
         <ResponsiveContainer width="100%" height="100%">
@@ -21,10 +27,10 @@ export default function ScoreDistributionChart({ data }: ScoreDistributionChartP
               labelStyle={{ color: '#f1f5f9' }}
               itemStyle={{ color: '#10B981' }}
             />
-            <Bar dataKey="count" fill="#10B981" radius={[4, 4, 0, 0]} />
+            <Bar dataKey="count" fill="#10B981" radius={[4, 4, 0, 0]} animationBegin={200} />
           </BarChart>
         </ResponsiveContainer>
       </div>
-    </div>
+    </motion.div>
   );
 }

@@ -4,17 +4,22 @@ import { useState, useEffect } from 'react';
 import { TrendingUp, Target, ArrowUpRight } from 'lucide-react';
 import { policyData as staticPolicyData } from '@/lib/static-data';
 import { fetchPolicy } from '@/lib/api';
+import { useToast } from '@/lib/toast-context';
 
 export default function PolicySimulationPage() {
   const [policyData, setPolicyData] = useState(staticPolicyData);
   const [loading, setLoading] = useState(true);
+  const { addToast } = useToast();
 
   useEffect(() => {
     let cancelled = false;
     async function loadData() {
       try {
         const data = await fetchPolicy();
-        if (!cancelled) setPolicyData(data);
+        if (!cancelled) {
+          setPolicyData(data);
+          addToast('Policy simulation data loaded successfully', 'success');
+        }
       } catch {
         // Keep static data
       } finally {
