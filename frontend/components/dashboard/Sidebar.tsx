@@ -17,6 +17,7 @@ import {
   X,
   Sun,
   Moon,
+  Users,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useTheme } from "@/lib/theme-context";
@@ -26,6 +27,7 @@ const navItems = [
   { label: "Credit Scoring", href: "/credit-scoring", icon: ShieldCheck },
   { label: "Portfolio Analytics", href: "/portfolio-analytics", icon: PieChart },
   { label: "Location Intelligence", href: "/location-intelligence", icon: MapPin },
+  { label: "UMKM Directory", href: "/umkm", icon: Users },
   { label: "Clustering", href: "/clustering", icon: Layers },
   { label: "Policy Simulation", href: "/policy-simulation", icon: TrendingUp },
   { label: "Reports", href: "/reports", icon: FileBarChart },
