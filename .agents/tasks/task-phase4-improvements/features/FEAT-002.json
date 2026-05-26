@@ -2,7 +2,7 @@
   "id": "FEAT-002",
   "type": "feat",
   "description": "Performance monitoring preparation (Application Insights) - analytics wrapper with no-op fallback when NEXT_PUBLIC_APPINSIGHTS_KEY is not set, plus PWA support with manifest.json, service worker, and offline page",
-  "status": "in_progress",
+  "status": "completed",
   "steps": [
     "Create frontend/lib/analytics.ts with: (1) an Analytics class/object with methods trackPageView(pageName: string), trackEvent(eventName: string, properties?: Record<string,string>), trackError(error: Error, context?: string), (2) if process.env.NEXT_PUBLIC_APPINSIGHTS_KEY is set, log to console with '[Analytics]' prefix (placeholder for real App Insights SDK), (3) if not set, all methods are no-ops, (4) Export a singleton instance",
     "Add analytics.trackPageView() call in frontend/app/(dashboard)/layout.tsx using a client component wrapper or useEffect",
@@ -31,5 +31,5 @@
     "pnpm build"
   ],
   "blocked_reason": null,
-  "findings": ""
+  "findings": "Offline page requires 'use client' directive because it has an onClick handler (window.location.reload). Build produces 18 static pages including /offline. All 32 existing tests pass without modification."
 }
