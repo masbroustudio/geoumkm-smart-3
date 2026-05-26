@@ -746,6 +746,224 @@ The workflow file is located at `.github/workflows/deploy-frontend.yml`. It:
 
 ---
 
+## Step 12: Enable Azure OpenAI for AI Chat (Optional)
+
+This step enables the AI Chat assistant feature using Azure OpenAI with RAG (Retrieval Augmented Generation).
+
+### Prerequisites
+
+- Azure OpenAI access must be approved first
+- Apply at: [https://aka.ms/oai/access](https://aka.ms/oai/access)
+- Approval typically takes 1-5 business days
+- Use case: "Business intelligence chatbot for SME analytics"
+
+### 12.1 Create Azure OpenAI Resource
+
+If you have not already created the Azure OpenAI resource in Step 5, follow the instructions there to create it. Otherwise, verify the resource exists and the gpt-4o model is deployed:
+
+**Portal:**
+1. Go to [portal.azure.com](https://portal.azure.com)
+2. Search **"Azure OpenAI"** and click on your `oai-geoumkm` resource
+3. Go to **Model deployments** > **Manage Deployments**
+4. Verify `gpt-4o` deployment exists and is active
+
+**CLI:**
+```bash
+# Verify the resource exists
+az cognitiveservices account show \
+  --name oai-geoumkm \
+  --resource-group rg-geoumkm-prod
+
+# Verify gpt-4o deployment
+az cognitiveservices account deployment list \
+  --name oai-geoumkm \
+  --resource-group rg-geoumkm-prod
+```
+
+### 12.2 Configure Azure AI Search for RAG
+
+1. Create a search index named `umkm-knowledge-base`
+2. Upload knowledge base documents (from `/ml/data/` CSV files converted to searchable documents)
+3. Configure semantic search and vector search
+4. Set up indexer to auto-refresh data
+
+```bash
+# Create index
+az search index create \
+  --name umkm-knowledge-base \
+  --service-name search-geoumkm \
+  --resource-group rg-geoumkm-prod \
+  --fields '[
+    {"name": "id", "type": "Edm.String", "key": true, "searchable": false},
+    {"name": "content", "type": "Edm.String", "searchable": true, "analyzer": "id.microsoft"},
+    {"name": "title", "type": "Edm.String", "searchable": true},
+    {"name": "category", "type": "Edm.String", "filterable": true, "facetable": true},
+    {"name": "source", "type": "Edm.String", "filterable": true},
+    {"name": "embedding", "type": "Collection(Edm.Single)", "searchable": true, "dimensions": 1536, "vectorSearchProfile": "default-profile"}
+  ]'
+
+# Upload documents (using Python script)
+python scripts/upload_knowledge_base.py
+```
+
+### 12.3 Environment Variables for AI Chat
+
+Set these environment variables in the Azure Functions App:
+
+| Variable | Value | Where |
+|----------|-------|-------|
+| `AZURE_OPENAI_ENDPOINT` | `https://oai-geoumkm.openai.azure.com/` | Function App |
+| `AZURE_OPENAI_API_KEY` | (from Key Vault) | Function App |
+| `AZURE_OPENAI_DEPLOYMENT` | `gpt-4o` | Function App |
+| `AZURE_SEARCH_ENDPOINT` | `https://search-geoumkm.search.windows.net` | Function App |
+| `AZURE_SEARCH_KEY` | (from Key Vault) | Function App |
+| `AZURE_SEARCH_INDEX` | `umkm-knowledge-base` | Function App |
+
+### 12.4 Cost Estimation
+
+| Component | Monthly Cost |
+|-----------|-------------|
+| Azure OpenAI (gpt-4o) | $20-80 (based on usage) |
+| Azure AI Search (Basic) | $70 (if upgraded from Free) |
+| **Total** | **$30-100/month** |
+
+### 12.5 Manual Steps Summary
+
+| Step | Action | Cannot be automated |
+|------|--------|---------------------|
+| 1 | Apply for Azure OpenAI access | Requires manual form submission and approval |
+| 2 | Prepare knowledge base documents | Requires domain expert review |
+| 3 | Test chat quality | Requires human evaluation of responses |
+| 4 | Configure content filters | Requires manual policy decisions |
+
+---
+
+## Step 13: Create Demo Video for Landing Page (Manual)
+
+This is a fully manual step to create a demo video/GIF for the landing page hero section.
+
+### Prerequisites
+
+- Application must be deployed and accessible
+- Screen recording software: OBS Studio (free, cross-platform) or Loom (cloud-based)
+
+### 13.1 Record the Demo
+
+Recommended flow to record (30-60 seconds):
+
+1. Start at landing page - show hero and scroll briefly
+2. Navigate to Dashboard Overview - show map and KPIs
+3. Show Credit Scoring page briefly
+4. Open AI Chat and ask a question
+5. Show a Policy Simulation result
+
+### 13.2 Recording Settings
+
+- Resolution: 1920x1080 (will be scaled down)
+- Frame rate: 30fps for MP4, 15fps for GIF
+- Format: MP4 (H.264 codec)
+
+### 13.3 Convert to Web-Optimized Format
+
+```bash
+# Convert MP4 to web-optimized MP4 (smaller file)
+ffmpeg -i demo-raw.mp4 -vcodec h264 -acodec aac -strict -2 -crf 28 -preset slow -vf scale=1280:720 demo.mp4
+
+# Convert to GIF (for fallback/preview)
+ffmpeg -i demo.mp4 -vf "fps=12,scale=640:-1:flags=lanczos" -c:v gif demo-preview.gif
+
+# Alternative: Create WebM for better compression
+ffmpeg -i demo-raw.mp4 -c:v libvpx-vp9 -b:v 1M -c:a libopus -vf scale=1280:720 demo.webm
+```
+
+### 13.4 Upload and Integration
+
+1. Place files in `/frontend/public/demo/`:
+   - `demo.mp4` (target: <10MB)
+   - `demo-preview.gif` (target: <5MB)
+2. Update landing page hero to reference the video
+3. Verify loading performance
+
+### 13.5 Tips
+
+- Keep it under 60 seconds for engagement
+- Use a clean browser (no extensions visible)
+- Record during off-peak hours (if using live API)
+- Consider adding captions/annotations in post-production
+
+---
+
+## Step 14: Custom Domain Setup (Optional)
+
+Configure a custom domain for your GeoUMKM application.
+
+### 14.1 Purchase a Domain
+
+Recommended Indonesian domain providers:
+
+- Niagahoster (niagahoster.co.id) - `.id` domains from Rp 120k/year
+- Rumahweb (rumahweb.com)
+- Domainesia (domainesia.com)
+
+Suggested domains: `geoumkm.id`, `geoumkm.co.id`, `geoumkm.app`
+
+### 14.2 Configure in Azure Portal
+
+1. Go to **Static Web Apps** > `swa-geoumkm-frontend`
+2. Click **Custom domains** in the left menu
+3. Click **+ Add**
+4. Enter your domain (e.g., `geoumkm.id` or `www.geoumkm.id`)
+5. Azure will show the validation record needed
+
+### 14.3 DNS Configuration
+
+At your domain registrar, add these records:
+
+**For root domain (geoumkm.id):**
+
+| Type | Name | Value |
+|------|------|-------|
+| ALIAS/ANAME | @ | thankful-tree-0162cfc00.eastasia.azurestaticapps.net |
+
+**For www subdomain:**
+
+| Type | Name | Value |
+|------|------|-------|
+| CNAME | www | thankful-tree-0162cfc00.eastasia.azurestaticapps.net |
+
+> **Note:** Replace the Static Web App URL with your actual deployment URL.
+
+### 14.4 SSL Certificate
+
+- Azure Static Web Apps automatically provisions a free SSL certificate
+- Certificate is issued within minutes of DNS validation
+- Auto-renews before expiration
+
+### 14.5 Azure CLI
+
+```bash
+az staticwebapp hostname set \
+  --name swa-geoumkm-frontend \
+  --resource-group rg-geoumkm-prod \
+  --hostname geoumkm.id
+```
+
+### 14.6 Verification
+
+1. Wait for DNS propagation (5 min to 48 hours)
+2. Check with: `nslookup geoumkm.id`
+3. Visit https://geoumkm.id in browser
+4. Verify SSL lock icon appears
+5. Test www redirect works
+
+### Troubleshooting
+
+- **DNS not resolving:** Wait up to 48 hours, check TTL settings
+- **SSL error:** Ensure DNS is pointing correctly, wait for certificate provisioning
+- **404 on custom domain:** Check `staticwebapp.config.json` navigationFallback
+
+---
+
 ## Summary
 
 After completing all steps, your GeoUMKM Intelligence v4.0 platform will have:
@@ -757,7 +975,12 @@ After completing all steps, your GeoUMKM Intelligence v4.0 platform will have:
 - **File Storage** on Azure Blob Storage (models, reports)
 - **Authentication** via Azure Entra ID B2C (user sign-up/sign-in)
 - **Secrets Management** via Azure Key Vault
+- **AI Chat with RAG** (Optional, Step 12) - intelligent chat using knowledge base
+- **Demo Video** (Optional, Step 13) - landing page hero video/GIF
+- **Custom Domain** (Optional, Step 14) - professional domain with SSL
 
 Total estimated monthly cost for development: **~$10-25/month**
+
+With optional services (Azure OpenAI + AI Search Basic): **~$40-125/month**
 
 For production with higher tiers, expect **~$100-200/month** depending on usage.
