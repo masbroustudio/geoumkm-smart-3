@@ -2,7 +2,7 @@
   "id": "FEAT-001",
   "type": "feat",
   "description": "Dark/Light Mode Toggle - Connect the existing ThemeProvider, add toggle button to Sidebar, and implement CSS variables approach so light mode works without changing every component file",
-  "status": "in_progress",
+  "status": "completed",
   "steps": [
     "1. Update frontend/app/globals.css: Expand the :root (light mode) CSS variables section to cover all the colors used by components. Add variables for: --text-primary, --text-secondary, --text-muted, --sidebar-bg, --sidebar-border, --card-text, --border-color. In the .dark section, set corresponding dark values. Update the body, .glass, .glass-card classes to use these CSS variables. Add light-mode-specific overrides for common Tailwind dark classes (slate-950 bg, slate-800 borders, text-white, text-slate-400) using a :root:not(.dark) or html:not(.dark) selector approach.",
     "2. Update frontend/components/dashboard/Sidebar.tsx: Import useTheme from @/lib/theme-context. Add a Sun/Moon toggle button in the SidebarContent between the nav items and the user section at the bottom. Use Sun and Moon icons from lucide-react. When theme is 'dark' show Sun icon (to switch to light), when 'light' show Moon icon (to switch to dark). Style the sidebar using CSS variables instead of hardcoded slate-950/slate-800. The sidebar should use bg-[var(--sidebar-bg)] and border-[var(--sidebar-border)].",
@@ -22,5 +22,5 @@
     "Run pnpm build in frontend/ and confirm it produces 16 routes without errors"
   ],
   "blocked_reason": null,
-  "findings": ""
+  "findings": "Build passes with 16 routes. CSS variables approach works cleanly - dark mode unchanged, light mode gets proper values via :root defaults. ThemeProvider already handles localStorage persistence and class toggling on html element."
 }
