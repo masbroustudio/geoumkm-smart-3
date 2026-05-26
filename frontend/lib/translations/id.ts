@@ -10,6 +10,7 @@ export const id: TranslationKeys = {
     clustering: 'Klasterisasi',
     policySimulation: 'Simulasi Kebijakan',
     reports: 'Laporan',
+    modelDocs: 'Dokumentasi Model',
     settings: 'Pengaturan',
   },
   dashboard: {

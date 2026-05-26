@@ -10,6 +10,7 @@ export const en: TranslationKeys = {
     clustering: 'Clustering',
     policySimulation: 'Policy Simulation',
     reports: 'Reports',
+    modelDocs: 'Model Docs',
     settings: 'Settings',
   },
   dashboard: {

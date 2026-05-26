@@ -99,17 +99,20 @@ export const suggestedQuestions: Record<string, string[]> = {
     'Area mana yang memiliki risiko tertinggi?',
     'Faktor apa yang mempengaruhi default rate?',
     'Berapa estimasi NPL reduction?',
+    'Bagaimana performa model credit scoring?',
   ],
   government: [
     'Kecamatan mana prioritas intervensi?',
     'Dampak program infrastruktur?',
     'Alokasi budget per cluster?',
     'Kebijakan apa paling efektif?',
+    'Bagaimana meningkatkan skor UMKM?',
   ],
   investor: [
     'Cluster mana ROI tertinggi?',
     'Berapa market size tahunan?',
     'Risiko investasi di area rural?',
     'Sektor apa paling menjanjikan?',
+    'Apa dokumentasi model yang digunakan?',
   ],
 };

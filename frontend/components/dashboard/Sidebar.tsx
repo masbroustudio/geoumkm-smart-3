@@ -12,6 +12,7 @@ import {
   Layers,
   TrendingUp,
   FileBarChart,
+  BookOpen,
   Settings,
   Menu,
   X,
@@ -36,6 +37,7 @@ const navItems: { key: SidebarKey; href: string; icon: typeof LayoutDashboard }[
   { key: "clustering", href: "/clustering", icon: Layers },
   { key: "policySimulation", href: "/policy-simulation", icon: TrendingUp },
   { key: "reports", href: "/reports", icon: FileBarChart },
+  { key: "modelDocs", href: "/model-docs", icon: BookOpen },
   { key: "settings", href: "/settings", icon: Settings },
 ];
 

@@ -112,6 +112,26 @@ function getEnhancedResponse(message: string, persona: Persona): string {
     return `**Alokasi Budget per Cluster (Rekomendasi):**\n\n- **High-Risk Underserved** (Cluster 3): 41.5% - Prioritas infrastruktur\n- **High-Risk Underserved 4** (Cluster 4): 27.8% - Risk mitigation\n- **Rural Developing** (Cluster 1): 18.2% - Digital literacy\n- **Urban Digital Leaders 2** (Cluster 2): 7.5% - Scale-up\n- **Urban Digital Leaders** (Cluster 0): 5.0% - Market expansion\n\n**Total UMKM target:** ${modelMetrics.totalUmkm.toLocaleString()}\n**Focus area:** Infrastructure & digital transformation di area underserved\n\n[Sumber: Policy Simulation, Notebook 04]`;
   }
 
+  // Model performance queries
+  if (lower.includes('performa model') || lower.includes('model performance') || lower.includes('auc') || lower.includes('ks statistic')) {
+    return `**Performa Model GeoUMKM:**\n\n**Location Scoring (XGBoost Regressor):**\n- R² Score: **0.9999** (near-perfect fit)\n- RMSE: 0.1654\n- MAE: 0.0805\n- Test samples: 2,000\n\n**Credit Risk (Logistic Regression):**\n- AUC-ROC: **0.8303** (very good discrimination)\n- KS Statistic: **0.6607** (strong separation)\n- Score bands: 7\n- Portfolio: 10,000 UMKM\n\n**Interpretasi:**\n- AUC-ROC > 0.8 = model sangat baik membedakan default vs non-default\n- KS > 0.5 = separasi yang kuat antara good dan bad borrowers\n- R² ~ 1.0 = location scoring sangat akurat\n\n[Sumber: Executive Summary, Notebook 08]`;
+  }
+
+  // DBSCAN queries
+  if (lower.includes('dbscan') || lower.includes('spatial cluster') || lower.includes('klaster spasial')) {
+    return `**DBSCAN Spatial Clustering:**\n\n**Ringkasan:**\n- Total klaster spasial: **408**\n- Noise ratio: **0.31%** (sangat rendah)\n- Algoritma: DBSCAN (Density-Based Spatial Clustering)\n\n**Perbedaan dengan K-Means:**\n- K-Means: 5 cluster berdasarkan fitur bisnis\n- DBSCAN: 408 cluster berdasarkan kedekatan geografis\n- DBSCAN mendeteksi klaster berbentuk tidak beraturan\n- DBSCAN otomatis mengidentifikasi noise points\n\n**Top Cluster:**\n- Cluster terdensest: 45+ UMKM per cluster di area Kota Bekasi\n- Area Kota Bandung: 68 klaster teridentifikasi\n- Area Kota Bekasi: 52 klaster teridentifikasi\n\n[Sumber: Clustering Analysis, Notebook 05]`;
+  }
+
+  // Counterfactual/improvement queries
+  if (lower.includes('counterfactual') || lower.includes('bagaimana meningkatkan') || lower.includes('how to improve') || lower.includes('cara meningkatkan')) {
+    return `**Cara Meningkatkan Skor UMKM (Counterfactual Analysis):**\n\n**Top 3 Faktor dengan Dampak Terbesar:**\n\n1. **Infrastructure Score +20 poin**\n   - Dampak: Skor potensi naik ~13 poin\n   - Cara: Perbaikan jalan, listrik stabil, air bersih\n\n2. **Akses Internet +30%**\n   - Dampak: Skor potensi naik ~10 poin\n   - Cara: Pemasangan WiFi, subsidi internet\n\n3. **Jarak ke Bank -5km**\n   - Dampak: Skor kredit naik ~0.05 poin\n   - Cara: Pembukaan cabang/agen bank\n\n**Insight:**\n- UMKM rural: Fokus infrastruktur fisik (dampak terbesar)\n- UMKM urban: Fokus digital adoption dan market access\n- UMKM suburban: Fokus financial inclusion\n\n[Sumber: Counterfactual Analysis, Notebook 06]`;
+  }
+
+  // Model card/documentation queries
+  if (lower.includes('model card') || lower.includes('dokumentasi model') || lower.includes('model documentation')) {
+    return `**Model Cards GeoUMKM:**\n\n**1. Location Scoring Model**\n- Type: XGBoost Regressor\n- Purpose: Prediksi skor potensi lokasi UMKM\n- Input: 37 features (infrastruktur, digital, finansial, market, risk)\n- Output: Skor 0-100\n- Performance: R² = 0.9999\n- Limitations: Trained on synthetic data, West Java only\n\n**2. Credit Risk Model**\n- Type: Logistic Regression\n- Purpose: Estimasi Probability of Default (PD)\n- Input: Location score + business features\n- Output: PD (0-1) + Score Band (AAA to CCC)\n- Performance: AUC-ROC = 0.8303, KS = 0.6607\n- Limitations: Not for individual lending decisions without human review\n\n**Ethical Considerations:**\n- Model tidak boleh digunakan sebagai satu-satunya basis keputusan kredit\n- Regular retraining diperlukan saat data riil tersedia\n- Geographic bias: performa lebih baik di area urban\n\n[Sumber: Model Documentation, Notebook 08]`;
+  }
+
   // Investment/ROI queries
   if (lower.includes('investasi') || lower.includes('invest') || lower.includes('roi')) {
     return `**Peluang Investasi UMKM:**\n\n**Top Cluster untuk Investasi:**\n- #1 Urban Digital Leaders: Investment score **0.962**\n  - Market size: Rp 182.2M\n  - Digital adoption: 74.1%\n  - Survival: 71.9%\n\n- #2 Rural Developing: Investment score **0.834**\n  - Market size: Rp 138.0M\n  - Growth potential: High\n\n**Market Size Total:** Rp ${modelMetrics.marketSizeAnnual.toLocaleString()}M/tahun\n\n**Risiko:**\n- Area rural: Higher default (50-70%), butuh infrastruktur\n- Area urban: Kompetisi tinggi, margin lebih tipis\n\n[Sumber: Investment Analysis, Notebook 05]`;

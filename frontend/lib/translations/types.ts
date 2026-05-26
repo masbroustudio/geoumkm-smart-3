@@ -9,6 +9,7 @@ export interface TranslationKeys {
     clustering: string;
     policySimulation: string;
     reports: string;
+    modelDocs: string;
     settings: string;
   };
   // Dashboard common labels
