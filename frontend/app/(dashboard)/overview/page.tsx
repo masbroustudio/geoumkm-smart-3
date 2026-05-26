@@ -1,10 +1,13 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Users, TrendingUp, AlertTriangle, Activity } from 'lucide-react';
+import dynamic from 'next/dynamic';
+import { Users, TrendingUp, AlertTriangle, Activity, Layers } from 'lucide-react';
 import KPICard from '@/components/dashboard/KPICard';
 import FilteredMapView from '@/components/dashboard/FilteredMapView';
 import ScoreDistributionChart from '@/components/dashboard/ScoreDistributionChart';
+
+const HeatmapMapView = dynamic(() => import('@/components/dashboard/HeatmapMapView'), { ssr: false });
 import ClusterDonutChart from '@/components/dashboard/ClusterDonutChart';
 import TopKabupatenChart from '@/components/dashboard/TopKabupatenChart';
 import { overviewData as staticOverview, kecamatanMapData as staticMapData } from '@/lib/static-data';
@@ -15,6 +18,7 @@ export default function OverviewPage() {
   const [overviewData, setOverviewData] = useState(staticOverview);
   const [kecamatanMapData, setKecamatanMapData] = useState(staticMapData);
   const [loading, setLoading] = useState(true);
+  const [mapMode, setMapMode] = useState<'markers' | 'heatmap'>('markers');
 
   useEffect(() => {
     let cancelled = false;
@@ -118,8 +122,40 @@ export default function OverviewPage() {
         />
       </div>
 
+      {/* Map Mode Toggle */}
+      <div className="flex items-center gap-3">
+        <Layers className="w-4 h-4 text-slate-400" />
+        <span className="text-sm text-slate-400">Map View:</span>
+        <div className="flex rounded-lg overflow-hidden border border-slate-700">
+          <button
+            onClick={() => setMapMode('markers')}
+            className={`px-4 py-1.5 text-sm font-medium transition-colors ${
+              mapMode === 'markers'
+                ? 'bg-accent text-white'
+                : 'bg-transparent text-slate-400 hover:text-white'
+            }`}
+          >
+            Markers
+          </button>
+          <button
+            onClick={() => setMapMode('heatmap')}
+            className={`px-4 py-1.5 text-sm font-medium transition-colors ${
+              mapMode === 'heatmap'
+                ? 'bg-accent text-white'
+                : 'bg-transparent text-slate-400 hover:text-white'
+            }`}
+          >
+            Heatmap
+          </button>
+        </div>
+      </div>
+
       {/* Map */}
-      <FilteredMapView data={kecamatanMapData} />
+      {mapMode === 'markers' ? (
+        <FilteredMapView data={kecamatanMapData} />
+      ) : (
+        <HeatmapMapView data={kecamatanMapData} />
+      )}
 
       {/* Charts Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">

@@ -2,7 +2,7 @@
   "id": "FEAT-004",
   "type": "feat",
   "description": "Geospatial Heatmap Layer - Add a toggle on the Overview page map to switch between Markers view and Heatmap view. The heatmap uses colored circles with radius proportional to UMKM count and color based on average score.",
-  "status": "pending",
+  "status": "in_progress",
   "steps": [
     "Step 1: Create `frontend/components/dashboard/HeatmapMapInner.tsx` - a new map component that renders circles with: (a) radius proportional to a normalized score (e.g., higher score = larger radius, range 6-18px), (b) fillColor based on score gradient (red < 40, orange 40-55, yellow 55-70, green > 70), (c) Higher fillOpacity (0.5-0.7) to create a heatmap effect, (d) No click handlers - this is view-only. Use the same MapContainer/TileLayer setup as MapInner.tsx but with different circle rendering.",
     "Step 2: Create `frontend/components/dashboard/HeatmapMapView.tsx` - wrapper component (like MapView.tsx) that uses dynamic import of HeatmapMapInner. Add a color-scale legend showing: Red (Low <40), Orange (40-55), Yellow (55-70), Green (High >70), and a note about circle size representing relative intensity.",
