@@ -2,7 +2,7 @@
   "id": "FEAT-002",
   "type": "feat",
   "description": "Add Vitest testing framework with 5+ meaningful unit tests covering cn() utility, CSV export, API client fallback, theme context toggle, and KPICard component rendering",
-  "status": "pending",
+  "status": "in_progress",
   "steps": [
     "1. Install dev dependencies: vitest, @testing-library/react, @testing-library/jest-dom, jsdom, @vitejs/plugin-react. Run: pnpm add -D vitest @testing-library/react @testing-library/jest-dom jsdom @vitejs/plugin-react in frontend/.",
     "2. Create frontend/vitest.config.ts: Configure with jsdom environment, react plugin, path alias (@/* -> ./*) matching tsconfig paths, and setup file.",
