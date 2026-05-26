@@ -419,8 +419,8 @@
         <div class="hero">
             <div class="badge">🏆 METC DATATHON 2026</div>
             <h1>GeoUMKM Smart V3.0</h1>
-            <p>AI-Powered Location Decision Support System for Indonesian MSMEs<br>
-            <strong>Urban Resilience &amp; Smart City</strong></p>
+            <p>AI-Powered Location Intelligence &amp; Credit Risk System for Indonesian MSMEs<br>
+            <strong>Serving Banks, Government &amp; Investors</strong></p>
             
             <div class="hero-buttons">
                 <a href="https://thankful-tree-0162cfc00.7.azurestaticapps.net/" target="_blank" class="btn btn-primary">
@@ -435,20 +435,20 @@
         <!-- Stats -->
         <div class="stats">
             <div class="stat-card">
-                <div class="stat-value">6,000</div>
+                <div class="stat-value">10,000</div>
                 <div class="stat-label">UMKM Data Points</div>
             </div>
             <div class="stat-card">
-                <div class="stat-value">45-95</div>
-                <div class="stat-label">Skor Potensi Range</div>
-            </div>
-            <div class="stat-card">
                 <div class="stat-value">8</div>
-                <div class="stat-label">Spatial Clusters</div>
+                <div class="stat-label">ML Notebooks</div>
             </div>
             <div class="stat-card">
-                <div class="stat-value">15</div>
-                <div class="stat-label">Priority Areas</div>
+                <div class="stat-value">596</div>
+                <div class="stat-label">Kecamatan</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">3</div>
+                <div class="stat-label">Target Users</div>
             </div>
         </div>
 
@@ -456,57 +456,70 @@
         <div class="section">
             <h2>📋 Ringkasan Proyek</h2>
             <p>
-                <strong>GeoUMKM Smart V3.0</strong> adalah sistem intelijen lokasi berbasis AI dan geospatial analytics 
-                yang membantu UMKM memilih lokasi usaha optimal dan membantu pemerintah mengidentifikasi 
-                area prioritas intervensi di Jawa Barat. 
+                <strong>GeoUMKM Smart V3.0</strong> adalah sistem intelijen lokasi dan penilaian risiko kredit berbasis AI 
+                yang melayani 3 target pengguna: <strong>Bank</strong> (credit risk scoring &amp; PD buckets), 
+                <strong>Pemerintah</strong> (priority areas &amp; policy simulation), dan 
+                <strong>Investor</strong> (opportunity scoring &amp; market segmentation).
             </p>
             <p style="margin-top: 16px;">
-                Proyek ini menggunakan <strong>6.000 data UMKM sintetis</strong> dengan <strong>18+ fitur advance</strong> 
-                dan analisis statistik mendalam (Kruskal-Wallis, Tukey HSD, Regresi Linear, Effect Size). 
-                Skor potensi berhasil divariasikan secara realistis antara <strong>45-95</strong>.
+                Proyek ini menggunakan <strong>10,000 data UMKM sintetis</strong> di <strong>596 kecamatan</strong> 
+                dan <strong>27 kabupaten/kota</strong> di Jawa Barat, dengan pipeline ML lengkap menggunakan 
+                XGBoost, LightGBM, K-Means, DBSCAN, dan SHAP explainability.
             </p>
         </div>
 
         <!-- Notebooks -->
         <div class="section" id="notebooks">
-            <h2>📓 Notebook Documentation</h2>
-            <p style="margin-bottom: 24px;">6 notebook lengkap dengan analisis mendalam dan visualisasi profesional.</p>
+            <h2>📓 Notebook Pipeline</h2>
+            <p style="margin-bottom: 24px;">8 notebook end-to-end ML pipeline, dari data generation hingga executive summary.</p>
             
             <div class="notebook-grid">
-                <a href="docs/01_Data_Generation_v3_Realistic.html" class="notebook-card">
+                <a href="docs/01_Data_Foundation.html" class="notebook-card">
                     <div class="notebook-number">01</div>
-                    <h3>Data Generation v3</h3>
-                    <p>Generate 6.000 data UMKM Jawa Barat dengan skor potensi realistis (45-95) dan 18+ fitur advance.</p>
+                    <h3>Data Foundation</h3>
+                    <p>Generate 10,000 dataset UMKM sintetis dengan 596 kecamatan riil di Jawa Barat.</p>
                 </a>
                 
-                <a href="docs/02_Clustering_Recommendation_v3.html" class="notebook-card">
+                <a href="docs/02_EDA_Feature_Engineering.html" class="notebook-card">
                     <div class="notebook-number">02</div>
-                    <h3>Clustering &amp; Recommendation</h3>
-                    <p>K-Means clustering (8 cluster), Top 15 rekomendasi lokasi, What-If Analysis, dan Government Priority Dashboard.</p>
+                    <h3>EDA &amp; Feature Engineering</h3>
+                    <p>Exploratory Data Analysis dan feature engineering menghasilkan 34 kolom fitur.</p>
                 </a>
                 
-                <a href="docs/03_Final_Summary_v3.html" class="notebook-card">
+                <a href="docs/03_Location_Scoring_Model.html" class="notebook-card">
                     <div class="notebook-number">03</div>
-                    <h3>Final Summary</h3>
-                    <p>Ringkasan statistik, estimasi dampak (1.320 UMKM terselamatkan), dan kesimpulan proyek.</p>
+                    <h3>Location Scoring Model</h3>
+                    <p>XGBoost model untuk location scoring dengan SHAP explainability.</p>
                 </a>
                 
-                <a href="docs/04_Visualisasi_Distribusi_Skor.html" class="notebook-card">
+                <a href="docs/04_Credit_Risk_Model.html" class="notebook-card">
                     <div class="notebook-number">04</div>
-                    <h3>Visualisasi Distribusi Skor</h3>
-                    <p>Histogram, box plot, violin plot, Q-Q Plot, CDF, dan visualisasi statistik lanjutan.</p>
+                    <h3>Credit Risk Model</h3>
+                    <p>Credit risk scoring dengan PD buckets, calibration curves, dan KS statistic.</p>
                 </a>
                 
-                <a href="docs/05_Analisis_Statistik_Mendalam_V3.html" class="notebook-card">
+                <a href="docs/05_Clustering_Segmentation.html" class="notebook-card">
                     <div class="notebook-number">05</div>
-                    <h3>Analisis Statistik Mendalam</h3>
-                    <p>Kruskal-Wallis, Tukey HSD, Regresi Linear Berganda, Effect Size (Cohen's d), dan Uji Normalitas.</p>
+                    <h3>Clustering &amp; Segmentation</h3>
+                    <p>K-Means + DBSCAN clustering untuk segmentasi wilayah dan analisis geospasial.</p>
                 </a>
                 
-                <a href="docs/06_Visualisasi_Lengkap_V3.html" class="notebook-card">
+                <a href="docs/06_Recommendation_WhatIf.html" class="notebook-card">
                     <div class="notebook-number">06</div>
-                    <h3>Visualisasi Lengkap</h3>
-                    <p>Q-Q Plot, CDF, heatmap korelasi, dan visualisasi statistik profesional.</p>
+                    <h3>Recommendation &amp; What-If</h3>
+                    <p>Recommendation engine per kecamatan dan What-If policy simulation.</p>
+                </a>
+                
+                <a href="docs/07_LLM_RIG_Preparation.html" class="notebook-card">
+                    <div class="notebook-number">07</div>
+                    <h3>LLM &amp; RIG Preparation</h3>
+                    <p>Knowledge base construction untuk Retrieval-Integrated Generation (RIG).</p>
+                </a>
+                
+                <a href="docs/08_Executive_Summary.html" class="notebook-card">
+                    <div class="notebook-number">08</div>
+                    <h3>Executive Summary</h3>
+                    <p>Model cards dan executive summary untuk pengambil keputusan.</p>
                 </a>
             </div>
         </div>
@@ -517,50 +530,50 @@
             
             <div class="features-grid">
                 <div class="feature-item">
-                    <div class="feature-icon">🗺️</div>
+                    <div class="feature-icon">🤖</div>
                     <div class="feature-content">
-                        <h4>Advanced Geospatial Engineering</h4>
-                        <p>18+ fitur: jarak ke pusat ekonomi, skor infrastruktur, cluster success rate, population density proxy.</p>
+                        <h4>ML Pipeline (XGBoost/LightGBM)</h4>
+                        <p>Ensemble gradient boosting models untuk location scoring dan credit risk assessment.</p>
+                    </div>
+                </div>
+                
+                <div class="feature-item">
+                    <div class="feature-icon">🏦</div>
+                    <div class="feature-content">
+                        <h4>Credit Risk Model</h4>
+                        <p>Probability of Default (PD) buckets, score bands, calibration curves, dan KS statistic.</p>
                     </div>
                 </div>
                 
                 <div class="feature-item">
                     <div class="feature-icon">📍</div>
                     <div class="feature-content">
-                        <h4>K-Means Clustering</h4>
-                        <p>8 cluster dengan karakteristik unik untuk segmentasi wilayah Jawa Barat.</p>
+                        <h4>Clustering &amp; Segmentation</h4>
+                        <p>K-Means + DBSCAN untuk segmentasi wilayah berdasarkan karakteristik UMKM geospasial.</p>
                     </div>
                 </div>
                 
                 <div class="feature-item">
                     <div class="feature-icon">🎯</div>
                     <div class="feature-content">
-                        <h4>Location Recommendation Engine</h4>
-                        <p>Top 15 lokasi terbaik per jenis usaha (Makanan, Fashion, Kerajinan, Jasa, Pertanian).</p>
+                        <h4>Recommendation Engine</h4>
+                        <p>Rekomendasi lokasi optimal per kecamatan dengan multi-criteria scoring.</p>
                     </div>
                 </div>
                 
                 <div class="feature-item">
                     <div class="feature-icon">🔮</div>
                     <div class="feature-content">
-                        <h4>What-If Analysis Simulator</h4>
-                        <p>Prediksi skor potensi untuk skenario lokasi baru dengan rekomendasi perbaikan.</p>
+                        <h4>What-If Simulation</h4>
+                        <p>Simulasi dampak kebijakan pemerintah (KUR, infrastruktur, pelatihan) terhadap skor UMKM.</p>
                     </div>
                 </div>
                 
                 <div class="feature-item">
-                    <div class="feature-icon">🏛️</div>
+                    <div class="feature-icon">🧠</div>
                     <div class="feature-content">
-                        <h4>Government Priority Dashboard</h4>
-                        <p>15 kecamatan dengan skor terendah + rekomendasi intervensi spesifik (KUR, SEHATI, pelatihan).</p>
-                    </div>
-                </div>
-                
-                <div class="feature-item">
-                    <div class="feature-icon">📊</div>
-                    <div class="feature-content">
-                        <h4>Analisis Statistik Mendalam</h4>
-                        <p>Kruskal-Wallis, Tukey HSD, Regresi Linear, Effect Size (Cohen's d), Uji Normalitas.</p>
+                        <h4>LLM/RIG Preparation</h4>
+                        <p>Knowledge base terstruktur untuk integrasi dengan Large Language Models via RIG.</p>
                     </div>
                 </div>
             </div>
@@ -570,10 +583,11 @@
         <div class="section" id="tech">
             <h2>🛠️ Technology Stack</h2>
             <div class="tech-stack">
-                <span class="tech-badge">Azure Synapse Analytics</span>
-                <span class="tech-badge">Python (XGBoost, Folium, Seaborn)</span>
-                <span class="tech-badge">Apache Spark</span>
-                <span class="tech-badge">SciPy &amp; Statsmodels</span>
+                <span class="tech-badge">XGBoost / LightGBM</span>
+                <span class="tech-badge">scikit-learn</span>
+                <span class="tech-badge">SHAP</span>
+                <span class="tech-badge">Pandas / NumPy / SciPy</span>
+                <span class="tech-badge">Matplotlib / Seaborn</span>
                 <span class="tech-badge">Azure Static Web Apps</span>
                 <span class="tech-badge">GitHub Actions</span>
             </div>
@@ -581,14 +595,14 @@
 
         <!-- Footer -->
         <div class="footer">
-            <p><strong>© 2026 GeoUMKM Smart V3.0</strong> — Created by <strong>Yudha Elfransyah</strong></p>
+            <p><strong>&copy; 2026 GeoUMKM Smart V3.0</strong> &mdash; Created by <strong>Yudha Elfransyah</strong></p>
             <div class="footer-links">
                 <a href="https://thankful-tree-0162cfc00.7.azurestaticapps.net/" target="_blank">🌐 Live Demo</a>
                 <a href="https://github.com/masbroustudio/geoumkm-smart-3" target="_blank">📁 GitHub Repository</a>
                 <a href="https://github.com/masbroustudio/geoumkm-smart-3/archive/main.zip" target="_blank">⬇️ Download ZIP</a>
             </div>
             <p style="margin-top: 20px; font-size: 0.8rem; color: #64748B;">
-                METC Datathon 2026 — Urban Resilience &amp; Smart City
+                METC Datathon 2026 &mdash; Urban Resilience &amp; Smart City
             </p>
         </div>
     </div>
