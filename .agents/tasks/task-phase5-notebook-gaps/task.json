@@ -1,7 +1,14 @@
 {
   "task_id": "task-phase5-notebook-gaps",
   "task_description": "Fill gaps where notebook outputs (DBSCAN spatial clusters, model performance metrics, counterfactual explanations, model documentation) are not yet represented in the dashboard. Add new AI chat capabilities for these new topics. Update documentation.",
-  "status": "in_progress",
+  "status": "completed",
   "feature_order": ["FEAT-001", "FEAT-002"],
-  "blocked_reason": null
+  "blocked_reason": null,
+  "verification": {
+    "build": "pass",
+    "tests": "pass",
+    "test_quality": "pass",
+    "docker_build": "skipped",
+    "summary": "pnpm build succeeds with 19 static pages including new /model-docs route. All 32 tests pass across 6 test files. Review issues (AUC-ROC label mismatch, SVG gauge clamping, counterfactual bar clamping) fixed in follow-up commit."
+  }
 }
