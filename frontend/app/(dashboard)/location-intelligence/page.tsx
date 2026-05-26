@@ -1,11 +1,14 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { MapPin, Search, Sliders } from 'lucide-react';
-import { recommendData, policyData } from '@/lib/static-data';
+import { recommendData as staticRecommendData, policyData as staticPolicyData } from '@/lib/static-data';
+import { fetchRecommendations, fetchPolicy } from '@/lib/api';
 
 const jenisUsahaOptions = ['Semua', 'Makanan', 'Fashion', 'Kerajinan', 'Jasa', 'Pertanian'];
 const kabupatenOptions = ['Semua', 'Kota Bekasi', 'Kota Depok', 'Kota Bandung', 'Kab. Bogor', 'Kota Cimahi'];
+
+type WhatIfScenario = typeof staticPolicyData.whatifScenarios[number];
 
 export default function LocationIntelligencePage() {
   const [jenisUsaha, setJenisUsaha] = useState('Semua');
@@ -13,7 +16,34 @@ export default function LocationIntelligencePage() {
   const [infra, setInfra] = useState(50);
   const [bankDist, setBankDist] = useState(50);
   const [internet, setInternet] = useState(50);
-  const [simResult, setSimResult] = useState<string | null>(null);
+  const [simResult, setSimResult] = useState<WhatIfScenario | null>(null);
+  const [recommendData, setRecommendData] = useState(staticRecommendData);
+  const [whatifScenarios, setWhatifScenarios] = useState(staticPolicyData.whatifScenarios);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    let cancelled = false;
+    async function loadData() {
+      try {
+        const [recs, policy] = await Promise.all([
+          fetchRecommendations(),
+          fetchPolicy(),
+        ]);
+        if (!cancelled) {
+          setRecommendData(recs);
+          if (policy.whatifScenarios) {
+            setWhatifScenarios(policy.whatifScenarios);
+          }
+        }
+      } catch {
+        // Keep static data
+      } finally {
+        if (!cancelled) setLoading(false);
+      }
+    }
+    loadData();
+    return () => { cancelled = true; };
+  }, []);
 
   const filtered = recommendData.filter((item) => {
     if (jenisUsaha !== 'Semua' && item.jenis_usaha !== jenisUsaha) return false;
@@ -22,13 +52,46 @@ export default function LocationIntelligencePage() {
   });
 
   const handleSimulate = () => {
-    const baseScore = 45;
-    const infraBonus = (infra / 100) * 25;
-    const bankBonus = ((100 - bankDist) / 100) * 5;
-    const internetBonus = (internet / 100) * 15;
-    const predicted = Math.min(100, baseScore + infraBonus + bankBonus + internetBonus).toFixed(1);
-    setSimResult(`Predicted Score: ${predicted} (Infrastructure: +${infraBonus.toFixed(1)}, Bank Access: +${bankBonus.toFixed(1)}, Internet: +${internetBonus.toFixed(1)})`);
+    // Determine which slider was adjusted most from the default (50)
+    const infraDelta = Math.abs(infra - 50);
+    const bankDelta = Math.abs(bankDist - 50);
+    const internetDelta = Math.abs(internet - 50);
+
+    const maxDelta = Math.max(infraDelta, bankDelta, internetDelta);
+
+    let bestScenario: WhatIfScenario;
+    if (maxDelta === infraDelta) {
+      // Infrastructure slider moved most - find infrastructure scenario
+      bestScenario = whatifScenarios.find(s =>
+        s.scenario.toLowerCase().includes('infrastructure')
+      ) || whatifScenarios[0];
+    } else if (maxDelta === bankDelta) {
+      // Bank distance slider moved most - find bank scenario
+      bestScenario = whatifScenarios.find(s =>
+        s.scenario.toLowerCase().includes('bank')
+      ) || whatifScenarios[1];
+    } else {
+      // Internet slider moved most - find internet scenario
+      bestScenario = whatifScenarios.find(s =>
+        s.scenario.toLowerCase().includes('internet')
+      ) || whatifScenarios[2];
+    }
+
+    setSimResult(bestScenario);
   };
+
+  if (loading) {
+    return (
+      <div className="space-y-6 mt-12 lg:mt-0">
+        <h1 className="text-2xl font-bold text-white">Location Intelligence</h1>
+        <div className="glass-card p-6 animate-pulse">
+          <div className="h-4 bg-slate-700 rounded w-1/3 mb-4" />
+          <div className="h-10 bg-slate-700 rounded mb-2" />
+          <div className="h-10 bg-slate-700 rounded" />
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6 mt-12 lg:mt-0">
@@ -97,6 +160,7 @@ export default function LocationIntelligencePage() {
           <Sliders className="w-5 h-5 text-accent" />
           <h3 className="text-lg font-semibold text-white">What-If Simulator</h3>
         </div>
+        <p className="text-xs text-slate-400 mb-4">Adjust sliders and click Simulate to see the closest matching pre-computed ML scenario.</p>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
           <div>
             <label className="text-sm text-slate-400 mb-2 block">Infrastructure Score: {infra}</label>
@@ -139,8 +203,26 @@ export default function LocationIntelligencePage() {
           Simulate
         </button>
         {simResult && (
-          <div className="mt-4 p-4 rounded-lg bg-slate-800 border border-slate-700">
-            <p className="text-sm text-accent font-medium">{simResult}</p>
+          <div className="mt-4 p-4 rounded-lg bg-slate-800 border border-slate-700 space-y-2">
+            <p className="text-sm text-accent font-medium">{simResult.scenario}</p>
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs">
+              <div>
+                <span className="text-slate-400">Affected UMKMs</span>
+                <p className="text-white font-medium">{simResult.affected}</p>
+              </div>
+              <div>
+                <span className="text-slate-400">Before</span>
+                <p className="text-white font-medium">{simResult.before.toFixed(1)}</p>
+              </div>
+              <div>
+                <span className="text-slate-400">After</span>
+                <p className="text-emerald-400 font-medium">{simResult.after.toFixed(1)}</p>
+              </div>
+              <div>
+                <span className="text-slate-400">Improvement</span>
+                <p className="text-emerald-400 font-medium">+{simResult.improvement.toFixed(2)}</p>
+              </div>
+            </div>
           </div>
         )}
       </div>
@@ -160,7 +242,7 @@ export default function LocationIntelligencePage() {
               </tr>
             </thead>
             <tbody>
-              {policyData.whatifScenarios.map((s, i) => (
+              {whatifScenarios.map((s, i) => (
                 <tr key={i} className="border-b border-slate-800 hover:bg-slate-800/50">
                   <td className="py-3 px-4 text-slate-200">{s.scenario}</td>
                   <td className="py-3 px-4 text-right text-slate-300">{s.affected}</td>

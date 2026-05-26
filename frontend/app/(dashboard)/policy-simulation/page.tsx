@@ -1,9 +1,50 @@
 'use client';
 
+import { useState, useEffect } from 'react';
 import { TrendingUp, Target, ArrowUpRight } from 'lucide-react';
-import { policyData } from '@/lib/static-data';
+import { policyData as staticPolicyData } from '@/lib/static-data';
+import { fetchPolicy } from '@/lib/api';
 
 export default function PolicySimulationPage() {
+  const [policyData, setPolicyData] = useState(staticPolicyData);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    let cancelled = false;
+    async function loadData() {
+      try {
+        const data = await fetchPolicy();
+        if (!cancelled) setPolicyData(data);
+      } catch {
+        // Keep static data
+      } finally {
+        if (!cancelled) setLoading(false);
+      }
+    }
+    loadData();
+    return () => { cancelled = true; };
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="space-y-6 mt-12 lg:mt-0">
+        <h1 className="text-2xl font-bold text-white">Policy Simulation</h1>
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+          {[1, 2, 3].map((i) => (
+            <div key={i} className="glass-card p-6 animate-pulse">
+              <div className="h-4 bg-slate-700 rounded w-2/3 mb-3" />
+              <div className="space-y-2">
+                {[1, 2, 3, 4].map((j) => (
+                  <div key={j} className="h-4 bg-slate-700 rounded" />
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="space-y-6 mt-12 lg:mt-0">
       <h1 className="text-2xl font-bold text-white">Policy Simulation</h1>

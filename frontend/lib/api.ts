@@ -7,14 +7,17 @@ import {
   kecamatanMapData,
 } from './static-data';
 
-const BASE_URL = process.env.NEXT_PUBLIC_API_URL || '';
+const BASE_URL = typeof window !== 'undefined'
+  ? (process.env.NEXT_PUBLIC_API_URL || '')
+  : '';
 
 async function fetchWithFallback<T>(path: string, fallback: T): Promise<T> {
   if (!BASE_URL) return fallback;
   try {
     const res = await fetch(`${BASE_URL}${path}`);
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    return await res.json();
+    const data = await res.json();
+    return data as T;
   } catch {
     return fallback;
   }
@@ -28,7 +31,7 @@ export async function fetchScores(params?: { kabupaten?: string; limit?: number 
   const query = new URLSearchParams();
   if (params?.kabupaten) query.set('kabupaten', params.kabupaten);
   if (params?.limit) query.set('limit', String(params.limit));
-  const path = `/api/scores${query.toString() ? `?${query}` : ''}`;
+  const path = `/api/score${query.toString() ? `?${query}` : ''}`;
   return fetchWithFallback(path, kecamatanMapData);
 }
 
@@ -37,14 +40,14 @@ export async function fetchCredit() {
 }
 
 export async function fetchClusters() {
-  return fetchWithFallback('/api/clusters', clusterData);
+  return fetchWithFallback('/api/cluster', clusterData);
 }
 
 export async function fetchRecommendations(params?: { jenis_usaha?: string; kabupaten?: string }) {
   const query = new URLSearchParams();
   if (params?.jenis_usaha) query.set('jenis_usaha', params.jenis_usaha);
   if (params?.kabupaten) query.set('kabupaten', params.kabupaten);
-  const path = `/api/recommendations${query.toString() ? `?${query}` : ''}`;
+  const path = `/api/recommend${query.toString() ? `?${query}` : ''}`;
   return fetchWithFallback(path, recommendData);
 }
 
@@ -52,7 +55,14 @@ export async function fetchPolicy() {
   return fetchWithFallback('/api/policy', policyData);
 }
 
-export async function postChat(body: { message: string; persona: string }) {
+export async function fetchKecamatan(params?: { kabupaten?: string }) {
+  const query = new URLSearchParams();
+  if (params?.kabupaten) query.set('kabupaten', params.kabupaten);
+  const path = `/api/kecamatan${query.toString() ? `?${query}` : ''}`;
+  return fetchWithFallback(path, kecamatanMapData);
+}
+
+export async function postChat(body: { message: string; persona: string; history?: Array<{ role: string; content: string }> }): Promise<{ response: string }> {
   if (!BASE_URL) return { response: '' };
   try {
     const res = await fetch(`${BASE_URL}/api/chat`, {
@@ -61,7 +71,16 @@ export async function postChat(body: { message: string; persona: string }) {
       body: JSON.stringify(body),
     });
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    return await res.json();
+    const data = await res.json();
+    // API returns { success, data: { response, intent, sources } }
+    // Normalize to { response: string }
+    if (data?.data?.response) {
+      return { response: data.data.response };
+    }
+    if (data?.response) {
+      return { response: data.response };
+    }
+    return { response: '' };
   } catch {
     return { response: '' };
   }

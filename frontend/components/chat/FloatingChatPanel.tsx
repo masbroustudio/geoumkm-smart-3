@@ -3,6 +3,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { MessageCircle, X, Send } from 'lucide-react';
+import { postChat } from '@/lib/api';
 
 type Message = {
   role: 'user' | 'assistant';
@@ -73,18 +74,35 @@ export default function FloatingChatPanel() {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
 
-  const handleSend = () => {
+  const handleSend = async () => {
     if (!input.trim() || isLoading) return;
     const userMessage = input.trim();
     setMessages((prev) => [...prev, { role: 'user', content: userMessage }]);
     setInput('');
     setIsLoading(true);
 
-    setTimeout(() => {
+    try {
+      // Try API first
+      const result = await postChat({
+        message: userMessage,
+        persona,
+        history: messages.map((m) => ({ role: m.role, content: m.content })),
+      });
+
+      if (result.response) {
+        setMessages((prev) => [...prev, { role: 'assistant', content: result.response }]);
+      } else {
+        // Fall back to canned response
+        const response = getCannedResponse(userMessage, persona);
+        setMessages((prev) => [...prev, { role: 'assistant', content: response }]);
+      }
+    } catch {
+      // Fall back to canned response on error
       const response = getCannedResponse(userMessage, persona);
       setMessages((prev) => [...prev, { role: 'assistant', content: response }]);
+    } finally {
       setIsLoading(false);
-    }, 1000);
+    }
   };
 
   return (

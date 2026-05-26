@@ -1,7 +1,9 @@
 'use client';
 
+import { useState, useEffect } from 'react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, Legend } from 'recharts';
-import { creditData } from '@/lib/static-data';
+import { creditData as staticCreditData } from '@/lib/static-data';
+import { fetchCredit } from '@/lib/api';
 
 const riskDistribution = [
   { name: 'Low Risk (AAA-A)', value: 976 + 1534 + 1691, color: '#10B981' },
@@ -11,6 +13,41 @@ const riskDistribution = [
 ];
 
 export default function CreditScoringPage() {
+  const [creditData, setCreditData] = useState(staticCreditData);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    let cancelled = false;
+    async function loadData() {
+      try {
+        const data = await fetchCredit();
+        if (!cancelled) setCreditData(data);
+      } catch {
+        // Keep static data
+      } finally {
+        if (!cancelled) setLoading(false);
+      }
+    }
+    loadData();
+    return () => { cancelled = true; };
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="space-y-6 mt-12 lg:mt-0">
+        <h1 className="text-2xl font-bold text-white">Credit Scoring</h1>
+        <div className="glass-card p-6 animate-pulse">
+          <div className="h-4 bg-slate-700 rounded w-1/3 mb-4" />
+          <div className="space-y-3">
+            {[1, 2, 3, 4, 5].map((i) => (
+              <div key={i} className="h-6 bg-slate-700 rounded" />
+            ))}
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="space-y-6 mt-12 lg:mt-0">
       <h1 className="text-2xl font-bold text-white">Credit Scoring</h1>

@@ -1,10 +1,51 @@
 'use client';
 
-import { clusterData } from '@/lib/static-data';
+import { useState, useEffect } from 'react';
+import { clusterData as staticClusterData } from '@/lib/static-data';
+import { fetchClusters } from '@/lib/api';
 
 const clusterColors = ['#10B981', '#3B82F6', '#8B5CF6', '#EF4444', '#F59E0B'];
 
 export default function ClusteringPage() {
+  const [clusterData, setClusterData] = useState(staticClusterData);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    let cancelled = false;
+    async function loadData() {
+      try {
+        const data = await fetchClusters();
+        if (!cancelled) setClusterData(data);
+      } catch {
+        // Keep static data
+      } finally {
+        if (!cancelled) setLoading(false);
+      }
+    }
+    loadData();
+    return () => { cancelled = true; };
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="space-y-6 mt-12 lg:mt-0">
+        <h1 className="text-2xl font-bold text-white">Clustering & Segmentation</h1>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {[1, 2, 3].map((i) => (
+            <div key={i} className="glass-card p-5 animate-pulse">
+              <div className="h-4 bg-slate-700 rounded w-2/3 mb-3" />
+              <div className="space-y-2">
+                {[1, 2, 3].map((j) => (
+                  <div key={j} className="h-4 bg-slate-700 rounded" />
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="space-y-6 mt-12 lg:mt-0">
       <h1 className="text-2xl font-bold text-white">Clustering & Segmentation</h1>

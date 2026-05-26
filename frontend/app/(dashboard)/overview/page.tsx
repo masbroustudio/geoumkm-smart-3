@@ -1,14 +1,59 @@
 'use client';
 
+import { useState, useEffect } from 'react';
 import { Users, TrendingUp, AlertTriangle, Activity } from 'lucide-react';
 import KPICard from '@/components/dashboard/KPICard';
 import MapView from '@/components/dashboard/MapView';
 import ScoreDistributionChart from '@/components/dashboard/ScoreDistributionChart';
 import ClusterDonutChart from '@/components/dashboard/ClusterDonutChart';
 import TopKabupatenChart from '@/components/dashboard/TopKabupatenChart';
-import { overviewData, kecamatanMapData } from '@/lib/static-data';
+import { overviewData as staticOverview, kecamatanMapData as staticMapData } from '@/lib/static-data';
+import { fetchOverview, fetchKecamatan } from '@/lib/api';
 
 export default function OverviewPage() {
+  const [overviewData, setOverviewData] = useState(staticOverview);
+  const [kecamatanMapData, setKecamatanMapData] = useState(staticMapData);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    let cancelled = false;
+    async function loadData() {
+      try {
+        const [overview, mapData] = await Promise.all([
+          fetchOverview(),
+          fetchKecamatan(),
+        ]);
+        if (!cancelled) {
+          setOverviewData(overview);
+          setKecamatanMapData(mapData);
+        }
+      } catch {
+        // Keep static data on error
+      } finally {
+        if (!cancelled) setLoading(false);
+      }
+    }
+    loadData();
+    return () => { cancelled = true; };
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="space-y-6 mt-12 lg:mt-0">
+        <h1 className="text-2xl font-bold text-white">Dashboard Overview</h1>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          {[1, 2, 3, 4].map((i) => (
+            <div key={i} className="glass-card p-6 animate-pulse">
+              <div className="h-4 bg-slate-700 rounded w-1/2 mb-3" />
+              <div className="h-8 bg-slate-700 rounded w-3/4" />
+            </div>
+          ))}
+        </div>
+        <div className="glass-card p-6 h-[300px] animate-pulse" />
+      </div>
+    );
+  }
+
   return (
     <div className="space-y-6 mt-12 lg:mt-0">
       <h1 className="text-2xl font-bold text-white">Dashboard Overview</h1>
