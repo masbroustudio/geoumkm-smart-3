@@ -32,6 +32,12 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
     setMounted(true);
   }, []);
 
+  useEffect(() => {
+    if (mounted) {
+      document.documentElement.lang = locale;
+    }
+  }, [locale, mounted]);
+
   const toggle = useCallback(() => {
     setLocale((prev) => {
       const next = prev === 'id' ? 'en' : 'id';

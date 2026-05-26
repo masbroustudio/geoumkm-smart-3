@@ -32,6 +32,12 @@ self.addEventListener('fetch', (event) => {
   const { request } = event;
   const url = new URL(request.url);
 
+  // Skip non-same-origin requests
+  if (url.origin !== self.location.origin) {
+    event.respondWith(fetch(request));
+    return;
+  }
+
   // Network-first for API calls
   if (url.pathname.includes('/api/')) {
     event.respondWith(
@@ -40,29 +46,40 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
-  // Cache-first for same-origin static assets
-  if (url.origin === self.location.origin) {
+  // Network-first for navigation requests (HTML pages)
+  // This ensures users always get the latest HTML after deploys
+  if (request.mode === 'navigate') {
     event.respondWith(
-      caches.match(request).then((cached) => {
-        if (cached) return cached;
-        return fetch(request).then((response) => {
+      fetch(request)
+        .then((response) => {
           if (response.ok) {
             const clone = response.clone();
             caches.open(CACHE_NAME).then((cache) => cache.put(request, clone));
           }
           return response;
-        }).catch(() => {
-          // Serve offline page for navigation requests
-          if (request.mode === 'navigate') {
-            return caches.match('/offline');
-          }
-          return new Response('Offline', { status: 503 });
-        });
-      })
+        })
+        .catch(() => {
+          return caches.match(request).then((cached) => {
+            return cached || caches.match('/offline');
+          });
+        })
     );
     return;
   }
 
-  // Pass-through for external requests
-  event.respondWith(fetch(request));
+  // Cache-first for static assets (JS, CSS, images, fonts)
+  event.respondWith(
+    caches.match(request).then((cached) => {
+      if (cached) return cached;
+      return fetch(request).then((response) => {
+        if (response.ok) {
+          const clone = response.clone();
+          caches.open(CACHE_NAME).then((cache) => cache.put(request, clone));
+        }
+        return response;
+      }).catch(() => {
+        return new Response('Offline', { status: 503 });
+      });
+    })
+  );
 });

@@ -330,7 +330,12 @@ Add to `frontend/.env.local` for local development:
 NEXT_PUBLIC_APPINSIGHTS_KEY=<your-instrumentation-key>
 ```
 
-For production, add this to your Azure Static Web Apps environment variables.
+For production, this variable **must be present at build time** (during `pnpm build`). Because GeoUMKM uses Next.js static export (`output: 'export'`), all `NEXT_PUBLIC_*` variables are inlined into the JavaScript bundle at build time. Setting the variable only as a runtime environment variable in Azure Static Web Apps will NOT work for client-side code.
+
+To enable analytics in production:
+1. Add `NEXT_PUBLIC_APPINSIGHTS_KEY` to your CI/CD pipeline environment (e.g., GitHub Actions secrets)
+2. Ensure the variable is available when `pnpm build` runs
+3. The compiled static output will include the key and activate analytics
 
 ### 4. Tracked Events
 

@@ -64,15 +64,15 @@ describe('LanguageProvider', () => {
       );
     });
 
-    // Default locale is id, sidebar.overview is "Overview" in both
-    expect(screen.getByTestId('sample-text').textContent).toBe('Overview');
+    // Default locale is id - sidebar.overview is "Ringkasan" in Indonesian
+    expect(screen.getByTestId('sample-text').textContent).toBe('Ringkasan');
 
     const button = screen.getByText('Toggle');
     await act(async () => {
       button.click();
     });
 
-    // English also has "Overview" for sidebar
+    // English has "Overview"
     expect(screen.getByTestId('sample-text').textContent).toBe('Overview');
   });
 

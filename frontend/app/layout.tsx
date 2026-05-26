@@ -58,6 +58,10 @@ export default function RootLayout({
                     document.documentElement.classList.remove('dark');
                     document.documentElement.classList.add('light');
                   }
+                  var locale = localStorage.getItem('locale');
+                  if (locale === 'en') {
+                    document.documentElement.lang = 'en';
+                  }
                 } catch(e) {}
               })();
               if ('serviceWorker' in navigator && location.hostname !== 'localhost') {
