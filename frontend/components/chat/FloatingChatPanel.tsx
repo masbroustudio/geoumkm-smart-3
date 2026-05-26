@@ -71,21 +71,7 @@ function formatInline(text: string) {
 function getEnhancedResponse(message: string, persona: Persona): string {
   const lower = message.toLowerCase();
 
-  // Check specific kecamatan names first
-  for (const [name, data] of Object.entries(locationHighlights)) {
-    if (lower.includes(name)) {
-      return `**${name.charAt(0).toUpperCase() + name.slice(1)}** - ${data.kabupaten}\n\n**Skor Lokasi:** ${data.score}/100\n\n**Kekuatan:**\n${data.strengths.map(s => `- ${s}`).join('\n')}\n\n**Risiko:**\n${data.risks.map(r => `- ${r}`).join('\n')}\n\n[Sumber: Location Scoring, Notebook 03]`;
-    }
-  }
-
-  // Check kabupaten names
-  for (const [name, data] of Object.entries(kabupatenSummaries)) {
-    if (lower.includes(name)) {
-      return `**Kabupaten ${name.charAt(0).toUpperCase() + name.slice(1)}**\n\n**Rata-rata Skor:** ${data.avgScore}/100\n**Jumlah UMKM:** ${data.umkmCount.toLocaleString()}\n**Faktor Kunci:** ${data.keyFactor}\n\n**Top Kecamatan:**\n${data.topKecamatan.map(k => `- ${k}`).join('\n')}\n\n[Sumber: Location Scoring, Notebook 03]`;
-    }
-  }
-
-  // Credit/score queries
+  // Credit/score queries - check topic keywords BEFORE location names
   if (lower.includes('kredit') || lower.includes('credit') || lower.includes('skor') || lower.includes('score')) {
     if (persona === 'bank') {
       return `**Distribusi Credit Band Portfolio:**\n\n- **AAA** (skor 90-100): 976 UMKM (9.8%) - Default rate 3.9%\n- **AA** (skor 80-90): 1,245 UMKM (12.5%) - Default rate 8.2%\n- **A** (skor 70-80): 1,567 UMKM (15.7%) - Default rate 15.1%\n- **BBB** (skor 60-70): 1,890 UMKM (18.9%) - Default rate 24.3%\n- **BB** (skor 50-60): 1,456 UMKM (14.6%) - Default rate 38.7%\n- **B** (skor 30-50): 1,856 UMKM (18.6%) - Default rate 62.4%\n- **CCC** (skor <30): 1,010 UMKM (10.1%) - Default rate 93.3%\n\n**Rata-rata PD portfolio:** 34.59%\n**Konsentrasi risiko:** Bucket 20-50% (very high risk)\n\n[Sumber: Credit Risk Model]`;
@@ -109,11 +95,6 @@ function getEnhancedResponse(message: string, persona: Persona): string {
       return `**Cluster Prioritas Pemerintah:**\n\n**#1 Prioritas: ${c3.name}** (Gov Priority: ${c3.govPriority})\n- Jumlah UMKM: ${c3.n_umkm.toLocaleString()}\n- Infrastructure: ${c3.characteristics.infra}\n- Digital: ${c3.characteristics.digital}%\n- KUR penetration: ${c3.characteristics.kur}%\n\n**Kelemahan:**\n${c3.weaknesses.map(w => `- ${w}`).join('\n')}\n\n**Aksi yang Direkomendasikan:**\n${c3.actions.map(a => `- ${a}`).join('\n')}\n\n**Semua Cluster (by Gov Priority):**\n${[...clusterSummaries].sort((a, b) => a.govPriority - b.govPriority).map(c => `- Priority ${c.govPriority}: ${c.name} (${c.n_umkm} UMKM)`).join('\n')}\n\n[Sumber: Cluster Analysis, Notebook 02]`;
     }
     return `**5 Cluster UMKM:**\n\n${clusterSummaries.map(c => `- **${c.name}**: ${c.n_umkm.toLocaleString()} UMKM - ${c.description}`).join('\n')}\n\n**Total UMKM:** ${modelMetrics.totalUmkm.toLocaleString()}\n\n[Sumber: Cluster Analysis, Notebook 02]`;
-  }
-
-  // Location queries
-  if (lower.includes('lokasi') || lower.includes('location') || lower.includes('kecamatan')) {
-    return `**Top & Bottom Lokasi UMKM:**\n\n**Top 5:**\n- Pondok Gede, Kota Bekasi: **94.85**/100\n- Bekasi Selatan, Kota Bekasi: **92.0**/100\n- Astana Anyar, Kota Bandung: **90.6**/100\n- Cilodong, Kota Depok: **90.3**/100\n- Rancasari, Kota Bandung: **87.6**/100\n\n**Bottom 3:**\n- Sagaranten, Kab. Sukabumi: **1.36**/100\n- Cisompet, Kab. Garut: **6.82**/100\n\n**Faktor utama:** Infrastructure score & digital readiness\n**Total kecamatan dianalisis:** ${modelMetrics.kecamatanCount}\n\n[Sumber: Location Scoring, Notebook 03]`;
   }
 
   // Policy/infrastructure queries
@@ -181,6 +162,25 @@ function getEnhancedResponse(message: string, persona: Persona): string {
     };
     const d = sectorData[sector];
     return `**Sektor ${sector}:**\n\n- **Proporsi:** ${d.pct} dari total UMKM\n- **Avg Score:** ${d.avg}/100\n- **Area Terbaik:** ${d.best}\n- **Risiko Utama:** ${d.risk}\n\n**Rekomendasi:**\n- Focus di area urban untuk ${sector} (higher survival)\n- Digital marketing adoption meningkatkan omset 20-30%\n- KUR penetration masih rendah di sektor ini\n\n[Sumber: Sector Analysis]`;
+  }
+
+  // Location queries (general keyword)
+  if (lower.includes('lokasi') || lower.includes('location') || lower.includes('kecamatan')) {
+    return `**Top & Bottom Lokasi UMKM:**\n\n**Top 5:**\n- Pondok Gede, Kota Bekasi: **94.85**/100\n- Bekasi Selatan, Kota Bekasi: **92.0**/100\n- Astana Anyar, Kota Bandung: **90.6**/100\n- Cilodong, Kota Depok: **90.3**/100\n- Rancasari, Kota Bandung: **87.6**/100\n\n**Bottom 3:**\n- Sagaranten, Kab. Sukabumi: **1.36**/100\n- Cisompet, Kab. Garut: **6.82**/100\n\n**Faktor utama:** Infrastructure score & digital readiness\n**Total kecamatan dianalisis:** ${modelMetrics.kecamatanCount}\n\n[Sumber: Location Scoring, Notebook 03]`;
+  }
+
+  // Check specific kecamatan names (after all topic keywords)
+  for (const [name, data] of Object.entries(locationHighlights)) {
+    if (lower.includes(name)) {
+      return `**${name.charAt(0).toUpperCase() + name.slice(1)}** - ${data.kabupaten}\n\n**Skor Lokasi:** ${data.score}/100\n\n**Kekuatan:**\n${data.strengths.map(s => `- ${s}`).join('\n')}\n\n**Risiko:**\n${data.risks.map(r => `- ${r}`).join('\n')}\n\n[Sumber: Location Scoring, Notebook 03]`;
+    }
+  }
+
+  // Check kabupaten names (after all topic keywords)
+  for (const [name, data] of Object.entries(kabupatenSummaries)) {
+    if (lower.includes(name)) {
+      return `**Kabupaten ${name.charAt(0).toUpperCase() + name.slice(1)}**\n\n**Rata-rata Skor:** ${data.avgScore}/100\n**Jumlah UMKM:** ${data.umkmCount.toLocaleString()}\n**Faktor Kunci:** ${data.keyFactor}\n\n**Top Kecamatan:**\n${data.topKecamatan.map(k => `- ${k}`).join('\n')}\n\n[Sumber: Location Scoring, Notebook 03]`;
+    }
   }
 
   // Default responses

@@ -7,7 +7,7 @@ import { generateCreditReport, generateGovernmentReport, generateInvestmentRepor
 
 type ReportType = 'credit' | 'government' | 'investment';
 
-const kabupatenOptions = ['Semua', 'Kota Bekasi', 'Kota Depok', 'Kota Bandung', 'Kab. Bogor', 'Kota Cimahi'];
+
 
 const reportTemplates = [
   {
@@ -35,7 +35,6 @@ const reportTemplates = [
 
 export default function ReportsPage() {
   const [selectedReport, setSelectedReport] = useState<ReportType | null>(null);
-  const [kabupaten, setKabupaten] = useState('Semua');
   const [generated, setGenerated] = useState(false);
 
   const handleGenerate = () => {
@@ -62,7 +61,7 @@ export default function ReportsPage() {
             <h3 className="text-lg font-semibold text-accent">Credit Risk Summary Report</h3>
             <p className="text-xs text-slate-400 mt-1">
               Generated: {new Date().toLocaleDateString('id-ID', { year: 'numeric', month: 'long', day: 'numeric' })}
-              {kabupaten !== 'Semua' && ` | Region: ${kabupaten}`}
+              {' | Scope: West Java (Jawa Barat) Province-wide'}
             </p>
           </div>
           <div className="grid grid-cols-3 gap-4">
@@ -115,7 +114,7 @@ export default function ReportsPage() {
             <h3 className="text-lg font-semibold text-accent">Government Priority Report</h3>
             <p className="text-xs text-slate-400 mt-1">
               Generated: {new Date().toLocaleDateString('id-ID', { year: 'numeric', month: 'long', day: 'numeric' })}
-              {kabupaten !== 'Semua' && ` | Region: ${kabupaten}`}
+              {' | Scope: West Java (Jawa Barat) Province-wide'}
             </p>
           </div>
           <div className="grid grid-cols-3 gap-4">
@@ -170,7 +169,7 @@ export default function ReportsPage() {
             <h3 className="text-lg font-semibold text-accent">Investment Opportunity Brief</h3>
             <p className="text-xs text-slate-400 mt-1">
               Generated: {new Date().toLocaleDateString('id-ID', { year: 'numeric', month: 'long', day: 'numeric' })}
-              {kabupaten !== 'Semua' && ` | Region: ${kabupaten}`}
+              {' | Scope: West Java (Jawa Barat) Province-wide'}
             </p>
           </div>
           <div className="grid grid-cols-3 gap-4">
@@ -254,17 +253,9 @@ export default function ReportsPage() {
         <div className="glass-card p-6">
           <h3 className="text-sm font-semibold text-white mb-4">Report Parameters</h3>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div>
-              <label className="text-xs text-slate-400 mb-1 block">Kabupaten/Kota</label>
-              <select
-                value={kabupaten}
-                onChange={(e) => setKabupaten(e.target.value)}
-                className="w-full px-4 py-2 rounded-lg bg-slate-800 border border-slate-700 text-white text-sm focus:outline-none focus:border-accent"
-              >
-                {kabupatenOptions.map((opt) => (
-                  <option key={opt} value={opt}>{opt}</option>
-                ))}
-              </select>
+            <div className="flex items-center gap-2">
+              <span className="text-xs text-slate-400">Scope:</span>
+              <span className="text-sm text-white font-medium">West Java (Jawa Barat) Province-wide</span>
             </div>
             <div className="flex items-end">
               <button

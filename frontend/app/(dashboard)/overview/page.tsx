@@ -7,7 +7,7 @@ import FilteredMapView from '@/components/dashboard/FilteredMapView';
 import ScoreDistributionChart from '@/components/dashboard/ScoreDistributionChart';
 import ClusterDonutChart from '@/components/dashboard/ClusterDonutChart';
 import TopKabupatenChart from '@/components/dashboard/TopKabupatenChart';
-import { overviewData as staticOverview, kecamatanMapData as staticMapData, creditData, clusterData, policyData, recommendData } from '@/lib/static-data';
+import { overviewData as staticOverview, kecamatanMapData as staticMapData } from '@/lib/static-data';
 import { fetchOverview, fetchKecamatan } from '@/lib/api';
 import DownloadCSVButton from '@/components/ui/DownloadCSVButton';
 
@@ -57,18 +57,25 @@ export default function OverviewPage() {
 
   return (
     <div className="space-y-6 mt-12 lg:mt-0">
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between flex-wrap gap-3">
         <h1 className="text-2xl font-bold text-white">Dashboard Overview</h1>
-        <DownloadCSVButton
-          data={[
-            ...creditData.bands.map(b => ({ ...b, source: 'credit_bands' })),
-            ...clusterData.govPriority.map(g => ({ ...g, source: 'gov_priority' })),
-            ...clusterData.investment.map(inv => ({ ...inv, source: 'investment' })),
-            ...recommendData.map(r => ({ ...r, source: 'recommendations' })),
-          ] as unknown as Record<string, unknown>[]}
-          filename="geoumkm-all-data"
-          label="Export All Data"
-        />
+        <div className="flex flex-wrap gap-2">
+          <DownloadCSVButton
+            data={overviewData.score_distribution as unknown as Record<string, unknown>[]}
+            filename="geoumkm-score-distribution"
+            label="Export Score Distribution"
+          />
+          <DownloadCSVButton
+            data={overviewData.top_kabupaten as unknown as Record<string, unknown>[]}
+            filename="geoumkm-top-kabupaten"
+            label="Export Top Kabupaten"
+          />
+          <DownloadCSVButton
+            data={overviewData.cluster_distribution as unknown as Record<string, unknown>[]}
+            filename="geoumkm-cluster-distribution"
+            label="Export Cluster Distribution"
+          />
+        </div>
       </div>
 
       {/* KPI Cards */}
