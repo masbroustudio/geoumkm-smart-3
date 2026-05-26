@@ -1,0 +1,7 @@
+{
+  "task_id": "task-geoumkm-v4-phase1",
+  "task_description": "GeoUMKM Intelligence v4.0 Phase 1: Reorganize project structure, build premium landing page with Next.js 14 + Tailwind + Framer Motion, create dashboard skeleton pages, write comprehensive Azure setup documentation, and update CI/CD workflow",
+  "status": "in_progress",
+  "feature_order": ["FEAT-001", "FEAT-002", "FEAT-003"],
+  "blocked_reason": null
+}

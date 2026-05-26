@@ -1,3 +1,6 @@
+# ===========================================
+# PYTHON
+# ===========================================
 __pycache__/
 *.py[cod]
 *$py.class
@@ -35,6 +38,18 @@ env/
 *.ipynb_checkpoints/
 
 # ===========================================
+# NODE.JS / NEXT.JS
+# ===========================================
+node_modules/
+.next/
+out/
+.env.local
+.env*.local
+.turbo/
+.vercel/
+next-env.d.ts
+
+# ===========================================
 # IDE & EDITOR
 # ===========================================
 .vscode/
@@ -70,7 +85,6 @@ desktop.ini
 *.publishsettings
 *.pubxml
 *.pubxml.user
-node_modules/
 package-lock.json
 
 # ===========================================
@@ -85,8 +99,6 @@ package-lock.json
 # SECRETS & ENVIRONMENT
 # ===========================================
 .env
-.env.local
-.env.*.local
 secrets.json
 config.json
 
