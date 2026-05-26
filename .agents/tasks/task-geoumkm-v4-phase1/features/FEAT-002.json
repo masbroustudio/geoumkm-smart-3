@@ -2,7 +2,7 @@
   "id": "FEAT-002",
   "type": "feat",
   "description": "Initialize Next.js 14 frontend project with App Router, TypeScript, Tailwind CSS, and build the premium landing page with all sections, animations, and dashboard skeleton pages",
-  "status": "pending",
+  "status": "in_progress",
   "steps": [
     "Initialize Next.js 14 project in frontend/ with: pnpm create next-app@latest frontend --typescript --tailwind --eslint --app --src-dir=false --import-alias='@/*' --use-pnpm (or manually create package.json and config files)",
     "Install additional dependencies: framer-motion, lucide-react, clsx, tailwind-merge, class-variance-authority (for shadcn-style utilities)",
