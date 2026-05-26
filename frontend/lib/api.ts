@@ -164,7 +164,7 @@ export async function postWhatIfCustom(body: {
         (body.infrastructure_delta * 0.66) +
         (body.internet_delta * 0.33) +
         (body.bank_distance_delta * 0.01);
-      const scoreAfter = Math.min(100, rawNew);
+      const scoreAfter = Math.max(0, Math.min(100, rawNew));
       const improvement = scoreAfter - scoreBefore;
 
       totalBefore += scoreBefore;

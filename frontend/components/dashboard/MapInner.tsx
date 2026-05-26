@@ -1,5 +1,6 @@
 'use client';
 
+import { useMemo } from 'react';
 import { MapContainer, TileLayer, CircleMarker, Popup } from 'react-leaflet';
 import { useRouter } from 'next/navigation';
 import 'leaflet/dist/leaflet.css';
@@ -19,6 +20,15 @@ function getColor(score: number): string {
 export default function MapInner({ data }: MapInnerProps) {
   const router = useRouter();
 
+  // Pre-build a lookup map keyed by kecamatan name for O(1) access per marker
+  const umkmByKecamatan = useMemo(() => {
+    const map = new Map<string, typeof umkmDetailData[number]>();
+    for (const u of umkmDetailData) {
+      map.set(u.kecamatan, u);
+    }
+    return map;
+  }, []);
+
   return (
     <MapContainer
       center={[-6.9, 107.6]}
@@ -31,7 +41,7 @@ export default function MapInner({ data }: MapInnerProps) {
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
       {data.map((item, index) => {
-        const matchedUmkm = umkmDetailData.find((u) => u.kecamatan === item.kecamatan);
+        const matchedUmkm = umkmByKecamatan.get(item.kecamatan);
         return (
           <CircleMarker
             key={index}

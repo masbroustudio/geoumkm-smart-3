@@ -6,7 +6,12 @@ async function handler(request: HttpRequest, context: InvocationContext): Promis
   try {
     const body = (await request.json()) as WhatIfCustomRequest;
 
-    const { infrastructure_delta, internet_delta, bank_distance_delta, target_kabupaten } = body;
+    const { target_kabupaten } = body;
+
+    // Clamp deltas to expected ranges
+    const infrastructure_delta = Math.max(-30, Math.min(30, body.infrastructure_delta));
+    const internet_delta = Math.max(-30, Math.min(30, body.internet_delta));
+    const bank_distance_delta = Math.max(-50, Math.min(50, body.bank_distance_delta));
 
     if (!target_kabupaten) {
       return {
@@ -50,7 +55,7 @@ async function handler(request: HttpRequest, context: InvocationContext): Promis
         (infrastructure_delta * 0.66) +
         (internet_delta * 0.33) +
         (bank_distance_delta * 0.01);
-      const scoreAfter = Math.min(100, rawNew);
+      const scoreAfter = Math.max(0, Math.min(100, rawNew));
       const improvement = scoreAfter - scoreBefore;
 
       totalBefore += scoreBefore;

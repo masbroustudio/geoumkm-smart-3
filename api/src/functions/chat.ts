@@ -106,7 +106,8 @@ function buildKnowledgeContext(persona: string): string {
 async function callAzureOpenAI(
   message: string,
   persona: string,
-  context: InvocationContext
+  context: InvocationContext,
+  history?: { role: string; content: string }[]
 ): Promise<string | null> {
   const endpoint = process.env.AZURE_OPENAI_ENDPOINT;
   const apiKey = process.env.AZURE_OPENAI_KEY;
@@ -119,6 +120,11 @@ async function callAzureOpenAI(
   const url = `${endpoint}/openai/deployments/${deployment}/chat/completions?api-version=2024-02-01`;
 
   const systemPrompt = getSystemPrompt(persona) + buildKnowledgeContext(persona);
+
+  // Include last 5 messages from history for multi-turn context
+  const historyMessages = (history || [])
+    .slice(-5)
+    .map((m) => ({ role: m.role as "user" | "assistant", content: m.content }));
 
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), 15000);
@@ -133,6 +139,7 @@ async function callAzureOpenAI(
       body: JSON.stringify({
         messages: [
           { role: "system", content: systemPrompt },
+          ...historyMessages,
           { role: "user", content: message },
         ],
         max_tokens: 500,
@@ -173,7 +180,7 @@ async function callAzureOpenAI(
 async function handler(request: HttpRequest, context: InvocationContext): Promise<HttpResponseInit> {
   try {
     const body = (await request.json()) as ChatMessage;
-    const { message, persona } = body;
+    const { message, persona, history } = body;
 
     if (!message) {
       return {
@@ -183,7 +190,7 @@ async function handler(request: HttpRequest, context: InvocationContext): Promis
     }
 
     // Try Azure OpenAI if configured
-    const aiResponse = await callAzureOpenAI(message, persona, context);
+    const aiResponse = await callAzureOpenAI(message, persona, context, history);
     if (aiResponse) {
       const response: ChatResponse = {
         response: aiResponse,

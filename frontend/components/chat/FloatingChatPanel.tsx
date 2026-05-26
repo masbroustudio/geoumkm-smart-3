@@ -249,12 +249,14 @@ export default function FloatingChatPanel() {
       });
 
       const responseText = result.response || getEnhancedResponse(userMessage, persona);
-      setIsLoading(false);
       setTypingFullText(responseText);
+      setIsTyping(true);
+      setIsLoading(false);
     } catch {
       const response = getEnhancedResponse(userMessage, persona);
-      setIsLoading(false);
       setTypingFullText(response);
+      setIsTyping(true);
+      setIsLoading(false);
     }
   };
 
