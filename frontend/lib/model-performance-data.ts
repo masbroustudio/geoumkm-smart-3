@@ -8,7 +8,9 @@ export interface ModelComparison {
   model_name: string;
   algorithm: string;
   target: string;
-  auc_roc: number;
+  auc_roc: number | null;
+  r2: number | null;
+  rmse: number | null;
   accuracy: number;
   precision: number;
   recall: number;
@@ -27,7 +29,9 @@ export const modelComparison: ModelComparison[] = [
     model_name: 'Location Scoring',
     algorithm: 'XGBoost Regressor',
     target: 'Location Potential Score',
-    auc_roc: 0.8303,
+    auc_roc: null,
+    r2: 0.9999,
+    rmse: 0.42,
     accuracy: 0.94,
     precision: 0.92,
     recall: 0.91,
@@ -38,7 +42,9 @@ export const modelComparison: ModelComparison[] = [
     model_name: 'Credit Risk',
     algorithm: 'Logistic Regression',
     target: 'Probability of Default',
-    auc_roc: 0.7856,
+    auc_roc: 0.8303,
+    r2: null,
+    rmse: null,
     accuracy: 0.88,
     precision: 0.86,
     recall: 0.84,

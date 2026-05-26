@@ -306,7 +306,7 @@ function UmkmDetailView({ data }: { data: UmkmDetail }) {
                     <div className="flex-1 h-4 bg-slate-700 rounded-full overflow-hidden">
                       <div
                         className="h-full bg-slate-400 rounded-full"
-                        style={{ width: `${cf.current}%` }}
+                        style={{ width: `${Math.min(cf.current, 100)}%` }}
                       />
                     </div>
                     <span className="text-xs text-slate-400 w-8 text-right">{cf.current}</span>
@@ -316,7 +316,7 @@ function UmkmDetailView({ data }: { data: UmkmDetail }) {
                     <div className="flex-1 h-4 bg-slate-700 rounded-full overflow-hidden">
                       <div
                         className="h-full bg-emerald-500 rounded-full"
-                        style={{ width: `${cf.target}%` }}
+                        style={{ width: `${Math.min(cf.target, 100)}%` }}
                       />
                     </div>
                     <span className="text-xs text-emerald-400 w-8 text-right">{cf.target}</span>

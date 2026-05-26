@@ -229,7 +229,7 @@ export default function CreditScoringPage() {
                 <circle cx="60" cy="60" r="50" fill="none" stroke="#334155" strokeWidth="10" />
                 <circle
                   cx="60" cy="60" r="50" fill="none" stroke="#3B82F6" strokeWidth="10"
-                  strokeDasharray={`${modelMetrics.auc_roc * 314.16} 314.16`}
+                  strokeDasharray={`${Math.min(modelMetrics.auc_roc, 1) * 314.16} 314.16`}
                   strokeLinecap="round"
                 />
               </svg>
@@ -238,7 +238,7 @@ export default function CreditScoringPage() {
               </div>
             </div>
             <p className="mt-3 text-sm font-medium text-slate-300">AUC-ROC</p>
-            <p className="text-xs text-slate-500">Location Scoring Model</p>
+            <p className="text-xs text-slate-500">Credit Risk Model</p>
           </div>
 
           {/* KS Statistic Gauge */}
@@ -248,7 +248,7 @@ export default function CreditScoringPage() {
                 <circle cx="60" cy="60" r="50" fill="none" stroke="#334155" strokeWidth="10" />
                 <circle
                   cx="60" cy="60" r="50" fill="none" stroke="#10B981" strokeWidth="10"
-                  strokeDasharray={`${modelMetrics.ks_statistic * 314.16} 314.16`}
+                  strokeDasharray={`${Math.min(modelMetrics.ks_statistic, 1) * 314.16} 314.16`}
                   strokeLinecap="round"
                 />
               </svg>
@@ -267,7 +267,7 @@ export default function CreditScoringPage() {
                 <circle cx="60" cy="60" r="50" fill="none" stroke="#334155" strokeWidth="10" />
                 <circle
                   cx="60" cy="60" r="50" fill="none" stroke="#8B5CF6" strokeWidth="10"
-                  strokeDasharray={`${modelMetrics.location_scoring_r2 * 314.16} 314.16`}
+                  strokeDasharray={`${Math.min(modelMetrics.location_scoring_r2, 1) * 314.16} 314.16`}
                   strokeLinecap="round"
                 />
               </svg>
@@ -289,6 +289,8 @@ export default function CreditScoringPage() {
                 <th className="text-left py-3 px-4 text-slate-400 font-medium">Model</th>
                 <th className="text-left py-3 px-4 text-slate-400 font-medium">Algorithm</th>
                 <th className="text-right py-3 px-4 text-slate-400 font-medium">AUC-ROC</th>
+                <th className="text-right py-3 px-4 text-slate-400 font-medium">R²</th>
+                <th className="text-right py-3 px-4 text-slate-400 font-medium">RMSE</th>
                 <th className="text-right py-3 px-4 text-slate-400 font-medium">Accuracy</th>
                 <th className="text-right py-3 px-4 text-slate-400 font-medium">Precision</th>
                 <th className="text-right py-3 px-4 text-slate-400 font-medium">Recall</th>
@@ -300,7 +302,9 @@ export default function CreditScoringPage() {
                 <tr key={i} className="border-b border-slate-800 hover:bg-slate-800/50">
                   <td className="py-3 px-4 text-white font-medium">{model.model_name}</td>
                   <td className="py-3 px-4 text-slate-300">{model.algorithm}</td>
-                  <td className="py-3 px-4 text-right text-accent font-medium">{model.auc_roc.toFixed(4)}</td>
+                  <td className="py-3 px-4 text-right text-accent font-medium">{model.auc_roc !== null ? model.auc_roc.toFixed(4) : '-'}</td>
+                  <td className="py-3 px-4 text-right text-accent font-medium">{model.r2 !== null ? model.r2.toFixed(4) : '-'}</td>
+                  <td className="py-3 px-4 text-right text-slate-300">{model.rmse !== null ? model.rmse.toFixed(2) : '-'}</td>
                   <td className="py-3 px-4 text-right text-slate-300">{(model.accuracy * 100).toFixed(0)}%</td>
                   <td className="py-3 px-4 text-right text-slate-300">{(model.precision * 100).toFixed(0)}%</td>
                   <td className="py-3 px-4 text-right text-slate-300">{(model.recall * 100).toFixed(0)}%</td>
