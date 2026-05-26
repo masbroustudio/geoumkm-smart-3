@@ -2,7 +2,7 @@
   "id": "FEAT-001",
   "type": "feat",
   "description": "Internationalization (i18n) system - Bahasa Indonesia / English toggle with localStorage persistence, following the same context provider pattern as theme-context.tsx",
-  "status": "in_progress",
+  "status": "completed",
   "steps": [
     "Create frontend/lib/translations/types.ts with a TranslationKeys interface covering: sidebar labels (Overview, Credit Scoring, Portfolio Analytics, Location Intelligence, UMKM Directory, Clustering, Policy Simulation, Reports, Settings), dashboard common labels (Total UMKM, Avg Score, High Risk Areas, Survival Rate, Map View, Markers, Heatmap, Export, Download, Generate, Light Mode, Dark Mode), landing page text (Hero title, subtitle, CTA buttons, section headings for Features, ForWho, TechStack, Pricing, Footer), and chat panel labels (AI Assistant, placeholder text, persona names)",
     "Create frontend/lib/translations/id.ts exporting a const object satisfying TranslationKeys with all values in Bahasa Indonesia",
@@ -34,5 +34,5 @@
     "pnpm build"
   ],
   "blocked_reason": null,
-  "findings": ""
+  "findings": "All 32 tests pass (6 test files). Build succeeds with all 17 routes. i18n context follows same pattern as theme-context.tsx with localStorage persistence. Language toggle uses Globe icon in sidebar and navbar."
 }
