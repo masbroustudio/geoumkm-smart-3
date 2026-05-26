@@ -1,29 +1,32 @@
 "use client";
 
 import { MapPin } from "lucide-react";
-
-const footerLinks = {
-  Produk: [
-    { label: "Credit Scoring", href: "#" },
-    { label: "Location Intelligence", href: "#" },
-    { label: "Clustering", href: "#" },
-    { label: "Policy Simulation", href: "#" },
-    { label: "AI Chat", href: "#" },
-  ],
-  Perusahaan: [
-    { label: "Tentang Kami", href: "#" },
-    { label: "Karir", href: "#" },
-    { label: "Blog", href: "#" },
-    { label: "Kontak", href: "#" },
-  ],
-  Legal: [
-    { label: "Kebijakan Privasi", href: "#" },
-    { label: "Syarat & Ketentuan", href: "#" },
-    { label: "SLA", href: "#" },
-  ],
-};
+import { useLanguage } from "@/lib/i18n-context";
 
 export default function Footer() {
+  const { t } = useLanguage();
+
+  const footerLinks = {
+    [t.landing.footer.product]: [
+      { label: "Credit Scoring", href: "#" },
+      { label: "Location Intelligence", href: "#" },
+      { label: "Clustering", href: "#" },
+      { label: "Policy Simulation", href: "#" },
+      { label: "AI Chat", href: "#" },
+    ],
+    [t.landing.footer.company]: [
+      { label: t.landing.footer.companyAbout, href: "#" },
+      { label: t.landing.footer.companyCareer, href: "#" },
+      { label: t.landing.footer.companyBlog, href: "#" },
+      { label: t.landing.footer.companyContact, href: "#" },
+    ],
+    [t.landing.footer.legal]: [
+      { label: t.landing.footer.legalPrivacy, href: "#" },
+      { label: t.landing.footer.legalTerms, href: "#" },
+      { label: t.landing.footer.legalSla, href: "#" },
+    ],
+  };
+
   return (
     <footer className="bg-slate-950 border-t border-slate-800 pt-16 pb-8 relative wave-border-top">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -37,8 +40,7 @@ export default function Footer() {
               <span className="text-xl font-bold text-white">GeoUMKM</span>
             </div>
             <p className="text-sm text-slate-400 leading-relaxed">
-              Platform intelijen UMKM berbasis AI untuk mendukung inklusi
-              keuangan dan pengembangan ekonomi di Indonesia.
+              {t.landing.footer.description}
             </p>
           </div>
 
@@ -65,7 +67,7 @@ export default function Footer() {
         {/* Bottom */}
         <div className="border-t border-slate-800 pt-8">
           <p className="text-center text-sm text-slate-500">
-            &copy; 2025 GeoUMKM Intelligence. All rights reserved.
+            {t.landing.footer.copyright}
           </p>
         </div>
       </div>

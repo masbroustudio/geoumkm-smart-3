@@ -1,17 +1,11 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { MapPin, Menu, X, Sun, Moon } from "lucide-react";
+import { MapPin, Menu, X, Sun, Moon, Globe } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { useTheme } from "@/lib/theme-context";
-
-const navLinks = [
-  { label: "Fitur", href: "#fitur" },
-  { label: "Untuk Siapa", href: "#untuk-siapa" },
-  { label: "Teknologi", href: "#teknologi" },
-  { label: "Harga", href: "#harga" },
-];
+import { useLanguage } from "@/lib/i18n-context";
 
 function ThemeToggle() {
   const { theme, toggle } = useTheme();
@@ -49,9 +43,32 @@ function ThemeToggle() {
   );
 }
 
+function LanguageToggle() {
+  const { locale, toggle } = useLanguage();
+
+  return (
+    <button
+      onClick={toggle}
+      className="relative p-2 rounded-lg bg-white/10 dark:bg-white/10 hover:bg-white/20 dark:hover:bg-white/20 transition-colors flex items-center gap-1"
+      aria-label="Toggle language"
+    >
+      <Globe className="w-4 h-4 text-slate-300" />
+      <span className="text-xs font-semibold text-slate-300">{locale === 'id' ? 'EN' : 'ID'}</span>
+    </button>
+  );
+}
+
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const { t } = useLanguage();
+
+  const navLinks = [
+    { label: t.landing.navbar.features, href: "#fitur" },
+    { label: t.landing.navbar.forWho, href: "#untuk-siapa" },
+    { label: t.landing.navbar.technology, href: "#teknologi" },
+    { label: t.landing.navbar.pricing, href: "#harga" },
+  ];
 
   useEffect(() => {
     const handleScroll = () => {
@@ -95,14 +112,15 @@ export default function Navbar() {
             ))}
           </div>
 
-          {/* CTA + Dark Mode Toggle */}
+          {/* CTA + Toggles */}
           <div className="hidden md:flex items-center gap-3">
+            <LanguageToggle />
             <ThemeToggle />
             <a
               href="#harga"
               className="px-5 py-2.5 rounded-lg bg-gradient-to-r from-primary to-accent text-white text-sm font-semibold hover:shadow-lg hover:shadow-accent/25 transition-all"
             >
-              Mulai Sekarang
+              {t.landing.navbar.cta}
             </a>
           </div>
 
@@ -131,13 +149,14 @@ export default function Navbar() {
                 </a>
               ))}
               <div className="flex items-center gap-3 mt-2">
+                <LanguageToggle />
                 <ThemeToggle />
                 <a
                   href="#harga"
                   className="flex-1 px-5 py-2.5 rounded-lg bg-gradient-to-r from-primary to-accent text-white text-sm font-semibold text-center"
                   onClick={() => setMobileOpen(false)}
                 >
-                  Mulai Sekarang
+                  {t.landing.navbar.cta}
                 </a>
               </div>
             </div>

@@ -11,6 +11,7 @@ import {
   modelMetrics,
   suggestedQuestions,
 } from '@/lib/knowledge-base';
+import { useLanguage } from '@/lib/i18n-context';
 
 type Message = {
   role: 'user' | 'assistant';
@@ -204,6 +205,7 @@ export default function FloatingChatPanel() {
   const [typingText, setTypingText] = useState('');
   const [typingFullText, setTypingFullText] = useState('');
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const { t } = useLanguage();
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -295,8 +297,8 @@ export default function FloatingChatPanel() {
                   <MessageCircle className="w-4 h-4 text-white" />
                 </div>
                 <div>
-                  <h3 className="text-sm font-semibold text-white">AI Assistant</h3>
-                  <p className="text-xs text-slate-400">GeoUMKM Intelligence</p>
+                  <h3 className="text-sm font-semibold text-white">{t.chat.title}</h3>
+                  <p className="text-xs text-slate-400">{t.chat.subtitle}</p>
                 </div>
               </div>
               {/* Persona Tabs */}
@@ -311,7 +313,7 @@ export default function FloatingChatPanel() {
                         : 'bg-slate-800 text-slate-400 hover:text-white'
                     }`}
                   >
-                    {personaLabels[p]}
+                    {p === 'bank' ? t.chat.personaBank : p === 'government' ? t.chat.personaGovernment : t.chat.personaInvestor}
                   </button>
                 ))}
               </div>
@@ -386,7 +388,7 @@ export default function FloatingChatPanel() {
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
                   onKeyDown={(e) => e.key === 'Enter' && handleSend()}
-                  placeholder="Tanya sesuatu..."
+                  placeholder={t.chat.placeholder}
                   className="flex-1 px-4 py-2.5 rounded-lg bg-slate-800 border border-slate-700 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-accent"
                 />
                 <button

@@ -2,13 +2,7 @@
 
 import { useRef, useEffect, useState } from "react";
 import { motion, useInView, animate } from "framer-motion";
-
-const stats = [
-  { value: 10000, suffix: "+", label: "UMKM Data" },
-  { value: 596, suffix: "", label: "Kecamatan" },
-  { value: 27, suffix: "", label: "Kab/Kota" },
-  { value: 3, suffix: "", label: "AI Models" },
-];
+import { useLanguage } from "@/lib/i18n-context";
 
 function AnimatedCounter({
   value,
@@ -50,6 +44,14 @@ function AnimatedCounter({
 export default function HeroSection() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
+  const { t } = useLanguage();
+
+  const stats = [
+    { value: 10000, suffix: "+", label: t.landing.hero.statUmkm },
+    { value: 596, suffix: "", label: t.landing.hero.statKecamatan },
+    { value: 27, suffix: "", label: t.landing.hero.statKabKota },
+    { value: 3, suffix: "", label: t.landing.hero.statAiModels },
+  ];
 
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
@@ -82,11 +84,11 @@ export default function HeroSection() {
           transition={{ duration: 0.8 }}
         >
           <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white leading-tight mb-6">
-            Platform Intelijen UMKM{" "}
+            {t.landing.hero.title}{" "}
             <span className="bg-gradient-to-r from-accent-300 to-accent-500 bg-clip-text text-transparent">
-              Terdepan
+              {t.landing.hero.titleHighlight}
             </span>{" "}
-            di Indonesia
+            {t.landing.hero.titleSuffix}
           </h1>
         </motion.div>
 
@@ -96,7 +98,7 @@ export default function HeroSection() {
           transition={{ duration: 0.8, delay: 0.2 }}
           className="text-lg sm:text-xl text-slate-300 mb-10 max-w-3xl mx-auto"
         >
-          AI-Powered Location Intelligence & Credit Risk Assessment
+          {t.landing.hero.subtitle}
         </motion.p>
 
         {/* CTA Buttons */}
@@ -110,13 +112,13 @@ export default function HeroSection() {
             href="#harga"
             className="px-8 py-4 rounded-xl bg-gradient-to-r from-accent to-accent-600 text-white font-semibold text-lg hover:shadow-xl hover:shadow-accent/30 transition-all hover:scale-105"
           >
-            Coba Demo Gratis
+            {t.landing.hero.ctaPrimary}
           </a>
           <a
             href="#fitur"
             className="px-8 py-4 rounded-xl border-2 border-white/30 text-white font-semibold text-lg hover:bg-white/10 transition-all hover:scale-105"
           >
-            Pelajari Lebih Lanjut
+            {t.landing.hero.ctaSecondary}
           </a>
         </motion.div>
 

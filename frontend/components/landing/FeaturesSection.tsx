@@ -10,44 +10,18 @@ import {
   MessageSquare,
   FileBarChart,
 } from "lucide-react";
+import { useLanguage } from "@/lib/i18n-context";
+import type { TranslationKeys } from "@/lib/translations/types";
 
-const features = [
-  {
-    icon: ShieldCheck,
-    title: "Credit Scoring AI",
-    description:
-      "Model XGBoost untuk prediksi risiko kredit UMKM dengan akurasi tinggi dan estimasi Probability of Default (PD).",
-  },
-  {
-    icon: MapPin,
-    title: "Location Intelligence",
-    description:
-      "Analisis geospasial mendalam untuk mengidentifikasi potensi lokasi dan risiko area berdasarkan data UMKM.",
-  },
-  {
-    icon: Layers,
-    title: "Clustering & Segmentation",
-    description:
-      "Segmentasi UMKM menggunakan K-Means dan DBSCAN untuk memahami pola dan karakteristik usaha.",
-  },
-  {
-    icon: TrendingUp,
-    title: "Policy Simulation",
-    description:
-      "Simulasi dampak kebijakan terhadap UMKM dengan model what-if analysis untuk pengambilan keputusan.",
-  },
-  {
-    icon: MessageSquare,
-    title: "AI Chat Assistant",
-    description:
-      "Asisten AI berbasis GPT-4o dengan RAG untuk menjawab pertanyaan tentang data dan insight UMKM.",
-  },
-  {
-    icon: FileBarChart,
-    title: "Executive Reports",
-    description:
-      "Laporan eksekutif otomatis dengan visualisasi interaktif untuk stakeholder dan pengambil keputusan.",
-  },
+type FeatureKey = 'creditScoring' | 'locationIntelligence' | 'clustering' | 'policySimulation' | 'aiChat' | 'executiveReports';
+
+const featureItems: { key: FeatureKey; icon: typeof ShieldCheck }[] = [
+  { key: "creditScoring", icon: ShieldCheck },
+  { key: "locationIntelligence", icon: MapPin },
+  { key: "clustering", icon: Layers },
+  { key: "policySimulation", icon: TrendingUp },
+  { key: "aiChat", icon: MessageSquare },
+  { key: "executiveReports", icon: FileBarChart },
 ];
 
 const containerVariants = {
@@ -71,6 +45,7 @@ const cardVariants = {
 export default function FeaturesSection() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-50px" });
+  const { t } = useLanguage();
 
   return (
     <section id="fitur" className="py-24 relative">
@@ -83,10 +58,10 @@ export default function FeaturesSection() {
           className="text-center mb-16"
         >
           <h2 className="text-3xl sm:text-4xl font-bold mb-4">
-            <span className="gradient-text">Fitur Unggulan</span>
+            <span className="gradient-text">{t.landing.features.heading}</span>
           </h2>
           <p className="text-slate-600 dark:text-slate-400 max-w-2xl mx-auto">
-            Solusi lengkap untuk analisis UMKM berbasis AI dan data geospasial
+            {t.landing.features.subheading}
           </p>
         </motion.div>
 
@@ -96,23 +71,26 @@ export default function FeaturesSection() {
           initial="hidden"
           animate={isInView ? "visible" : "hidden"}
         >
-          {features.map((feature) => (
-            <motion.div
-              key={feature.title}
-              variants={cardVariants}
-              className="glass-card p-6 group hover:-translate-y-2 hover:shadow-xl hover:shadow-accent/10 transition-all duration-300 hover:border-accent/30"
-            >
-              <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-primary/20 to-accent/20 flex items-center justify-center mb-4 group-hover:from-primary/30 group-hover:to-accent/30 transition-colors">
-                <feature.icon className="w-6 h-6 text-accent group-hover:scale-110 group-hover:rotate-3 transition-transform duration-300" />
-              </div>
-              <h3 className="text-lg font-semibold mb-2 text-foreground">
-                {feature.title}
-              </h3>
-              <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
-                {feature.description}
-              </p>
-            </motion.div>
-          ))}
+          {featureItems.map((feature) => {
+            const featureT = t.landing.features[feature.key];
+            return (
+              <motion.div
+                key={feature.key}
+                variants={cardVariants}
+                className="glass-card p-6 group hover:-translate-y-2 hover:shadow-xl hover:shadow-accent/10 transition-all duration-300 hover:border-accent/30"
+              >
+                <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-primary/20 to-accent/20 flex items-center justify-center mb-4 group-hover:from-primary/30 group-hover:to-accent/30 transition-colors">
+                  <feature.icon className="w-6 h-6 text-accent group-hover:scale-110 group-hover:rotate-3 transition-transform duration-300" />
+                </div>
+                <h3 className="text-lg font-semibold mb-2 text-foreground">
+                  {featureT.title}
+                </h3>
+                <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+                  {featureT.description}
+                </p>
+              </motion.div>
+            );
+          })}
         </motion.div>
       </div>
     </section>

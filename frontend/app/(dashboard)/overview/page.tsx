@@ -13,12 +13,14 @@ import TopKabupatenChart from '@/components/dashboard/TopKabupatenChart';
 import { overviewData as staticOverview, kecamatanMapData as staticMapData } from '@/lib/static-data';
 import { fetchOverview, fetchKecamatan } from '@/lib/api';
 import DownloadCSVButton from '@/components/ui/DownloadCSVButton';
+import { useLanguage } from '@/lib/i18n-context';
 
 export default function OverviewPage() {
   const [overviewData, setOverviewData] = useState(staticOverview);
   const [kecamatanMapData, setKecamatanMapData] = useState(staticMapData);
   const [loading, setLoading] = useState(true);
   const [mapMode, setMapMode] = useState<'markers' | 'heatmap'>('markers');
+  const { t } = useLanguage();
 
   useEffect(() => {
     let cancelled = false;
@@ -45,7 +47,7 @@ export default function OverviewPage() {
   if (loading) {
     return (
       <div className="space-y-6 mt-12 lg:mt-0">
-        <h1 className="text-2xl font-bold text-white">Dashboard Overview</h1>
+        <h1 className="text-2xl font-bold text-white">{t.dashboard.title}</h1>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {[1, 2, 3, 4].map((i) => (
             <div key={i} className="glass-card p-6 animate-pulse">
@@ -62,22 +64,22 @@ export default function OverviewPage() {
   return (
     <div className="space-y-6 mt-12 lg:mt-0">
       <div className="flex items-center justify-between flex-wrap gap-3">
-        <h1 className="text-2xl font-bold text-white">Dashboard Overview</h1>
+        <h1 className="text-2xl font-bold text-white">{t.dashboard.title}</h1>
         <div className="flex flex-wrap gap-2">
           <DownloadCSVButton
             data={overviewData.score_distribution as unknown as Record<string, unknown>[]}
             filename="geoumkm-score-distribution"
-            label="Export Score Distribution"
+            label={t.dashboard.exportScoreDistribution}
           />
           <DownloadCSVButton
             data={overviewData.top_kabupaten as unknown as Record<string, unknown>[]}
             filename="geoumkm-top-kabupaten"
-            label="Export Top Kabupaten"
+            label={t.dashboard.exportTopKabupaten}
           />
           <DownloadCSVButton
             data={overviewData.cluster_distribution as unknown as Record<string, unknown>[]}
             filename="geoumkm-cluster-distribution"
-            label="Export Cluster Distribution"
+            label={t.dashboard.exportClusterDistribution}
           />
         </div>
       </div>
@@ -86,7 +88,7 @@ export default function OverviewPage() {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <KPICard
           icon={Users}
-          label="Total UMKM"
+          label={t.dashboard.totalUmkm}
           value={overviewData.total_umkm.toLocaleString()}
           subtitle="West Java region"
           color="#3B82F6"
@@ -95,7 +97,7 @@ export default function OverviewPage() {
         />
         <KPICard
           icon={TrendingUp}
-          label="Avg Score"
+          label={t.dashboard.avgScore}
           value={overviewData.avg_score.toFixed(1)}
           subtitle="Skor potensi rata-rata"
           color="#10B981"
@@ -104,7 +106,7 @@ export default function OverviewPage() {
         />
         <KPICard
           icon={AlertTriangle}
-          label="High Risk Areas"
+          label={t.dashboard.highRiskAreas}
           value={overviewData.high_risk_count}
           subtitle="Kecamatan skor < 30"
           color="#EF4444"
@@ -113,7 +115,7 @@ export default function OverviewPage() {
         />
         <KPICard
           icon={Activity}
-          label="Survival Rate"
+          label={t.dashboard.survivalRate}
           value={`${overviewData.survival_rate}%`}
           subtitle="Rata-rata tingkat kelangsungan"
           color="#8B5CF6"
@@ -125,7 +127,7 @@ export default function OverviewPage() {
       {/* Map Mode Toggle */}
       <div className="flex items-center gap-3">
         <Layers className="w-4 h-4 text-slate-400" />
-        <span className="text-sm text-slate-400">Map View:</span>
+        <span className="text-sm text-slate-400">{t.dashboard.mapView}</span>
         <div className="flex rounded-lg overflow-hidden border border-slate-700">
           <button
             onClick={() => setMapMode('markers')}
@@ -135,7 +137,7 @@ export default function OverviewPage() {
                 : 'bg-transparent text-slate-400 hover:text-white'
             }`}
           >
-            Markers
+            {t.dashboard.markers}
           </button>
           <button
             onClick={() => setMapMode('heatmap')}
@@ -145,7 +147,7 @@ export default function OverviewPage() {
                 : 'bg-transparent text-slate-400 hover:text-white'
             }`}
           >
-            Heatmap
+            {t.dashboard.heatmap}
           </button>
         </div>
       </div>

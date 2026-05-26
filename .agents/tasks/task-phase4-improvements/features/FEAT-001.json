@@ -1,0 +1,38 @@
+{
+  "id": "FEAT-001",
+  "type": "feat",
+  "description": "Internationalization (i18n) system - Bahasa Indonesia / English toggle with localStorage persistence, following the same context provider pattern as theme-context.tsx",
+  "status": "in_progress",
+  "steps": [
+    "Create frontend/lib/translations/types.ts with a TranslationKeys interface covering: sidebar labels (Overview, Credit Scoring, Portfolio Analytics, Location Intelligence, UMKM Directory, Clustering, Policy Simulation, Reports, Settings), dashboard common labels (Total UMKM, Avg Score, High Risk Areas, Survival Rate, Map View, Markers, Heatmap, Export, Download, Generate, Light Mode, Dark Mode), landing page text (Hero title, subtitle, CTA buttons, section headings for Features, ForWho, TechStack, Pricing, Footer), and chat panel labels (AI Assistant, placeholder text, persona names)",
+    "Create frontend/lib/translations/id.ts exporting a const object satisfying TranslationKeys with all values in Bahasa Indonesia",
+    "Create frontend/lib/translations/en.ts exporting a const object satisfying TranslationKeys with all values in English",
+    "Create frontend/lib/translations/index.ts that re-exports both translation files and types",
+    "Create frontend/lib/i18n-context.tsx following the exact pattern of theme-context.tsx: createContext with locale state ('id'|'en'), a LanguageProvider that reads from localStorage('locale'), a toggle function, a t() function that returns the current translation string given a key, and a useLanguage() hook",
+    "Update frontend/app/layout.tsx to wrap children with LanguageProvider (inside ThemeProvider or alongside it)",
+    "Update frontend/components/dashboard/Sidebar.tsx to use useLanguage() hook: replace navItems labels with translated keys, replace 'Light Mode'/'Dark Mode' text with translated string. Add a language toggle button (simple 'ID/EN' text button) below the theme toggle button",
+    "Update frontend/components/landing/Navbar.tsx to use useLanguage(): translate navLinks labels and CTA button text. Add an 'ID/EN' toggle button next to the theme toggle",
+    "Update frontend/components/landing/HeroSection.tsx to use useLanguage(): translate the main heading, subtitle, and CTA button labels. Keep stat labels translated (UMKM Data, Kecamatan, Kab/Kota, AI Models)",
+    "Update frontend/components/landing/FeaturesSection.tsx to use useLanguage(): translate section heading and feature card titles/descriptions",
+    "Update frontend/components/landing/ForWhoSection.tsx to use useLanguage(): translate section heading and audience descriptions",
+    "Update frontend/components/landing/PricingSection.tsx to use useLanguage(): translate section heading, plan names, price labels, and feature lists",
+    "Update frontend/components/landing/Footer.tsx to use useLanguage(): translate footer text",
+    "Update frontend/app/(dashboard)/overview/page.tsx to use useLanguage(): translate page title 'Dashboard Overview', KPI card labels, map view toggle labels, and export button labels",
+    "Update frontend/components/chat/FloatingChatPanel.tsx to use useLanguage(): translate 'AI Assistant', persona labels, placeholder text, and suggested question categories (keep actual data responses in Indonesian)",
+    "Add test file frontend/__tests__/lib/i18n-context.test.tsx following the pattern of theme-context.test.tsx: test default locale is 'id', test toggle switches to 'en', test localStorage persistence, test t() returns correct translations"
+  ],
+  "acceptance_criteria": [
+    "Language toggle button visible in sidebar and landing navbar",
+    "Clicking toggle switches all UI text between Indonesian and English",
+    "Language preference persists in localStorage across page reloads",
+    "Data values (kecamatan names, UMKM names, score numbers) remain unchanged regardless of language",
+    "pnpm build succeeds with no errors",
+    "pnpm test:ci passes including new i18n tests"
+  ],
+  "verification": [
+    "pnpm test:ci",
+    "pnpm build"
+  ],
+  "blocked_reason": null,
+  "findings": ""
+}

@@ -18,20 +18,25 @@ import {
   Sun,
   Moon,
   Users,
+  Globe,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useTheme } from "@/lib/theme-context";
+import { useLanguage } from "@/lib/i18n-context";
+import type { TranslationKeys } from "@/lib/translations/types";
 
-const navItems = [
-  { label: "Overview", href: "/overview", icon: LayoutDashboard },
-  { label: "Credit Scoring", href: "/credit-scoring", icon: ShieldCheck },
-  { label: "Portfolio Analytics", href: "/portfolio-analytics", icon: PieChart },
-  { label: "Location Intelligence", href: "/location-intelligence", icon: MapPin },
-  { label: "UMKM Directory", href: "/umkm", icon: Users },
-  { label: "Clustering", href: "/clustering", icon: Layers },
-  { label: "Policy Simulation", href: "/policy-simulation", icon: TrendingUp },
-  { label: "Reports", href: "/reports", icon: FileBarChart },
-  { label: "Settings", href: "/settings", icon: Settings },
+type SidebarKey = keyof TranslationKeys['sidebar'];
+
+const navItems: { key: SidebarKey; href: string; icon: typeof LayoutDashboard }[] = [
+  { key: "overview", href: "/overview", icon: LayoutDashboard },
+  { key: "creditScoring", href: "/credit-scoring", icon: ShieldCheck },
+  { key: "portfolioAnalytics", href: "/portfolio-analytics", icon: PieChart },
+  { key: "locationIntelligence", href: "/location-intelligence", icon: MapPin },
+  { key: "umkmDirectory", href: "/umkm", icon: Users },
+  { key: "clustering", href: "/clustering", icon: Layers },
+  { key: "policySimulation", href: "/policy-simulation", icon: TrendingUp },
+  { key: "reports", href: "/reports", icon: FileBarChart },
+  { key: "settings", href: "/settings", icon: Settings },
 ];
 
 export default function Sidebar() {
@@ -90,6 +95,7 @@ export default function Sidebar() {
 
 function SidebarContent({ pathname, onNavigate }: { pathname: string; onNavigate: () => void }) {
   const { theme, toggle } = useTheme();
+  const { locale, toggle: toggleLang, t } = useLanguage();
 
   return (
     <>
@@ -127,7 +133,7 @@ function SidebarContent({ pathname, onNavigate }: { pathname: string; onNavigate
                 />
               )}
               <item.icon className="relative z-10 w-5 h-5 transition-transform duration-200 group-hover:scale-110" />
-              <span className="relative z-10">{item.label}</span>
+              <span className="relative z-10">{t.sidebar[item.key]}</span>
             </Link>
           );
         })}
@@ -145,7 +151,17 @@ function SidebarContent({ pathname, onNavigate }: { pathname: string; onNavigate
           ) : (
             <Moon className="w-5 h-5" />
           )}
-          <span>{theme === 'dark' ? 'Light Mode' : 'Dark Mode'}</span>
+          <span>{theme === 'dark' ? t.dashboard.lightMode : t.dashboard.darkMode}</span>
+        </button>
+
+        {/* Language Toggle */}
+        <button
+          onClick={toggleLang}
+          className="flex items-center gap-3 w-full px-3 py-2.5 rounded-lg text-sm font-medium text-[var(--text-secondary)] hover:text-[var(--foreground)] hover:bg-[var(--sidebar-border)]/50 transition-all"
+          aria-label="Toggle language"
+        >
+          <Globe className="w-5 h-5" />
+          <span>{locale === 'id' ? 'EN' : 'ID'}</span>
         </button>
       </div>
 

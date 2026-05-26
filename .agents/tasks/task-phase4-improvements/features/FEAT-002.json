@@ -1,0 +1,35 @@
+{
+  "id": "FEAT-002",
+  "type": "feat",
+  "description": "Performance monitoring preparation (Application Insights) - analytics wrapper with no-op fallback when NEXT_PUBLIC_APPINSIGHTS_KEY is not set, plus PWA support with manifest.json, service worker, and offline page",
+  "status": "pending",
+  "steps": [
+    "Create frontend/lib/analytics.ts with: (1) an Analytics class/object with methods trackPageView(pageName: string), trackEvent(eventName: string, properties?: Record<string,string>), trackError(error: Error, context?: string), (2) if process.env.NEXT_PUBLIC_APPINSIGHTS_KEY is set, log to console with '[Analytics]' prefix (placeholder for real App Insights SDK), (3) if not set, all methods are no-ops, (4) Export a singleton instance",
+    "Add analytics.trackPageView() call in frontend/app/(dashboard)/layout.tsx using a client component wrapper or useEffect",
+    "Add analytics.trackEvent('chat_message_sent', {persona}) in frontend/components/chat/FloatingChatPanel.tsx handleSend function",
+    "Add analytics.trackEvent('report_exported', {reportType}) in frontend/app/(dashboard)/reports/page.tsx handleDownloadPDF function",
+    "Add analytics.trackEvent('theme_toggled', {newTheme}) in frontend/lib/theme-context.tsx toggle function",
+    "Create frontend/public/ directory if it does not exist",
+    "Create frontend/public/manifest.json with: name 'GeoUMKM Intelligence', short_name 'GeoUMKM', start_url '/overview', display 'standalone', theme_color '#6366f1' (primary color), background_color '#0f172a' (dark background), icons array referencing /icon.svg with sizes 'any' and type 'image/svg+xml'",
+    "Create frontend/public/sw.js - a minimal service worker: on install event cache the app shell URLs ('/overview', '/credit-scoring', '/portfolio-analytics', '/location-intelligence', '/umkm', '/clustering', '/policy-simulation', '/reports', '/settings', '/offline'), on fetch use cache-first for same-origin non-API requests and network-first for API calls (URLs containing '/api/'), on fetch failure for navigation requests serve '/offline' from cache",
+    "Create frontend/app/offline/page.tsx - a simple static offline fallback page with a centered message saying the app is offline and suggesting to check internet connection, styled with the app's dark theme CSS variables",
+    "Update frontend/app/layout.tsx to add: (1) <link rel='manifest' href='/manifest.json' /> in head, (2) meta tags for PWA (theme-color, apple-mobile-web-app-capable, apple-mobile-web-app-status-bar-style, apple-mobile-web-app-title), (3) a script that registers the service worker only in production (check typeof window !== 'undefined' && 'serviceWorker' in navigator && process.env.NODE_ENV === 'production')",
+    "Update docs/MANUAL_SETUP_NOTES.md to add new sections: (K) Application Insights Setup with steps to create resource, get key, set NEXT_PUBLIC_APPINSIGHTS_KEY env var; (L) PWA Support explaining the manifest and service worker behavior"
+  ],
+  "acceptance_criteria": [
+    "frontend/lib/analytics.ts exports trackPageView, trackEvent, trackError functions",
+    "Analytics calls are no-ops when NEXT_PUBLIC_APPINSIGHTS_KEY is not set (no errors in console)",
+    "manifest.json is valid and accessible at /manifest.json in build output",
+    "Service worker sw.js is in the public directory and will be served at /sw.js",
+    "Offline page renders a user-friendly message",
+    "Service worker registration only happens in production (not during dev)",
+    "pnpm build succeeds with no errors (offline page generates as static route)",
+    "pnpm test:ci still passes all existing tests"
+  ],
+  "verification": [
+    "pnpm test:ci",
+    "pnpm build"
+  ],
+  "blocked_reason": null,
+  "findings": ""
+}

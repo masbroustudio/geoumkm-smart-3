@@ -3,70 +3,7 @@
 import { useRef } from "react";
 import { motion, useInView } from "framer-motion";
 import { Check } from "lucide-react";
-
-const plans = [
-  {
-    name: "Starter",
-    price: "Rp 0",
-    period: "/bulan",
-    description: "Untuk peneliti dan individu",
-    highlighted: false,
-    badge: null,
-    features: [
-      "Akses data 100 UMKM",
-      "Credit scoring dasar",
-      "1 model AI",
-      "Dashboard overview",
-      "Export CSV",
-      "Community support",
-      "Dokumentasi lengkap",
-      "1 user",
-    ],
-    cta: "Mulai Gratis",
-  },
-  {
-    name: "Professional",
-    price: "Rp 2.500.000",
-    period: "/bulan",
-    description: "Untuk organisasi dan tim",
-    highlighted: true,
-    badge: "Populer",
-    features: [
-      "Akses data 10.000+ UMKM",
-      "Credit scoring lengkap + PD",
-      "Semua 3 model AI",
-      "Full dashboard & analytics",
-      "Location intelligence",
-      "Policy simulation",
-      "AI Chat Assistant",
-      "API access",
-      "Priority support",
-      "Hingga 10 users",
-    ],
-    cta: "Pilih Professional",
-  },
-  {
-    name: "Enterprise",
-    price: "Hubungi Kami",
-    period: "",
-    description: "Untuk kebutuhan kustom",
-    highlighted: false,
-    badge: null,
-    features: [
-      "Unlimited data access",
-      "Custom model training",
-      "Dedicated infrastructure",
-      "White-label solution",
-      "On-premise deployment",
-      "SLA 99.9% uptime",
-      "Dedicated account manager",
-      "Custom integration",
-      "24/7 premium support",
-      "Unlimited users",
-    ],
-    cta: "Hubungi Sales",
-  },
-];
+import { useLanguage } from "@/lib/i18n-context";
 
 const containerVariants = {
   hidden: {},
@@ -89,6 +26,29 @@ const cardVariants = {
 export default function PricingSection() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-50px" });
+  const { t } = useLanguage();
+
+  const plans = [
+    {
+      ...t.landing.pricing.starter,
+      price: "Rp 0",
+      period: "/bulan",
+      highlighted: false,
+      badge: null,
+    },
+    {
+      ...t.landing.pricing.professional,
+      price: "Rp 2.500.000",
+      period: "/bulan",
+      highlighted: true,
+    },
+    {
+      ...t.landing.pricing.enterprise,
+      period: "",
+      highlighted: false,
+      badge: null,
+    },
+  ];
 
   return (
     <section id="harga" className="py-24 relative">
@@ -101,10 +61,10 @@ export default function PricingSection() {
           className="text-center mb-16"
         >
           <h2 className="text-3xl sm:text-4xl font-bold mb-4">
-            <span className="gradient-text">Pilih Paket Sesuai Kebutuhan</span>
+            <span className="gradient-text">{t.landing.pricing.heading}</span>
           </h2>
           <p className="text-slate-600 dark:text-slate-400 max-w-2xl mx-auto">
-            Flexible pricing for every scale of operation
+            {t.landing.pricing.subheading}
           </p>
         </motion.div>
 

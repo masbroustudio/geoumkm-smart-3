@@ -1,0 +1,7 @@
+{
+  "task_id": "task-phase4-improvements",
+  "task_description": "GeoUMKM Intelligence V4.0 Phase 4: i18n (Bahasa/English), Performance monitoring + PWA support, Auth scaffolding",
+  "status": "in_progress",
+  "feature_order": ["FEAT-001", "FEAT-002", "FEAT-003"],
+  "blocked_reason": null
+}
